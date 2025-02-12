@@ -4,13 +4,6 @@
  */
 package UserInterface.Admin;
 
-import Function.Image.FitImage;
-import Function.SeeAndUnseePass.SeeAndUnseePass;
-import Function.file.file;
-import Function.password.checkPasswordField;
-import Function.textField.txtField;
-import java.io.File;
-
 public class Account extends javax.swing.JFrame {
 
     File profile = null;
@@ -18,12 +11,7 @@ public class Account extends javax.swing.JFrame {
     public Account() {
         
         initComponents();
-        txtpassword.setEchoChar((char)0);
-        btnban.setVisible(false);
-        btndelete.setVisible(false);
-        btnupdate.setVisible(false);
-        this.datePicker2.getComponentDateTextField().setEnabled(false);
-        
+      
     }
 
     /**

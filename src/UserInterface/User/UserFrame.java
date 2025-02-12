@@ -11,20 +11,21 @@ import javax.swing.JLabel;
  *
  * @author Admin
  */
-public class NewJFrame extends javax.swing.JFrame {
-    
-    public void labelHover(JLabel lbl){
+public class UserFrame extends javax.swing.JFrame {
+
+  public void labelHover(JLabel lbl){
     lbl.setForeground(Color.black);
-    lbl.setFont(new java.awt.Font("Retro Gaming", 1, 41)); // NOI18N
+    lbl.setFont(new java.awt.Font("Retro Gaming", 1, 32)); // NOI18N
     }
     
     public void labelHoverOut(JLabel lbl){
     lbl.setForeground(Color.white);
-    lbl.setFont(new java.awt.Font("Retro Gaming", 0, 40)); // NOI18N
+    lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
     }
     
     
-    public NewJFrame() {
+    
+    public UserFrame() {
         initComponents();
     }
 
@@ -40,16 +41,18 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblplay = new javax.swing.JLabel();
         lblprofile = new javax.swing.JLabel();
-        lbllogout = new javax.swing.JLabel();
         lblsettings = new javax.swing.JLabel();
         lblleaderboard = new javax.swing.JLabel();
+        lbllogout = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 0));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
 
-        lblplay.setFont(new java.awt.Font("Retro Gaming", 0, 40)); // NOI18N
+        lblplay.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
         lblplay.setForeground(new java.awt.Color(255, 255, 255));
         lblplay.setText("PLAY");
         lblplay.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -65,7 +68,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        lblprofile.setFont(new java.awt.Font("Retro Gaming", 0, 40)); // NOI18N
+        lblprofile.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
         lblprofile.setForeground(new java.awt.Color(255, 255, 255));
         lblprofile.setText("PROFILE");
         lblprofile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -81,23 +84,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        lbllogout.setFont(new java.awt.Font("Retro Gaming", 0, 40)); // NOI18N
-        lbllogout.setForeground(new java.awt.Color(255, 255, 255));
-        lbllogout.setText("LOGOUT");
-        lbllogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lbllogout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbllogoutMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lbllogoutMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lbllogoutMouseExited(evt);
-            }
-        });
-
-        lblsettings.setFont(new java.awt.Font("Retro Gaming", 0, 40)); // NOI18N
+        lblsettings.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
         lblsettings.setForeground(new java.awt.Color(255, 255, 255));
         lblsettings.setText("SETTINGS");
         lblsettings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -113,7 +100,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        lblleaderboard.setFont(new java.awt.Font("Retro Gaming", 0, 38)); // NOI18N
+        lblleaderboard.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
         lblleaderboard.setForeground(new java.awt.Color(255, 255, 255));
         lblleaderboard.setText("LEADERBOARDS");
         lblleaderboard.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -129,78 +116,98 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        lbllogout.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
+        lbllogout.setForeground(new java.awt.Color(255, 255, 255));
+        lbllogout.setText("LOGOUT");
+        lbllogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbllogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbllogoutMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbllogoutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbllogoutMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblleaderboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addComponent(lblplay))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(lblprofile)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbllogout)
-                .addGap(88, 88, 88))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(lblsettings)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblleaderboard, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
-                .addContainerGap())
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(52, 52, 52)
+                                .addComponent(lblprofile))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(85, 85, 85)
+                                .addComponent(lblplay))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(lblsettings))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(59, 59, 59)
+                                .addComponent(lbllogout)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(26, 26, 26))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(153, Short.MAX_VALUE)
+                .addGap(84, 84, 84)
                 .addComponent(lblplay, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblprofile)
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addComponent(lblsettings)
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addComponent(lblleaderboard)
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
                 .addComponent(lbllogout)
-                .addGap(50, 50, 50))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(295, 295, 295)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(320, 320, 320)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblplayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseEntered
-      labelHover(lblplay);
-    }//GEN-LAST:event_lblplayMouseEntered
-
     private void lblplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseClicked
-      labelHoverOut(lblplay);
+        labelHoverOut(lblplay);
+        
     }//GEN-LAST:event_lblplayMouseClicked
+
+    private void lblplayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseEntered
+        labelHover(lblplay);
+    }//GEN-LAST:event_lblplayMouseEntered
 
     private void lblplayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseExited
         labelHoverOut(lblplay);
     }//GEN-LAST:event_lblplayMouseExited
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
-           labelHoverOut(lblprofile);
+        labelHoverOut(lblprofile);
     }//GEN-LAST:event_lblprofileMouseClicked
 
     private void lblprofileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseEntered
@@ -212,40 +219,40 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblprofileMouseExited
 
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
-     labelHoverOut(lblsettings);
+        labelHoverOut(lblsettings);
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
-            labelHover(lblsettings);
+        labelHover(lblsettings);
     }//GEN-LAST:event_lblsettingsMouseEntered
 
     private void lblsettingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseExited
-            labelHoverOut(lblsettings);
+        labelHoverOut(lblsettings);
     }//GEN-LAST:event_lblsettingsMouseExited
 
-    private void lblleaderboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseClicked
-            labelHoverOut(lblleaderboard);
-    }//GEN-LAST:event_lblleaderboardMouseClicked
-
-    private void lblleaderboardMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseEntered
-           labelHover(lblleaderboard);
-    }//GEN-LAST:event_lblleaderboardMouseEntered
-
-    private void lblleaderboardMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseExited
-            labelHoverOut(lblleaderboard);
-    }//GEN-LAST:event_lblleaderboardMouseExited
-
     private void lbllogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseClicked
-            labelHoverOut(lbllogout);
+        labelHoverOut(lbllogout);
     }//GEN-LAST:event_lbllogoutMouseClicked
 
     private void lbllogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseEntered
-            labelHover(lbllogout);
+        labelHover(lbllogout);
     }//GEN-LAST:event_lbllogoutMouseEntered
 
     private void lbllogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseExited
-                labelHoverOut(lbllogout);
+        labelHoverOut(lbllogout);
     }//GEN-LAST:event_lbllogoutMouseExited
+
+    private void lblleaderboardMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseExited
+        labelHoverOut(lblleaderboard);
+    }//GEN-LAST:event_lblleaderboardMouseExited
+
+    private void lblleaderboardMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseEntered
+        labelHover(lblleaderboard);
+    }//GEN-LAST:event_lblleaderboardMouseEntered
+
+    private void lblleaderboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseClicked
+        labelHoverOut(lblleaderboard);
+    }//GEN-LAST:event_lblleaderboardMouseClicked
 
     /**
      * @param args the command line arguments
@@ -264,26 +271,30 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NewJFrame().setVisible(true);
+                new UserFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblleaderboard;
     private javax.swing.JLabel lbllogout;
     private javax.swing.JLabel lblplay;

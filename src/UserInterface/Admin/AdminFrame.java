@@ -6,6 +6,7 @@ package UserInterface.Admin;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import UserInterface.Admin.Account;
 
 /**
  *
@@ -13,20 +14,20 @@ import javax.swing.JLabel;
  */
 public class AdminFrame extends javax.swing.JFrame {
 
-  public void labelHover(JLabel lbl){
-    lbl.setForeground(Color.black);
-    lbl.setFont(new java.awt.Font("Retro Gaming", 1, 32)); // NOI18N
+    public void labelHover(JLabel lbl) {
+        lbl.setForeground(Color.black);
+        lbl.setFont(new java.awt.Font("Retro Gaming", 1, 32)); // NOI18N
     }
-    
-    public void labelHoverOut(JLabel lbl){
-    lbl.setForeground(Color.white);
-    lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
+
+    public void labelHoverOut(JLabel lbl) {
+        lbl.setForeground(Color.white);
+        lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
     }
-    
-    
-    
+
     public AdminFrame() {
         initComponents();
+        ViewPanel.setViewportView(new Accounts());
+
     }
 
     /**
@@ -44,7 +45,8 @@ public class AdminFrame extends javax.swing.JFrame {
         lblsettings = new javax.swing.JLabel();
         lblleaderboard = new javax.swing.JLabel();
         lbllogout = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        lblleaderboard1 = new javax.swing.JLabel();
+        ViewPanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -132,74 +134,87 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
 
+        lblleaderboard1.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
+        lblleaderboard1.setForeground(new java.awt.Color(255, 255, 255));
+        lblleaderboard1.setText("ACCOUNTS");
+        lblleaderboard1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblleaderboard1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblleaderboard1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblleaderboard1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblleaderboard1MouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblleaderboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(lblleaderboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(52, 52, 52)
-                                .addComponent(lblprofile))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(85, 85, 85)
+                                .addGap(107, 107, 107)
                                 .addComponent(lblplay))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
+                                .addGap(58, 58, 58)
                                 .addComponent(lblsettings))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(59, 59, 59)
-                                .addComponent(lbllogout)))
+                                .addGap(58, 58, 58)
+                                .addComponent(lblleaderboard1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(73, 73, 73)
+                                .addComponent(lblprofile)))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(26, 26, 26))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(81, 81, 81)
+                .addComponent(lbllogout)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(84, 84, 84)
-                .addComponent(lblplay, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblprofile)
-                .addGap(37, 37, 37)
-                .addComponent(lblsettings)
-                .addGap(37, 37, 37)
-                .addComponent(lblleaderboard)
+                .addComponent(lblplay, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                 .addGap(35, 35, 35)
-                .addComponent(lbllogout)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblprofile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(48, 48, 48)
+                .addComponent(lblsettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(42, 42, 42)
+                .addComponent(lblleaderboard1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
+                .addComponent(lblleaderboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
+                .addComponent(lbllogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(33, 33, 33))
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 621, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 570, Short.MAX_VALUE)
-        );
+        ViewPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(314, 314, 314)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(ViewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(ViewPanel)
+                .addGap(1, 1, 1))
         );
 
         pack();
@@ -207,7 +222,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseClicked
         labelHoverOut(lblplay);
-        
+
     }//GEN-LAST:event_lblplayMouseClicked
 
     private void lblplayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseEntered
@@ -266,6 +281,18 @@ public class AdminFrame extends javax.swing.JFrame {
         labelHoverOut(lblleaderboard);
     }//GEN-LAST:event_lblleaderboardMouseClicked
 
+    private void lblleaderboard1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboard1MouseClicked
+        ViewPanel.setViewportView(new Accounts());
+    }//GEN-LAST:event_lblleaderboard1MouseClicked
+
+    private void lblleaderboard1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboard1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblleaderboard1MouseEntered
+
+    private void lblleaderboard1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboard1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblleaderboard1MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -302,9 +329,10 @@ public class AdminFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane ViewPanel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblleaderboard;
+    private javax.swing.JLabel lblleaderboard1;
     private javax.swing.JLabel lbllogout;
     private javax.swing.JLabel lblplay;
     private javax.swing.JLabel lblprofile;
