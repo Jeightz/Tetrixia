@@ -4,8 +4,14 @@
  */
 package UserInterface.User;
 
+import Model.UserData.UserData;
+import UserInterface.Login.SignIn;
+import UserInterface.leaderboards.leaderboards;
+import UserInterface.profile.profile;
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,20 +19,24 @@ import javax.swing.JLabel;
  */
 public class UserFrame extends javax.swing.JFrame {
 
-  public void labelHover(JLabel lbl){
-    lbl.setForeground(Color.black);
-    lbl.setFont(new java.awt.Font("Retro Gaming", 1, 32)); // NOI18N
+    static int profileIndex = -1;
+    static ArrayList<UserData> data;
+
+    public void labelHover(JLabel lbl) {
+        lbl.setForeground(Color.black);
+        lbl.setFont(new java.awt.Font("Retro Gaming", 1, 32)); // NOI18N
     }
-    
-    public void labelHoverOut(JLabel lbl){
-    lbl.setForeground(Color.white);
-    lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
+
+    public void labelHoverOut(JLabel lbl) {
+        lbl.setForeground(Color.white);
+        lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
     }
-    
-    
-    
-    public UserFrame() {
+
+    public UserFrame(ArrayList<UserData> data, int userIndex) {
         initComponents();
+        viewPanel.setViewportView(new leaderboards(data));
+        this.data = data;
+        profileIndex = userIndex;
     }
 
     /**
@@ -44,9 +54,14 @@ public class UserFrame extends javax.swing.JFrame {
         lblsettings = new javax.swing.JLabel();
         lblleaderboard = new javax.swing.JLabel();
         lbllogout = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        viewPanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 0));
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -173,7 +188,7 @@ public class UserFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
+        viewPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -181,12 +196,12 @@ public class UserFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(320, 320, 320)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -195,7 +210,7 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void lblplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseClicked
         labelHoverOut(lblplay);
-        
+
     }//GEN-LAST:event_lblplayMouseClicked
 
     private void lblplayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseEntered
@@ -207,7 +222,9 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblplayMouseExited
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
+        viewPanel.setViewportView(new profile(data, profileIndex));
         labelHoverOut(lblprofile);
+
     }//GEN-LAST:event_lblprofileMouseClicked
 
     private void lblprofileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseEntered
@@ -254,6 +271,16 @@ public class UserFrame extends javax.swing.JFrame {
         labelHoverOut(lblleaderboard);
     }//GEN-LAST:event_lblleaderboardMouseClicked
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int choose = JOptionPane.showConfirmDialog(this, "ARE YOU SURE YOU WANT TO LOGOUT?", "LOGOUT?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (choose == 0) {
+            new UserData().userLogout(data, profileIndex);
+           this.setVisible(false);
+           new SignIn().setVisible(true);
+            return;
+        }
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -287,18 +314,18 @@ public class UserFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserFrame().setVisible(true);
+                new UserFrame(data, profileIndex).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblleaderboard;
     private javax.swing.JLabel lbllogout;
     private javax.swing.JLabel lblplay;
     private javax.swing.JLabel lblprofile;
     private javax.swing.JLabel lblsettings;
+    private javax.swing.JScrollPane viewPanel;
     // End of variables declaration//GEN-END:variables
 }

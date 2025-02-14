@@ -6,7 +6,6 @@ package UserInterface.Admin;
 
 import java.awt.Color;
 import javax.swing.JLabel;
-import UserInterface.Admin.Account;
 
 /**
  *
@@ -19,6 +18,7 @@ public class AdminFrame extends javax.swing.JFrame {
         lbl.setFont(new java.awt.Font("Retro Gaming", 1, 32)); // NOI18N
     }
 
+    
     public void labelHoverOut(JLabel lbl) {
         lbl.setForeground(Color.white);
         lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N

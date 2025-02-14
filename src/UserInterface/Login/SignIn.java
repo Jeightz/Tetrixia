@@ -19,7 +19,11 @@ public class SignIn extends javax.swing.JFrame {
     private static final checkPasswordField chckpass = new checkPasswordField();
     private static final SeeAndUnseePass chckbox = new SeeAndUnseePass();
     private UserData user = new UserData();
-    public int userDataIndex = -1;
+    private static int userDataIndex = -1;
+
+    public int getUserDataIndex() {
+        return userDataIndex;
+    }
 
     private void login() {
         String pass = String.valueOf(txtpassword.getPassword());
@@ -33,36 +37,55 @@ public class SignIn extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No Data Of Username Found ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        this.setVisible(false);
-        this.txtusername.setText("");
-        this.txtpassword.setText("");
+        this.dispose();
+        this.txtusername.setText("Username");
+        this.txtpassword.setText("Password");
+        this.txtpassword.setEchoChar((char) 0);
 
     }
 
     private void SignUp() {
+        String password = String.valueOf(txtpasswordSignup1.getPassword()).trim();
+        String confirmPassword = String.valueOf(txtconfirmpasswordSignup.getPassword()).trim();
+        String username = txtusernameSignUp.getText().trim();
+        String lastName = txtlastname.getText().trim();
+        String firstName = txtfirstname.getText().trim();
+        String gender = cbgender.getSelectedItem().toString();
+        String birthDate = datePicker2.getText().trim();
 
-        String SignupPass = String.valueOf(this.txtpasswordSignup1.getPassword());
-        String confirmPass = String.valueOf(this.txtconfirmpasswordSignup.getPassword());
-        String usernameSignup = txtusernameSignUp.getText();
-        String lastName = txtlastname.getText();
-        String firstName = txtfirstname.getText();
-        if (cbgender.getSelectedItem().equals("Gender")
-                || lastName.isEmpty()
-                || lastName.equals("LastName")
-                || firstName.equals("LastName")
-                || firstName.isEmpty()
-                || usernameSignup.isEmpty()
-                || usernameSignup.equals("Username")
-                || SignupPass.equals("Password")
-                || SignupPass.isEmpty()
-                || confirmPass.equals("Confirm Password")
-                || confirmPass.isEmpty()
-                || datePicker2.getText().isEmpty()
-                || !chckpass.isConfirmPassAndPassSame(SignupPass, confirmPass)) {
-            JOptionPane.showMessageDialog(this, "Invalid SignUp Fill Up EveryThing ", "Invalid SignUP",JOptionPane.INFORMATION_MESSAGE);
+        if (!isValidSignUpInput(username, firstName, lastName, gender, birthDate, password, confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Invalid SignUp! Please fill in all fields correctly.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        data.add(new UserData(data, usernameSignup, SignupPass, firstName, lastName, profile, datePicker2.getText()));
+
+        data.add(new UserData(data, username, password, firstName, lastName, gender, profile, birthDate));
+
+        JOptionPane.showMessageDialog(new SignIn(), "User Successfully Registered", "Register", JOptionPane.INFORMATION_MESSAGE);
+
+        resetSignUpForm();
+    }
+
+    private boolean isValidSignUpInput(String username, String firstName, String lastName, String gender, String birthDate, String password, String confirmPassword) {
+        return !(gender.equals("Gender") || firstName.isEmpty() || lastName.isEmpty() || username.isEmpty()
+                || password.isEmpty() || confirmPassword.isEmpty() || birthDate.isEmpty()
+                || firstName.equalsIgnoreCase("FirstName") || lastName.equalsIgnoreCase("LastName")
+                || username.equalsIgnoreCase("Username") || password.equalsIgnoreCase("Password")
+                || confirmPassword.equalsIgnoreCase("Confirm Password")
+                || !chckpass.isConfirmPassAndPassSame(password, confirmPassword));
+    }
+
+    private void resetSignUpForm() {
+        txtusernameSignUp.setText("Username");
+        txtpasswordSignup1.setText("Password");
+        txtconfirmpasswordSignup.setText("Confirm Password");
+        txtlastname.setText("LastName");
+        txtfirstname.setText("FirstName");
+        profile = null;
+        chckseeUnseeConfirmPassSignup.setVisible(false);
+        chckseeUnseeSignup1.setVisible(false);
+        datePicker2.setText("");
+        txtpasswordSignup1.setEchoChar((char) 0);
+        txtconfirmpasswordSignup.setEchoChar((char) 0);
     }
 
     public SignIn() {
@@ -234,6 +257,7 @@ public class SignIn extends javax.swing.JFrame {
         signUp.setLayout(null);
 
         txtlastname.setText("LastName");
+        txtlastname.setNextFocusableComponent(cbgender);
         txtlastname.setRadius(50);
         txtlastname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -257,6 +281,7 @@ public class SignIn extends javax.swing.JFrame {
         txtlastname.setBounds(180, 310, 140, 50);
 
         txtfirstname.setText("FirstName");
+        txtfirstname.setNextFocusableComponent(txtlastname);
         txtfirstname.setRadius(50);
         txtfirstname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -326,6 +351,7 @@ public class SignIn extends javax.swing.JFrame {
         txtconfirmpasswordSignup.setCornerRadius(50);
         txtconfirmpasswordSignup.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/password.png"))); // NOI18N
         txtconfirmpasswordSignup.setName("txtpassword"); // NOI18N
+        txtconfirmpasswordSignup.setNextFocusableComponent(txtfirstname);
         txtconfirmpasswordSignup.setToolTipText("");
         txtconfirmpasswordSignup.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -360,6 +386,7 @@ public class SignIn extends javax.swing.JFrame {
         txtpasswordSignup1.setCornerRadius(50);
         txtpasswordSignup1.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/password.png"))); // NOI18N
         txtpasswordSignup1.setName("txtpassword"); // NOI18N
+        txtpasswordSignup1.setNextFocusableComponent(txtconfirmpasswordSignup);
         txtpasswordSignup1.setToolTipText("");
         txtpasswordSignup1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -391,6 +418,7 @@ public class SignIn extends javax.swing.JFrame {
         txtpasswordSignup1.setBounds(40, 190, 290, 54);
 
         datePicker2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        datePicker2.setNextFocusableComponent(btnsignIn);
         signUp.add(datePicker2);
         datePicker2.setBounds(130, 390, 200, 50);
 
@@ -438,6 +466,7 @@ public class SignIn extends javax.swing.JFrame {
         jLabel2.setBounds(140, 510, 147, 20);
 
         cbgender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gender", "Male", "Female" }));
+        cbgender.setNextFocusableComponent(datePicker2);
         cbgender.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbgenderItemStateChanged(evt);
@@ -592,7 +621,10 @@ public class SignIn extends javax.swing.JFrame {
         if (!cbgender.equals("Gender")) {
             cbgender.removeItem("Gender");
         }
-        new file().FileCheckGender(profile, cbgender, lblPictureHolder);
+        if (profile == null) {
+            profile = new file().FileCheckGender(profile, cbgender, lblPictureHolder);
+
+        }
     }//GEN-LAST:event_cbgenderItemStateChanged
 
     private void myButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myButton1ActionPerformed

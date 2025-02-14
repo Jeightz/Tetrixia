@@ -22,15 +22,15 @@ public class file {
     
     
     
-    public boolean FileCheckGender(File f,JComboBox j,JLabel label){
+    public File FileCheckGender(File f,JComboBox j,JLabel label){
         if(f == null ){
         String defaultImageFileName = j.getSelectedItem().equals("Female") ? "girlprofile.jpg" : "boyprofile.jpg";
         f = new File(System.getProperty("user.dir") + "\\src\\image\\" + defaultImageFileName);
         new Function.Image.FitImage().risizelabel(f, label);
-        return false;
+        return f;
         }
         
-        return true;
+        return null;
         
     }
     

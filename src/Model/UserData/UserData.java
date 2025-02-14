@@ -1,6 +1,8 @@
 package Model.UserData;
 
+import UserInterface.Admin.AdminFrame;
 import UserInterface.Login.SignIn;
+import UserInterface.User.UserFrame;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.security.MessageDigest;
@@ -27,8 +29,8 @@ public class UserData {
     private int playerScore;
     private String gender;
     private String BOD;
-    private ArrayList<LocalDateTime> loginHistory;
-    private ArrayList<LocalDateTime> logoutHistory;
+    private ArrayList<LocalDateTime> loginHistory = new ArrayList<>();
+    private ArrayList<LocalDateTime> logoutHistory = new ArrayList<>();
 
     //default keyBinds 
     private static final String MOVE_LEFT = "Move Left";
@@ -37,6 +39,7 @@ public class UserData {
     private static final String ROTATE = "Rotate";
     private static final String HARD_DROP = "Hard Drop";
     private LocalDateTime banExpr;
+    private String userType;
 
     public ArrayList<LocalDateTime> getLoginHistory() {
         return loginHistory;
@@ -155,7 +158,7 @@ public class UserData {
     }
 
     public UserData(ArrayList<UserData> data, String Username, String Password, String FirstName, String LastName,
-            File profile, String BOD) {
+           String gender, File profile, String BOD) {
         if (this.isUsernameDuplication(data, Username)) {
             JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -166,10 +169,11 @@ public class UserData {
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.profile = profile;
+        this.gender =gender;
         this.BOD = BOD;
         this.playerScore = 0;
         this.newAddUSerKeyBinds();
-        JOptionPane.showMessageDialog(new SignIn(), "USER SUCCESSFULLY REGISTER", "REGISTER", JOptionPane.INFORMATION_MESSAGE);
+        this.userType = "User";
     }
 
     public String userPasswordHash(String password) {
@@ -196,15 +200,25 @@ public class UserData {
                             "Your account is banned until: " + banExpr,
                             "Account Banned",
                             JOptionPane.ERROR_MESSAGE);
-                    return -1;
+                    return -1 ;
                 }
-                user.loginHistory.add(LocalDateTime.now());
+                if (user.userType == "Admin") {
+                    new AdminFrame().setVisible(true);
+                }
 
-                return i;
+                user.loginHistory.add(LocalDateTime.now());
+                new UserFrame(data,i).setVisible(true);
+               return i;
             }
 
         }
         return -1;
+    }
+    
+    public void userLogout(ArrayList<UserData> data,int userindex){
+        UserData us = data.get(userindex);
+        us.logoutHistory.add(LocalDateTime.now());
+        new SignIn().setVisible(true);
     }
 
     public boolean isUsernameDuplication(ArrayList<UserData> data, String username) {
@@ -259,7 +273,7 @@ public class UserData {
 
     public void addDataAccountTable(ArrayList<UserData> data, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-
+        model.setRowCount(0);
         int count = model.getRowCount() + 1;
 
         for (UserData da : data) {
@@ -267,12 +281,16 @@ public class UserData {
             if (score == -1) {
                 score = 0;
             }
-            model.addRow(new Object[]{count++, da.getUsername(), da.FirstName + " " + da.LastName, score});
+            if (da.userType.equals("User")) {
+                model.addRow(new Object[]{count++, da.getUsername(), da.FirstName + " " + da.LastName, score});
+            }
+
         }
     }
 
     public void addDataLeaderBoardTables(ArrayList<UserData> data, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
         int cout = model.getRowCount() + 1;
         mergeSort(data);
         for (UserData da : data) {
@@ -306,15 +324,18 @@ public class UserData {
 
     private void merge(ArrayList<UserData> data, ArrayList<UserData> left, ArrayList<UserData> right) {
         int index = 0, RIndex = 0, LIndex = 0;
-        
+
         while (RIndex < right.size() && LIndex < left.size()) {
-            if (left.get(index).getPlayerScore() >= right.get(index).getPlayerScore()) {
+            if (left.get(LIndex).getPlayerScore() >= right.get(RIndex).getPlayerScore()) {
                 data.set(index, left.get(LIndex));
                 index++;
                 LIndex++;
             } else {
                 data.set(index, right.get(RIndex));
+                index++;
+                RIndex++;
             }
+            index++;
         }
 
         while (LIndex < left.size()) {
@@ -337,12 +358,23 @@ public class UserData {
             }
         }
     }
-    public void banHoursUsername(ArrayList<UserData> data ,String user,int hours){
-        for(UserData us :data){
-            if(us.getUsername().equals(user)){
+
+    public void banHoursUsername(ArrayList<UserData> data, String user, int hours) {
+        for (UserData us : data) {
+            if (us.getUsername().equals(user)) {
                 us.setBanForHours(hours);
             }
-                }
-    
+        }
+
+    }
+
+    public int findUserIndex(ArrayList<UserData> data, String username) {
+        for (int i = 0; i < data.size(); i++) {
+            UserData us = data.get(i);
+            if (us.getUsername().equals(username)) {
+                return i;
+            }
+        }
+        return - 1;
     }
 }

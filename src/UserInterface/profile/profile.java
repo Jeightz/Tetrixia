@@ -3,17 +3,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.profile;
+
+import Function.Image.FitImage;
+import Model.UserData.UserData;
 import UserInterface.changedata.*;
+import java.util.ArrayList;
+
 /**
  *
  * @author Admin
  */
 public class profile extends javax.swing.JPanel {
-    
-    
-    public profile() {
+
+    private ArrayList<UserData> data;
+
+    public profile(ArrayList<UserData> data,int userIndex) {
         initComponents();
-        
+          lblprofilepicture.setSize(133,126);//set the size to make the lblprofilepicture not a null
+        this.data = data;
+        UserData us = data.get(userIndex);
+        lblfirstName.setText(us.getFirstName());
+        lbllastname.setText(us.getLastName());
+        lblusername.setText(us.getUsername());
+        System.out.println(us.getGender());
+        lblgender.setText(us.getGender());
+        lblbod.setText(us.getBOD());
+        new FitImage().risizelabel(us.getProfile(), lblprofilepicture);
     }
 
     /**
@@ -25,49 +40,37 @@ public class profile extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         lable = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        lblfirstName = new javax.swing.JLabel();
+        lblusername = new javax.swing.JLabel();
         lbllastname = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         lable2 = new javax.swing.JLabel();
         lblgender = new javax.swing.JLabel();
-        lblage = new javax.swing.JLabel();
+        lblbod = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btnchangePassword = new UserInterface.CustomComponents.MyButton();
         btnchangeUsername = new UserInterface.CustomComponents.MyButton();
         btnchangePI = new UserInterface.CustomComponents.MyButton();
         btnchangeProfile = new UserInterface.CustomComponents.MyButton();
+        lable1 = new javax.swing.JLabel();
+        lblfirstName = new javax.swing.JLabel();
+        lblprofilepicture = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 119, Short.MAX_VALUE)
-        );
-
         lable.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
         lable.setForeground(new java.awt.Color(0, 0, 0));
-        lable.setText("FirstName:");
+        lable.setText("Username:");
 
         jLabel2.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("LastName:");
 
-        lblfirstName.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
-        lblfirstName.setForeground(new java.awt.Color(0, 0, 0));
-        lblfirstName.setText("FirstName:");
+        lblusername.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
+        lblusername.setForeground(new java.awt.Color(0, 0, 0));
+        lblusername.setText("username");
 
         lbllastname.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
         lbllastname.setForeground(new java.awt.Color(0, 0, 0));
@@ -79,21 +82,22 @@ public class profile extends javax.swing.JPanel {
 
         lable2.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
         lable2.setForeground(new java.awt.Color(0, 0, 0));
-        lable2.setText("Age:");
+        lable2.setText("BOD:");
 
         lblgender.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
         lblgender.setForeground(new java.awt.Color(0, 0, 0));
         lblgender.setText("LastName:");
 
-        lblage.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
-        lblage.setForeground(new java.awt.Color(0, 0, 0));
-        lblage.setText("FirstName:");
+        lblbod.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
+        lblbod.setForeground(new java.awt.Color(0, 0, 0));
+        lblbod.setText("Age");
 
         jPanel2.setBackground(new java.awt.Color(0, 204, 0));
 
         btnchangePassword.setBackground(new java.awt.Color(0, 204, 0));
         btnchangePassword.setText("Change Password");
         btnchangePassword.setBorderColor(new java.awt.Color(0, 204, 0));
+        btnchangePassword.setColor(new java.awt.Color(0, 204, 0));
         btnchangePassword.setColorClick(new java.awt.Color(51, 255, 51));
         btnchangePassword.setColorOver(new java.awt.Color(0, 255, 0));
         btnchangePassword.setFont(new java.awt.Font("Retro Gaming", 0, 14)); // NOI18N
@@ -106,6 +110,7 @@ public class profile extends javax.swing.JPanel {
         btnchangeUsername.setBackground(new java.awt.Color(0, 204, 0));
         btnchangeUsername.setText("Change Username");
         btnchangeUsername.setBorderColor(new java.awt.Color(0, 204, 0));
+        btnchangeUsername.setColor(new java.awt.Color(0, 204, 0));
         btnchangeUsername.setColorClick(new java.awt.Color(51, 255, 51));
         btnchangeUsername.setColorOver(new java.awt.Color(0, 255, 0));
         btnchangeUsername.setFont(new java.awt.Font("Retro Gaming", 0, 14)); // NOI18N
@@ -115,9 +120,9 @@ public class profile extends javax.swing.JPanel {
             }
         });
 
-        btnchangePI.setBackground(new java.awt.Color(0, 204, 0));
         btnchangePI.setText("Change PersonInfo");
         btnchangePI.setBorderColor(new java.awt.Color(0, 204, 0));
+        btnchangePI.setColor(new java.awt.Color(0, 204, 0));
         btnchangePI.setColorClick(new java.awt.Color(51, 255, 51));
         btnchangePI.setColorOver(new java.awt.Color(0, 255, 0));
         btnchangePI.setFont(new java.awt.Font("Retro Gaming", 0, 12)); // NOI18N
@@ -130,6 +135,7 @@ public class profile extends javax.swing.JPanel {
         btnchangeProfile.setBackground(new java.awt.Color(0, 204, 0));
         btnchangeProfile.setText("Change Profile");
         btnchangeProfile.setBorderColor(new java.awt.Color(0, 204, 0));
+        btnchangeProfile.setColor(new java.awt.Color(0, 204, 0));
         btnchangeProfile.setColorClick(new java.awt.Color(51, 255, 51));
         btnchangeProfile.setColorOver(new java.awt.Color(0, 255, 0));
         btnchangeProfile.setFont(new java.awt.Font("Retro Gaming", 0, 14)); // NOI18N
@@ -162,8 +168,18 @@ public class profile extends javax.swing.JPanel {
                 .addComponent(btnchangePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnchangeProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(246, Short.MAX_VALUE))
         );
+
+        lable1.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
+        lable1.setForeground(new java.awt.Color(0, 0, 0));
+        lable1.setText("FirstName:");
+
+        lblfirstName.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
+        lblfirstName.setForeground(new java.awt.Color(0, 0, 0));
+        lblfirstName.setText("FirstName:");
+
+        lblprofilepicture.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -174,70 +190,79 @@ public class profile extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lable2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblage))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lable)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblfirstName))
+                                .addComponent(lblprofilepicture, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(7, 7, 7)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lable1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblfirstName))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lable)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblusername, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lbllastname, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbllastname))))
+                                .addComponent(lblgender, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(129, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel4)
+                        .addComponent(lable2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblgender)))
-                .addGap(123, 123, 123))
+                        .addComponent(lblbod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(123, 123, 123))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lable)
+                            .addComponent(lblusername))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lable1)
                             .addComponent(lblfirstName))
-                        .addGap(33, 33, 33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(lbllastname))))
-                .addGap(50, 50, 50)
+                            .addComponent(lbllastname)))
+                    .addComponent(lblprofilepicture, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lable2)
-                    .addComponent(lblage))
-                .addGap(33, 33, 33)
+                    .addComponent(lblbod))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(lblgender))
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnchangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePasswordActionPerformed
-          new changePass(null,true).setVisible(true);
+        new changePass(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangePasswordActionPerformed
 
     private void btnchangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeUsernameActionPerformed
-        new changeUser(null,true).setVisible(true);
+        new changeUser(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangeUsernameActionPerformed
 
     private void btnchangePIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePIActionPerformed
-       new changeProfInfo(null,true).setVisible(true);
+        new changeProfInfo(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangePIActionPerformed
 
     private void btnchangeProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfileActionPerformed
-        new changeProf(null,true).setVisible(true);
+        new changeProf(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangeProfileActionPerformed
 
 
@@ -248,14 +273,15 @@ public class profile extends javax.swing.JPanel {
     private UserInterface.CustomComponents.MyButton btnchangeUsername;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lable;
+    private javax.swing.JLabel lable1;
     private javax.swing.JLabel lable2;
-    private javax.swing.JLabel lblage;
+    private javax.swing.JLabel lblbod;
     private javax.swing.JLabel lblfirstName;
     private javax.swing.JLabel lblgender;
     private javax.swing.JLabel lbllastname;
+    private javax.swing.JLabel lblprofilepicture;
+    private javax.swing.JLabel lblusername;
     // End of variables declaration//GEN-END:variables
 }
