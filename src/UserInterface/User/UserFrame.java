@@ -8,6 +8,7 @@ import Model.UserData.UserData;
 import UserInterface.Login.SignIn;
 import UserInterface.leaderboards.leaderboards;
 import UserInterface.profile.profile;
+import UserInterface.settings.settings;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JLabel;
@@ -236,7 +237,9 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblprofileMouseExited
 
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
+
         labelHoverOut(lblsettings);
+        viewPanel.setViewportView(new settings());
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -269,15 +272,18 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void lblleaderboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseClicked
         labelHoverOut(lblleaderboard);
+        viewPanel.setViewportView(new leaderboards(data));
     }//GEN-LAST:event_lblleaderboardMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int choose = JOptionPane.showConfirmDialog(this, "ARE YOU SURE YOU WANT TO LOGOUT?", "LOGOUT?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        if (choose == 0) {
-            new UserData().userLogout(data, profileIndex);
-           this.setVisible(false);
-           new SignIn().setVisible(true);
-            return;
+        if (choose == 0) {    
+                    System.out.println(choose);
+
+        this.setVisible(false);
+        new UserData().userLogout(data, profileIndex);   
+        new SignIn().setVisible(true);
+        
         }
     }//GEN-LAST:event_formWindowClosing
 

@@ -1,5 +1,6 @@
 package UserInterface.game;
 
+import UserInterface.Login.SignIn;
 import java.util.Random;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,6 +11,7 @@ public class tetromino {
 
     public int getNextPiece() {
         return nextPiece;
+        
     }
 
     public void setNextPiece(int nextPiece) {

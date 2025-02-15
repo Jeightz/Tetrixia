@@ -191,8 +191,9 @@ public class UserData {
 
     public int userLogin(ArrayList<UserData> data, String username, String password) {
 
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i <=  data.size(); i++) {
             UserData user = data.get(i);
+            System.out.println(i);
             if (user.getUsername().equals(username) && user.getPassword().equals(userPasswordHash(password))) {
 
                 if (banExpr != null && LocalDateTime.now().isBefore(banExpr)) {
@@ -205,9 +206,9 @@ public class UserData {
                 if (user.userType == "Admin") {
                     new AdminFrame().setVisible(true);
                 }
-
                 user.loginHistory.add(LocalDateTime.now());
                 new UserFrame(data,i).setVisible(true);
+               System.out.println(user.getPassword());
                return i;
             }
 
@@ -218,7 +219,7 @@ public class UserData {
     public void userLogout(ArrayList<UserData> data,int userindex){
         UserData us = data.get(userindex);
         us.logoutHistory.add(LocalDateTime.now());
-        new SignIn().setVisible(true);
+        
     }
 
     public boolean isUsernameDuplication(ArrayList<UserData> data, String username) {
@@ -292,7 +293,6 @@ public class UserData {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         int cout = model.getRowCount() + 1;
-        mergeSort(data);
         for (UserData da : data) {
             model.addRow(new Object[]{cout++, da.getUsername(), da.getPlayerScore()});
         }

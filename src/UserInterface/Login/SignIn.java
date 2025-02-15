@@ -24,8 +24,8 @@ public class SignIn extends javax.swing.JFrame {
     public int getUserDataIndex() {
         return userDataIndex;
     }
-
-    private void login() {
+  
+  private void login() {
         String pass = String.valueOf(txtpassword.getPassword());
         if (pass.equals("Password") || txtusername.getText().equals("Username")) {
             JOptionPane.showMessageDialog(this, "Invalid Username and PAssword ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
@@ -37,7 +37,7 @@ public class SignIn extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No Data Of Username Found ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        this.dispose();
+        this.setVisible(false);
         this.txtusername.setText("Username");
         this.txtpassword.setText("Password");
         this.txtpassword.setEchoChar((char) 0);
@@ -80,7 +80,6 @@ public class SignIn extends javax.swing.JFrame {
         txtconfirmpasswordSignup.setText("Confirm Password");
         txtlastname.setText("LastName");
         txtfirstname.setText("FirstName");
-        profile = null;
         chckseeUnseeConfirmPassSignup.setVisible(false);
         chckseeUnseeSignup1.setVisible(false);
         datePicker2.setText("");
