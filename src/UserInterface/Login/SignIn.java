@@ -20,12 +20,10 @@ public class SignIn extends javax.swing.JFrame {
     private static final SeeAndUnseePass chckbox = new SeeAndUnseePass();
     private UserData user = new UserData();
     private static int userDataIndex = -1;
+    
+    
 
-    public int getUserDataIndex() {
-        return userDataIndex;
-    }
-  
-  private void login() {
+    private void login() {
         String pass = String.valueOf(txtpassword.getPassword());
         if (pass.equals("Password") || txtusername.getText().equals("Username")) {
             JOptionPane.showMessageDialog(this, "Invalid Username and PAssword ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
@@ -33,7 +31,7 @@ public class SignIn extends javax.swing.JFrame {
         }
 
         userDataIndex = user.userLogin(data, txtusername.getText(), pass);
-        if (userDataIndex == -1) {
+        if (userDataIndex < 0) {
             JOptionPane.showMessageDialog(this, "No Data Of Username Found ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -53,6 +51,10 @@ public class SignIn extends javax.swing.JFrame {
         String gender = cbgender.getSelectedItem().toString();
         String birthDate = datePicker2.getText().trim();
 
+        if (user.isUsernameDuplication(data, username)) {
+            JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         if (!isValidSignUpInput(username, firstName, lastName, gender, birthDate, password, confirmPassword)) {
             JOptionPane.showMessageDialog(this, "Invalid SignUp! Please fill in all fields correctly.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -85,6 +87,9 @@ public class SignIn extends javax.swing.JFrame {
         datePicker2.setText("");
         txtpasswordSignup1.setEchoChar((char) 0);
         txtconfirmpasswordSignup.setEchoChar((char) 0);
+        cbgender.setSelectedIndex(0);
+        cbgender.insertItemAt("Gender",0);
+
     }
 
     public SignIn() {

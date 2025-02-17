@@ -4,18 +4,48 @@
  */
 package UserInterface.changedata;
 
+import Function.textField.txtField;
+import Model.UserData.UserData;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
  */
 public class changeUser extends javax.swing.JDialog {
 
-    /**
-     * Creates new form changeUser
-     */
-    public changeUser(java.awt.Frame parent, boolean modal) {
+    private static ArrayList<UserData> data;
+    private static int userIndex;
+
+    private void changeUser() {
+        String oldUser = txtOldUsername.getText();
+        String newUser = txtNewUsername.getText();
+        String ConfrimNewUser = txtConfrimNewUsername.getText();
+        UserData us = data.get(userIndex);
+        if (oldUser.isEmpty() || oldUser.equals("Old Username")
+                || newUser.equals("New Username") || newUser.isEmpty()
+                || ConfrimNewUser.equals("Confirm New Password") || ConfrimNewUser.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "INVALID UPDATE PLEASE FILL UP ALL THE DATA", "INVALID UPDATE", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (!oldUser.equals(us.getUsername())) {
+            JOptionPane.showMessageDialog(null, "THE CURRENT CURRENT USERNAME DIDNT MATCH", "DIDNT MATCH", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (!newUser.equals(ConfrimNewUser)) {
+            JOptionPane.showMessageDialog(null, "THE NEW AND CONFIRM DIDNT MATCH PLEASE MATCH IT", "DIDNT MATCH", JOptionPane.INFORMATION_MESSAGE);
+
+            return;
+        }
+    }
+
+    public changeUser(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
         super(parent, modal);
         initComponents();
+        this.data = data;
+        this.userIndex = userIndex;
     }
 
     /**
@@ -64,21 +94,80 @@ public class changeUser extends javax.swing.JDialog {
         btnChangeUsername.setText("Change Username");
         btnChangeUsername.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnChangeUsername.setRadius(50);
+        btnChangeUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeUsernameActionPerformed(evt);
+            }
+        });
         bodyPanel.add(btnChangeUsername);
         btnChangeUsername.setBounds(352, 265, 174, 39);
 
         txtConfrimNewUsername.setText("Confirm New Username");
         txtConfrimNewUsername.setRadius(50);
+        txtConfrimNewUsername.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtConfrimNewUsernameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtConfrimNewUsernameFocusLost(evt);
+            }
+        });
+        txtConfrimNewUsername.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtConfrimNewUsernameMouseClicked(evt);
+            }
+        });
+        txtConfrimNewUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtConfrimNewUsernameActionPerformed(evt);
+            }
+        });
         bodyPanel.add(txtConfrimNewUsername);
         txtConfrimNewUsername.setBounds(20, 200, 290, 50);
 
         txtOldUsername.setText("Old Username");
         txtOldUsername.setRadius(50);
+        txtOldUsername.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtOldUsernameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtOldUsernameFocusLost(evt);
+            }
+        });
+        txtOldUsername.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtOldUsernameMouseClicked(evt);
+            }
+        });
+        txtOldUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOldUsernameActionPerformed(evt);
+            }
+        });
         bodyPanel.add(txtOldUsername);
         txtOldUsername.setBounds(20, 50, 290, 50);
 
         txtNewUsername.setText("New Username");
         txtNewUsername.setRadius(50);
+        txtNewUsername.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNewUsernameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtNewUsernameFocusLost(evt);
+            }
+        });
+        txtNewUsername.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtNewUsernameMouseClicked(evt);
+            }
+        });
+        txtNewUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNewUsernameActionPerformed(evt);
+            }
+        });
         bodyPanel.add(txtNewUsername);
         txtNewUsername.setBounds(20, 120, 290, 50);
 
@@ -122,6 +211,58 @@ public class changeUser extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnChangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeUsernameActionPerformed
+        changeUser();
+    }//GEN-LAST:event_btnChangeUsernameActionPerformed
+
+    private void txtOldUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOldUsernameActionPerformed
+        changeUser();
+    }//GEN-LAST:event_txtOldUsernameActionPerformed
+
+    private void txtNewUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewUsernameActionPerformed
+        changeUser();
+    }//GEN-LAST:event_txtNewUsernameActionPerformed
+
+    private void txtConfrimNewUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConfrimNewUsernameActionPerformed
+        changeUser();
+    }//GEN-LAST:event_txtConfrimNewUsernameActionPerformed
+
+    private void txtOldUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOldUsernameFocusGained
+        new txtField().checkTextField(txtOldUsername, "Old Username");
+    }//GEN-LAST:event_txtOldUsernameFocusGained
+
+    private void txtOldUsernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOldUsernameFocusLost
+        new txtField().checkTextFieldEmpty(txtOldUsername, "Old Username");
+    }//GEN-LAST:event_txtOldUsernameFocusLost
+
+    private void txtOldUsernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtOldUsernameMouseClicked
+        new txtField().checkTextField(txtOldUsername, "Old Username");
+    }//GEN-LAST:event_txtOldUsernameMouseClicked
+
+    private void txtNewUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNewUsernameFocusGained
+        new txtField().checkTextField(txtNewUsername, "New Username");
+    }//GEN-LAST:event_txtNewUsernameFocusGained
+
+    private void txtNewUsernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNewUsernameFocusLost
+        new txtField().checkTextFieldEmpty(txtNewUsername, "Old Username");
+    }//GEN-LAST:event_txtNewUsernameFocusLost
+
+    private void txtNewUsernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNewUsernameMouseClicked
+        new txtField().checkTextField(txtNewUsername, "New Username");
+    }//GEN-LAST:event_txtNewUsernameMouseClicked
+
+    private void txtConfrimNewUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtConfrimNewUsernameFocusGained
+        new txtField().checkTextField(txtConfrimNewUsername, "Confrim New Username");
+    }//GEN-LAST:event_txtConfrimNewUsernameFocusGained
+
+    private void txtConfrimNewUsernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtConfrimNewUsernameFocusLost
+        new txtField().checkTextFieldEmpty(txtConfrimNewUsername, "Old Username");
+    }//GEN-LAST:event_txtConfrimNewUsernameFocusLost
+
+    private void txtConfrimNewUsernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtConfrimNewUsernameMouseClicked
+        new txtField().checkTextField(txtConfrimNewUsername, "Confrim New Username");
+    }//GEN-LAST:event_txtConfrimNewUsernameMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -152,7 +293,7 @@ public class changeUser extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                changeUser dialog = new changeUser(new javax.swing.JFrame(), true);
+                changeUser dialog = new changeUser(new javax.swing.JFrame(), true, data, userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

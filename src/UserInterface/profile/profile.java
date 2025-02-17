@@ -16,11 +16,8 @@ import java.util.ArrayList;
 public class profile extends javax.swing.JPanel {
 
     private ArrayList<UserData> data;
-
-    public profile(ArrayList<UserData> data,int userIndex) {
-        initComponents();
-          lblprofilepicture.setSize(133,126);//set the size to make the lblprofilepicture not a null
-        this.data = data;
+    private int userIndex;
+    public void updateProfile(){
         UserData us = data.get(userIndex);
         lblfirstName.setText(us.getFirstName());
         lbllastname.setText(us.getLastName());
@@ -29,7 +26,18 @@ public class profile extends javax.swing.JPanel {
         lblgender.setText(us.getGender());
         lblbod.setText(us.getBOD());
         new FitImage().risizelabel(us.getProfile(), lblprofilepicture);
+
     }
+    
+    public profile(ArrayList<UserData> data,int userIndex) {
+        initComponents();
+          lblprofilepicture.setSize(133,126);//set the size to make the lblprofilepicture not a null
+          this.data = data;
+        this.userIndex = userIndex;
+        updateProfile();
+    }
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -250,19 +258,19 @@ public class profile extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnchangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePasswordActionPerformed
-        new changePass(null, true).setVisible(true);
+        new changePass(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePasswordActionPerformed
 
     private void btnchangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeUsernameActionPerformed
-        new changeUser(null, true).setVisible(true);
+        new changeUser(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeUsernameActionPerformed
 
     private void btnchangePIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePIActionPerformed
-        new changeProfInfo(null, true).setVisible(true);
+        new changeProfInfo(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePIActionPerformed
 
     private void btnchangeProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfileActionPerformed
-        new changeProf(null, true).setVisible(true);
+        new changeProf(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeProfileActionPerformed
 
 

@@ -4,8 +4,15 @@
  */
 package UserInterface.Admin;
 
+import Model.UserData.UserData;
+import UserInterface.Login.SignIn;
+import UserInterface.leaderboards.leaderboards;
+import UserInterface.profile.profile;
+import UserInterface.settings.settings;
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,18 +20,20 @@ import javax.swing.JLabel;
  */
 public class AdminFrame extends javax.swing.JFrame {
 
+    private static ArrayList<UserData> data;
+    private static int userIndex;
+
     public void labelHover(JLabel lbl) {
         lbl.setForeground(Color.black);
         lbl.setFont(new java.awt.Font("Retro Gaming", 1, 32)); // NOI18N
     }
 
-    
     public void labelHoverOut(JLabel lbl) {
         lbl.setForeground(Color.white);
         lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
     }
 
-    public AdminFrame() {
+    public AdminFrame(ArrayList<UserData> data, int userIndex) {
         initComponents();
         ViewPanel.setViewportView(new Accounts());
 
@@ -45,10 +54,15 @@ public class AdminFrame extends javax.swing.JFrame {
         lblsettings = new javax.swing.JLabel();
         lblleaderboard = new javax.swing.JLabel();
         lbllogout = new javax.swing.JLabel();
-        lblleaderboard1 = new javax.swing.JLabel();
+        lblaccount = new javax.swing.JLabel();
         ViewPanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 0));
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -134,19 +148,19 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
 
-        lblleaderboard1.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
-        lblleaderboard1.setForeground(new java.awt.Color(255, 255, 255));
-        lblleaderboard1.setText("ACCOUNTS");
-        lblleaderboard1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblleaderboard1.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblaccount.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
+        lblaccount.setForeground(new java.awt.Color(255, 255, 255));
+        lblaccount.setText("ACCOUNTS");
+        lblaccount.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblaccount.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblleaderboard1MouseClicked(evt);
+                lblaccountMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblleaderboard1MouseEntered(evt);
+                lblaccountMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblleaderboard1MouseExited(evt);
+                lblaccountMouseExited(evt);
             }
         });
 
@@ -168,17 +182,16 @@ public class AdminFrame extends javax.swing.JFrame {
                                 .addGap(58, 58, 58)
                                 .addComponent(lblsettings))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(58, 58, 58)
-                                .addComponent(lblleaderboard1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(73, 73, 73)
-                                .addComponent(lblprofile)))
+                                .addComponent(lblprofile))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(81, 81, 81)
+                                .addComponent(lbllogout))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(lblaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addComponent(lbllogout)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,7 +203,7 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addGap(48, 48, 48)
                 .addComponent(lblsettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(42, 42, 42)
-                .addComponent(lblleaderboard1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblaccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(38, 38, 38)
                 .addComponent(lblleaderboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(40, 40, 40)
@@ -235,6 +248,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
         labelHoverOut(lblprofile);
+        ViewPanel.setViewportView(new profile(data, userIndex));
     }//GEN-LAST:event_lblprofileMouseClicked
 
     private void lblprofileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseEntered
@@ -247,6 +261,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
         labelHoverOut(lblsettings);
+        ViewPanel.setViewportView(new settings());
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -259,6 +274,11 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lbllogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseClicked
         labelHoverOut(lbllogout);
+        new UserData().userLogout(data, userIndex);
+        this.dispose();
+        JOptionPane.showMessageDialog(null, "SUCCESSFULLY LOGOUT(RECORDED)", "LOGOUT!", JOptionPane.INFORMATION_MESSAGE);
+
+        new SignIn().setVisible(true);
     }//GEN-LAST:event_lbllogoutMouseClicked
 
     private void lbllogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseEntered
@@ -278,20 +298,32 @@ public class AdminFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblleaderboardMouseEntered
 
     private void lblleaderboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseClicked
+        ViewPanel.setViewportView(new leaderboards(data));
         labelHoverOut(lblleaderboard);
     }//GEN-LAST:event_lblleaderboardMouseClicked
 
-    private void lblleaderboard1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboard1MouseClicked
+    private void lblaccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblaccountMouseClicked
         ViewPanel.setViewportView(new Accounts());
-    }//GEN-LAST:event_lblleaderboard1MouseClicked
+    }//GEN-LAST:event_lblaccountMouseClicked
 
-    private void lblleaderboard1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboard1MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblleaderboard1MouseEntered
+    private void lblaccountMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblaccountMouseEntered
+        labelHover(lblaccount);
+    }//GEN-LAST:event_lblaccountMouseEntered
 
-    private void lblleaderboard1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboard1MouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblleaderboard1MouseExited
+    private void lblaccountMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblaccountMouseExited
+        labelHoverOut(lblaccount);
+    }//GEN-LAST:event_lblaccountMouseExited
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO LOGOUT?", "LOGOUT?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+        if (choose == JOptionPane.YES_OPTION) {
+            System.out.println(choose);
+            dispose();
+            new UserData().userLogout(data, userIndex);
+            new SignIn().setVisible(true);
+
+        }    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -323,7 +355,7 @@ public class AdminFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminFrame().setVisible(true);
+                new AdminFrame(data, userIndex).setVisible(true);
             }
         });
     }
@@ -331,8 +363,8 @@ public class AdminFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ViewPanel;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblaccount;
     private javax.swing.JLabel lblleaderboard;
-    private javax.swing.JLabel lblleaderboard1;
     private javax.swing.JLabel lbllogout;
     private javax.swing.JLabel lblplay;
     private javax.swing.JLabel lblprofile;

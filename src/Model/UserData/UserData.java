@@ -159,11 +159,7 @@ public class UserData {
 
     public UserData(ArrayList<UserData> data, String Username, String Password, String FirstName, String LastName,
            String gender, File profile, String BOD) {
-        if (this.isUsernameDuplication(data, Username)) {
-            JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
+       
         this.Username = Username;
         this.Password = userPasswordHash(Password);
         this.FirstName = FirstName;
@@ -190,10 +186,10 @@ public class UserData {
     }
 
     public int userLogin(ArrayList<UserData> data, String username, String password) {
-
-        for (int i = 0; i <=  data.size(); i++) {
+     
+        
+        for (int i = 0; i < data.size(); i++) {
             UserData user = data.get(i);
-            System.out.println(i);
             if (user.getUsername().equals(username) && user.getPassword().equals(userPasswordHash(password))) {
 
                 if (banExpr != null && LocalDateTime.now().isBefore(banExpr)) {
@@ -204,7 +200,7 @@ public class UserData {
                     return -1 ;
                 }
                 if (user.userType == "Admin") {
-                    new AdminFrame().setVisible(true);
+                    new AdminFrame(data,i).setVisible(true);
                 }
                 user.loginHistory.add(LocalDateTime.now());
                 new UserFrame(data,i).setVisible(true);
@@ -293,6 +289,7 @@ public class UserData {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         int cout = model.getRowCount() + 1;
+        mergeSort(data);
         for (UserData da : data) {
             model.addRow(new Object[]{cout++, da.getUsername(), da.getPlayerScore()});
         }
@@ -335,7 +332,6 @@ public class UserData {
                 index++;
                 RIndex++;
             }
-            index++;
         }
 
         while (LIndex < left.size()) {
