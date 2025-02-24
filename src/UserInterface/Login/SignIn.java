@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 public class SignIn extends javax.swing.JFrame {
 
-    public ArrayList<UserData> data = new ArrayList<UserData>();
+    private static ArrayList<UserData> data = new ArrayList<UserData>();
     private File profile = null;
     private static final txtField txtfield = new txtField();
     private static final checkPasswordField chckpass = new checkPasswordField();
@@ -62,7 +62,7 @@ public class SignIn extends javax.swing.JFrame {
 
         data.add(new UserData(data, username, password, firstName, lastName, gender, profile, birthDate));
 
-        JOptionPane.showMessageDialog(new SignIn(), "User Successfully Registered", "Register", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "User Successfully Registered", "Register", JOptionPane.INFORMATION_MESSAGE);
 
         resetSignUpForm();
     }
@@ -92,8 +92,9 @@ public class SignIn extends javax.swing.JFrame {
 
     }
 
-    public SignIn() {
+    public SignIn(ArrayList<UserData> data) {
         initComponents();
+        this.data = data;
         txtpassword.setEchoChar((char) 0);
         chckseeUnsee.setVisible(false);
         txtpasswordSignup1.setEchoChar((char) 0);
@@ -738,7 +739,7 @@ public class SignIn extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SignIn().setVisible(true);
+                new SignIn(data).setVisible(true);
             }
         });
     }

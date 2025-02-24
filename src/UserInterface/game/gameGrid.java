@@ -4,133 +4,86 @@
  */
 package UserInterface.game;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Random;
+import java.util.function.BiPredicate;
 import javax.swing.JPanel;
 
-public class gameGrid extends JPanel implements Runnable {
+public class gameGrid extends JPanel {
 
-    mino tetro = new mino(this);
-    private final int grid_Width = 10;
-    private final int grid_Height = 20;
-    private final int cellSize = 8;
-    private final int reSizeWin = 4;
-    private final Random random = new Random();
-    private boolean gameOver = false;
-    private long dropCount = 0; // Tracks the last time the piece dropped
-    private final long dropInterval = 60; // 0.5 seconds in nanoseconds
-    
+    private final int gridHeight = 20;
+    private final int gridWidth = 10;
+    private int gridCell;
+    private tetro tetromino;
 
-    public int getGrid_Width() {
-        return grid_Width;
+    private void spawnTetromino() {
+        int tetro[][] = {{1, 0}, {1, 0}, {1, 1}};
+        tetromino = new tetro(tetro, Color.red);
     }
 
-    public int getGrid_Height() {
-        return grid_Height;
+    public gameGrid(JPanel panelHolder, int col) {
+        panelHolder.setVisible(false);
+        setBounds(panelHolder.getBounds());
+        setBackground(Color.BLACK);
+        gridCell = getBounds().width / gridHeight;
+        spawnTetromino();
     }
 
-    public int getCellSize() {
-        return cellSize;
-    }
+    private boolean processTetro(int x, int y, BiPredicate<Integer, Integer> func) {
+        for (int row = 0; row < tetromino.getTetrominoWidth(); row++) {
+            for (int col = 0; col < tetromino.getTetrominoLength(); col++) {
+                int gridX = x + row - 2;
+                int gridY = y + col - 2;
 
-    public int getReSizeWin() {
-        return reSizeWin;
-    }
-
-    public int[][] getGridBoard() {
-        return gridBoard;
-    }
-
-    public void setGridBoard(int row, int col, int piece) {
-        this.gridBoard[col][row] = piece;
-    }
-
-    int[][] gridBoard = new int[grid_Height][grid_Width];
-
-    double delta = 0;
-    int fps = 60;
-    long drawInterval = 1000000000 / fps;
-    long currentTime;
-    long lastTime = System.nanoTime();
-    Thread gameThread;
-
-   
-    int score = 0; // Moved to the top
-
-    public gameGrid() {
-        setBackground(Color.black);
-        setFocusable(true);
-        requestFocusInWindow();
-        gridFillReset();
-        tetro.setCurrentPiece(random.nextInt(7));
-    }
-
-    public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
-
-    public void run() {
-        while (gameThread != null) {
-            currentTime = System.nanoTime();
-
-            delta += (currentTime - lastTime) / drawInterval;
-            lastTime = currentTime;
-                 
-            if (delta >= 1) {
-                dropCount++;
-                repaint();
-                delta--;
+                if (func.test(gridX, gridY)) {
+                    return true;
+                }
             }
-            
-            if(dropCount == dropInterval){
-                dropCount = 0;
-                 update();
-
-            }
-
         }
+        return false;
     }
-    public void update(){
-        tetro.move(0, 1);
+
+    private boolean isBottom() {
+        int x = tetromino.getPosX();
+        int y = tetromino.getPosY();
+        return processTetro(x, y, (gridX, gridY) -> gridX == gridHeight);
+
     }
-    public void gridFillReset() {
-        for (int row = 0; row < grid_Height; row++) { // Fixed loop
-            for (int col = 0; col < grid_Width; col++) {
-                gridBoard[row][col] = 0;
+
+    private void drawTetromino(Graphics2D g2d) {
+
+        g2d.setColor(new Color(211, 211, 211));
+
+        for (int row = 0; row < tetromino.getTetrominoWidth(); row++) {
+            for (int col = 0; col < tetromino.getTetrominoLength(); col++) {
+                if (tetromino.getTetromino()[row][col] != 0) {
+                    int x = (tetromino.getPosX() + row) * gridCell;
+                    int y = (tetromino.getPosY() + col) * gridCell;
+                    g2d.drawRect(x , y, gridCell, gridCell);
+                    g2d.setColor(tetromino.getColor());
+                    g2d.fillRect(x , y, gridCell, gridCell);
+                }
+
             }
         }
     }
 
+    private void drawGrid(Graphics2D g2d) {
+        g2d.setColor(new Color(128, 128, 128));
+        for (int row = 0; row < gridWidth; row++) {
+            for (int col = 0; col < gridHeight; col++) {
+                g2d.drawRect(row * gridCell, col * gridCell, gridCell, gridCell);
+            }
+        }
+
+    }
+
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
         drawGrid(g2d);
-        tetro.drawPiece(g2d);
-        drawNextPieceBox(g2d, tetro.getNextPiece());
-
+        drawTetromino(g2d);
     }
-
-    public void drawGrid(Graphics2D g2d) {
-    
-    }
-
-
-    private void drawNextPieceBox(Graphics2D g2d, int nextPiece) {
-        
-        
-        if (nextPiece != -1) {
-        }
-
-    }
-
 }

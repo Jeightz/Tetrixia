@@ -362,7 +362,7 @@ public class mino {
                     int gridX = x + col - 2;
                     int gridY = y + row - 2;
 
-                    if (gridX < 0 || gridX >= grid.getGrid_Width() || gridY < 0 || gridY >= grid.getGrid_Height() || func.test(gridX, gridY)) {
+                    if(func.test(gridX, gridY)){
                         return true;
                     }
                 }

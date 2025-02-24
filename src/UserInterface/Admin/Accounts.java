@@ -396,11 +396,11 @@ public class Accounts extends javax.swing.JPanel {
         String bod = datePicker2.getComponentDateTextField().getText();
         String gender = cbgender.getSelectedItem().toString();
         if (!isValidSignUpInput(username, firstname, lastname, gender, bod, pass)|| profile == null) {
-            JOptionPane.showMessageDialog(new AdminFrame(), "Invalid SignUp Fill Up EveryThing ", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid SignUp Fill Up EveryThing ", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         data.add(new UserData(data, username, pass, firstname, bod, gender, profile, bod));
-        JOptionPane.showMessageDialog(new SignIn(), "SUCCESSFULLY ADD AN ACCOUNT", "ADD ACOOUNT", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(new SignIn(data), "SUCCESSFULLY ADD AN ACCOUNT", "ADD ACOOUNT", JOptionPane.INFORMATION_MESSAGE);
         resetInputData();
         new UserData().addDataAccountTable(data, myTable1);
 
@@ -437,11 +437,11 @@ public class Accounts extends javax.swing.JPanel {
         String bod = datePicker2.getComponentDateTextField().getText();
         String gender = cbgender.getSelectedItem().toString();
         if (userIndex == -1) {
-            JOptionPane.showMessageDialog(new AdminFrame(), "NO DATA HAS FOUND TO UPDATE", "UPDATE NO DATA", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "NO DATA HAS FOUND TO UPDATE", "UPDATE NO DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         if (!isValidSignUpInput(username, firstname, lastname, gender, bod, pass) || profile == null) {
-            JOptionPane.showMessageDialog(new AdminFrame(), "Invalid Update Fill Up EveryThing Or Please dont Leave Empty", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid Update Fill Up EveryThing Or Please dont Leave Empty", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -450,14 +450,14 @@ public class Accounts extends javax.swing.JPanel {
         new UserData().updateUsername(data, userIndex, username);
         resetInputData();
 
-        JOptionPane.showMessageDialog(new AdminFrame(), "Successfully update the Account", "SUCCESSFULLY UPDATED", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Successfully update the Account", "SUCCESSFULLY UPDATED", JOptionPane.INFORMATION_MESSAGE);
         new UserData().addDataAccountTable(data, myTable1);
       componentEnanbleAfterOperation();
     }//GEN-LAST:event_btnupdateActionPerformed
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
         new UserData().deleteData(data, userIndex);
-        JOptionPane.showMessageDialog(new AdminFrame(), "Successfully deleted the Account", "SUCCESSFULLY DELETED ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Successfully deleted the Account", "SUCCESSFULLY DELETED ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
         resetInputData();
         new UserData().addDataAccountTable(data, myTable1);
         componentEnanbleAfterOperation();

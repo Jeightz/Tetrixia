@@ -5,18 +5,40 @@
 package UserInterface.settings;
 
 import Function.textField.txtField;
+import Model.UserData.UserData;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import javax.swing.JTextField;
 
-/**
- *
- * @author Admin
- */
 public class settings extends javax.swing.JPanel {
 
-    /**
-     * Creates new form settings
-     */
-    public settings() {
+    private ArrayList<UserData> data;
+    private int index;
+
+    private void userPressKey(ArrayList<UserData> data, int userIndex, JTextField text, String keyName, KeyEvent e) {
+        int vkCode = e.getKeyCode();
+        String nameKeyPress = KeyEvent.getKeyText(vkCode);
+        UserData da = data.get(userIndex);
+
+        da.updateUserKeyBinds(keyName, vkCode);
+        text.setText(nameKeyPress);
+
+    }
+    
+    private void loaduserSettings(){
+        UserData da = data.get(index);
+        txtleft.setText(da.getStringUserKeyBinds("MOVE_LEFT"));
+        txtdown.setText(da.getStringUserKeyBinds("MOVE_DOWN"));
+        txtright.setText(da.getStringUserKeyBinds("MOVE_RIGHT"));
+        txtrotate.setText(da.getStringUserKeyBinds("ROTATE"));
+        txtHardDrop.setText(da.getStringUserKeyBinds("HARD_DROP"));
+    }
+
+    public settings(ArrayList<UserData> data, int index) {
         initComponents();
+        this.data = data;
+        this.index = index;
+        loaduserSettings();
     }
 
     /**
@@ -38,7 +60,6 @@ public class settings extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         txtHardDrop = new UserInterface.CustomComponents.MyTextField();
         jLabel5 = new javax.swing.JLabel();
-        btnsaveSetting = new UserInterface.CustomComponents.MyButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(621, 570));
@@ -47,6 +68,7 @@ public class settings extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Move Down:");
 
+        txtdown.setEditable(false);
         txtdown.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txtdown.setRadius(50);
         txtdown.addActionListener(new java.awt.event.ActionListener() {
@@ -54,7 +76,13 @@ public class settings extends javax.swing.JPanel {
                 txtdownActionPerformed(evt);
             }
         });
+        txtdown.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtdownKeyPressed(evt);
+            }
+        });
 
+        txtleft.setEditable(false);
         txtleft.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txtleft.setRadius(50);
         txtleft.addActionListener(new java.awt.event.ActionListener() {
@@ -62,11 +90,17 @@ public class settings extends javax.swing.JPanel {
                 txtleftActionPerformed(evt);
             }
         });
+        txtleft.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtleftKeyPressed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Move Left:");
 
+        txtright.setEditable(false);
         txtright.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txtright.setRadius(50);
         txtright.addActionListener(new java.awt.event.ActionListener() {
@@ -74,11 +108,17 @@ public class settings extends javax.swing.JPanel {
                 txtrightActionPerformed(evt);
             }
         });
+        txtright.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtrightKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Move Right:");
 
+        txtrotate.setEditable(false);
         txtrotate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txtrotate.setRadius(50);
         txtrotate.addActionListener(new java.awt.event.ActionListener() {
@@ -86,11 +126,17 @@ public class settings extends javax.swing.JPanel {
                 txtrotateActionPerformed(evt);
             }
         });
+        txtrotate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtrotateKeyPressed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Rotate:");
 
+        txtHardDrop.setEditable(false);
         txtHardDrop.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txtHardDrop.setRadius(50);
         txtHardDrop.addActionListener(new java.awt.event.ActionListener() {
@@ -98,47 +144,48 @@ public class settings extends javax.swing.JPanel {
                 txtHardDropActionPerformed(evt);
             }
         });
+        txtHardDrop.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtHardDropKeyPressed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Hard Drop:");
-
-        btnsaveSetting.setText("Save Setting");
-        btnsaveSetting.setFont(new java.awt.Font("Retro Gaming", 1, 18)); // NOI18N
-        btnsaveSetting.setRadius(50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel1)
-                .addGap(12, 12, 12)
-                .addComponent(txtdown, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jLabel2)
-                .addGap(4, 4, 4)
-                .addComponent(txtleft, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(txtright, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(txtrotate, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jLabel5)
-                .addGap(17, 17, 17)
-                .addComponent(txtHardDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(430, 430, 430)
-                .addComponent(btnsaveSetting, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel1)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtdown, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(jLabel2)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtleft, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(txtright, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtrotate, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel5)
+                        .addGap(17, 17, 17)
+                        .addComponent(txtHardDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(130, 130, 130))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,34 +212,48 @@ public class settings extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(txtHardDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(103, 103, 103)
-                .addComponent(btnsaveSetting, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(163, 163, 163))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdownActionPerformed
-        new txtField().getTheKeyText(txtdown);
     }//GEN-LAST:event_txtdownActionPerformed
 
     private void txtleftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtleftActionPerformed
-        new txtField().getTheKeyText(txtleft);
     }//GEN-LAST:event_txtleftActionPerformed
 
     private void txtrightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtrightActionPerformed
-        new txtField().getTheKeyText(txtright);
     }//GEN-LAST:event_txtrightActionPerformed
 
     private void txtrotateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtrotateActionPerformed
-        new txtField().getTheKeyText(txtrotate);
     }//GEN-LAST:event_txtrotateActionPerformed
 
     private void txtHardDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHardDropActionPerformed
-        new txtField().getTheKeyText(txtHardDrop);
     }//GEN-LAST:event_txtHardDropActionPerformed
+
+    private void txtdownKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtdownKeyPressed
+        userPressKey(data, index, txtdown, "MOVE_DOWN", evt);
+    }//GEN-LAST:event_txtdownKeyPressed
+
+    private void txtleftKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtleftKeyPressed
+        userPressKey(data, index, txtleft, "MOVE_LEFT", evt);
+    }//GEN-LAST:event_txtleftKeyPressed
+
+    private void txtrightKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtrightKeyPressed
+        userPressKey(data, index, txtright, "MOVE_RIGHT", evt);
+    }//GEN-LAST:event_txtrightKeyPressed
+
+    private void txtrotateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtrotateKeyPressed
+        userPressKey(data, index, txtrotate, "ROTATE", evt);
+
+    }//GEN-LAST:event_txtrotateKeyPressed
+
+    private void txtHardDropKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHardDropKeyPressed
+        userPressKey(data, index, txtHardDrop, "HARD_DROP", evt);
+    }//GEN-LAST:event_txtHardDropKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private UserInterface.CustomComponents.MyButton btnsaveSetting;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

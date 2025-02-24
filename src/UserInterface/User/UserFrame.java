@@ -234,7 +234,7 @@ public class UserFrame extends javax.swing.JFrame {
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
 
         labelHoverOut(lblsettings);
-        viewPanel.setViewportView(new settings());
+        viewPanel.setViewportView(new settings(data,profileIndex));
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -250,7 +250,7 @@ public class UserFrame extends javax.swing.JFrame {
         new UserData().userLogout(data,profileIndex);
         this.dispose();
         JOptionPane.showMessageDialog(null,"SUCCESSFULLY LOGOUT(RECORDED)","LOGOUT!",JOptionPane.INFORMATION_MESSAGE);
-        new SignIn().setVisible(true);
+        new SignIn(data).setVisible(true);
     }//GEN-LAST:event_lbllogoutMouseClicked
 
     private void lbllogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseEntered
@@ -280,7 +280,7 @@ public class UserFrame extends javax.swing.JFrame {
         if (choose == JOptionPane.YES_OPTION) {
             dispose();
             new UserData().userLogout(data, profileIndex);
-            new SignIn().setVisible(true);
+            new SignIn(data).setVisible(true);
 
         }
     }//GEN-LAST:event_formWindowClosing

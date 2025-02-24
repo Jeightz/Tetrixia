@@ -79,7 +79,7 @@ public class grid {
                     drawNextPiece(g2d, boxX, boxY, tetro.getNextPiece());
 
                 }
-                //draw the box to store the next piece
+                        //draw the box to store the next piece
                 g2d.setColor(Color.WHITE);
                 drawScore(g2d, boxX, boxY + boxHeight);
             }

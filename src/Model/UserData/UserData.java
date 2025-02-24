@@ -1,17 +1,14 @@
 package Model.UserData;
 
 import UserInterface.Admin.AdminFrame;
-import UserInterface.Login.SignIn;
 import UserInterface.User.UserFrame;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.security.MessageDigest;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -20,7 +17,7 @@ public class UserData {
 
     //map is a interface
     //hashmap as an implementation of the map
-    private Map<String, Integer> userKeyBinds = new HashMap<>();//store the keyBind of the user
+    private HashMap<String, Integer> userKeyBinds = new HashMap<>();//store the keyBind of the user
     private String Username;
     private String Password;
     private String FirstName;
@@ -33,11 +30,11 @@ public class UserData {
     private ArrayList<LocalDateTime> logoutHistory = new ArrayList<>();
 
     //default keyBinds 
-    private static final String MOVE_LEFT = "Move Left";
-    private static final String MOVE_RIGHT = "Move Right";
-    private static final String MOVE_DOWN = "Move Down";
-    private static final String ROTATE = "Rotate";
-    private static final String HARD_DROP = "Hard Drop";
+    private static final String MOVE_LEFT = "MOVE_LEFT";
+    private static final String MOVE_RIGHT = "MOVE_RIGHT";
+    private static final String MOVE_DOWN = "MOVE_DOWN";
+    private static final String ROTATE = "ROTATE";
+    private static final String HARD_DROP = "HARD_DROP";
     private LocalDateTime banExpr;
     private String userType;
 
@@ -73,12 +70,18 @@ public class UserData {
         this.setBanExpr(LocalDateTime.now().plusHours(hours));
     }
 
-    public Map<String, Integer> getUserKeyBinds() {
-        return userKeyBinds;
+    public String getStringUserKeyBinds(String key) {
+
+        if (!userKeyBinds.containsKey(key)) {
+            return null;
+        }
+        return KeyEvent.getKeyText(userKeyBinds.get(key));
     }
 
-    public void updateUserKeyBinds() {
-        this.userKeyBinds = userKeyBinds;
+    public void updateUserKeyBinds(String key, int updateVkValue) {
+        if (userKeyBinds.containsKey(key)) {
+            userKeyBinds.put(key, updateVkValue);
+        }
     }
 
     public String getBOD() {
@@ -94,11 +97,11 @@ public class UserData {
     }
 
     private void newAddUSerKeyBinds() {
-        this.getUserKeyBinds().put(MOVE_LEFT, KeyEvent.VK_LEFT);
-        this.getUserKeyBinds().put(MOVE_RIGHT, KeyEvent.VK_RIGHT);
-        this.getUserKeyBinds().put(MOVE_DOWN, KeyEvent.VK_DOWN);
-        this.getUserKeyBinds().put(ROTATE, KeyEvent.VK_UP);
-        this.getUserKeyBinds().put(HARD_DROP, KeyEvent.VK_SPACE);
+        userKeyBinds.put(MOVE_LEFT, KeyEvent.VK_LEFT);
+        userKeyBinds.put(MOVE_RIGHT, KeyEvent.VK_RIGHT);
+        userKeyBinds.put(MOVE_DOWN, KeyEvent.VK_DOWN);
+        userKeyBinds.put(ROTATE, KeyEvent.VK_UP);
+        userKeyBinds.put(HARD_DROP, KeyEvent.VK_SPACE);
     }
 
     public void setGender(String gender) {
@@ -158,14 +161,14 @@ public class UserData {
     }
 
     public UserData(ArrayList<UserData> data, String Username, String Password, String FirstName, String LastName,
-           String gender, File profile, String BOD) {
-       
+            String gender, File profile, String BOD) {
+
         this.Username = Username;
         this.Password = userPasswordHash(Password);
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.profile = profile;
-        this.gender =gender;
+        this.gender = gender;
         this.BOD = BOD;
         this.playerScore = 0;
         this.newAddUSerKeyBinds();
@@ -186,8 +189,7 @@ public class UserData {
     }
 
     public int userLogin(ArrayList<UserData> data, String username, String password) {
-     
-        
+
         for (int i = 0; i < data.size(); i++) {
             UserData user = data.get(i);
             if (user.getUsername().equals(username) && user.getPassword().equals(userPasswordHash(password))) {
@@ -197,25 +199,25 @@ public class UserData {
                             "Your account is banned until: " + banExpr,
                             "Account Banned",
                             JOptionPane.ERROR_MESSAGE);
-                    return -1 ;
+                    return -1;
                 }
                 if (user.userType == "Admin") {
-                    new AdminFrame(data,i).setVisible(true);
+                    new AdminFrame(data, i).setVisible(true);
                 }
                 user.loginHistory.add(LocalDateTime.now());
-                new UserFrame(data,i).setVisible(true);
-               System.out.println(user.getPassword());
-               return i;
+                new UserFrame(data, i).setVisible(true);
+                System.out.println(user.getPassword());
+                return i;
             }
 
         }
         return -1;
     }
-    
-    public void userLogout(ArrayList<UserData> data,int userindex){
+
+    public void userLogout(ArrayList<UserData> data, int userindex) {
         UserData us = data.get(userindex);
         us.logoutHistory.add(LocalDateTime.now());
-        
+
     }
 
     public boolean isUsernameDuplication(ArrayList<UserData> data, String username) {

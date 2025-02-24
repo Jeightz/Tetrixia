@@ -261,7 +261,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
         labelHoverOut(lblsettings);
-        ViewPanel.setViewportView(new settings());
+        ViewPanel.setViewportView(new settings(data,userIndex));
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -278,7 +278,7 @@ public class AdminFrame extends javax.swing.JFrame {
         this.dispose();
         JOptionPane.showMessageDialog(null, "SUCCESSFULLY LOGOUT(RECORDED)", "LOGOUT!", JOptionPane.INFORMATION_MESSAGE);
 
-        new SignIn().setVisible(true);
+        new SignIn(data).setVisible(true);
     }//GEN-LAST:event_lbllogoutMouseClicked
 
     private void lbllogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseEntered
@@ -321,7 +321,7 @@ public class AdminFrame extends javax.swing.JFrame {
             System.out.println(choose);
             dispose();
             new UserData().userLogout(data, userIndex);
-            new SignIn().setVisible(true);
+            new SignIn(data).setVisible(true);
 
         }    }//GEN-LAST:event_formWindowClosing
 
