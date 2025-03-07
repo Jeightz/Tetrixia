@@ -20,8 +20,6 @@ public class SignIn extends javax.swing.JFrame {
     private static final SeeAndUnseePass chckbox = new SeeAndUnseePass();
     private UserData user = new UserData();
     private static int userDataIndex = -1;
-    
-    
 
     private void login() {
         String pass = String.valueOf(txtpassword.getPassword());
@@ -81,15 +79,21 @@ public class SignIn extends javax.swing.JFrame {
         txtpasswordSignup1.setText("Password");
         txtconfirmpasswordSignup.setText("Confirm Password");
         txtlastname.setText("LastName");
+        this.lblPictureHolder.setIcon(null);
+
         txtfirstname.setText("FirstName");
         chckseeUnseeConfirmPassSignup.setVisible(false);
         chckseeUnseeSignup1.setVisible(false);
         datePicker2.setText("");
         txtpasswordSignup1.setEchoChar((char) 0);
         txtconfirmpasswordSignup.setEchoChar((char) 0);
-        cbgender.setSelectedIndex(0);
-        cbgender.insertItemAt("Gender",0);
+        cbgender.removeAllItems();
 
+        cbgender.insertItemAt("Gender",0);
+        cbgender.insertItemAt("Male", 1);
+        cbgender.insertItemAt("Female", 2);
+        profile = null;
+          
     }
 
     public SignIn(ArrayList<UserData> data) {
@@ -175,7 +179,7 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
         signIn.add(chckseeUnsee);
-        chckseeUnsee.setBounds(270, 270, 24, 20);
+        chckseeUnsee.setBounds(260, 270, 24, 20);
 
         txtpassword.setText("Password");
         txtpassword.setCornerRadius(50);

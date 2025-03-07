@@ -6,9 +6,9 @@ package UserInterface.Admin;
 
 import Model.UserData.UserData;
 import UserInterface.Login.SignIn;
-import UserInterface.leaderboards.leaderboards;
-import UserInterface.profile.profile;
-import UserInterface.settings.settings;
+import UserInterface.leaderboards.Leaderboards;
+import UserInterface.profile.Profile;
+import UserInterface.settings.Settings;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JLabel;
@@ -248,7 +248,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
         labelHoverOut(lblprofile);
-        ViewPanel.setViewportView(new profile(data, userIndex));
+        ViewPanel.setViewportView(new Profile(data, userIndex));
     }//GEN-LAST:event_lblprofileMouseClicked
 
     private void lblprofileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseEntered
@@ -261,7 +261,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
         labelHoverOut(lblsettings);
-        ViewPanel.setViewportView(new settings(data,userIndex));
+        ViewPanel.setViewportView(new Settings(data,userIndex));
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -298,7 +298,7 @@ public class AdminFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblleaderboardMouseEntered
 
     private void lblleaderboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseClicked
-        ViewPanel.setViewportView(new leaderboards(data));
+        ViewPanel.setViewportView(new Leaderboards(data));
         labelHoverOut(lblleaderboard);
     }//GEN-LAST:event_lblleaderboardMouseClicked
 

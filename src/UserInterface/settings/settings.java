@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JTextField;
 
-public class settings extends javax.swing.JPanel {
+public class Settings extends javax.swing.JPanel {
 
     private ArrayList<UserData> data;
     private int index;
@@ -34,7 +34,7 @@ public class settings extends javax.swing.JPanel {
         txtHardDrop.setText(da.getStringUserKeyBinds("HARD_DROP"));
     }
 
-    public settings(ArrayList<UserData> data, int index) {
+    public Settings(ArrayList<UserData> data, int index) {
         initComponents();
         this.data = data;
         this.index = index;

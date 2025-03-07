@@ -63,11 +63,19 @@ public class UserData {
     }
 
     public void setBanForDays(int days) {
-        this.setBanExpr(LocalDateTime.now().plusDays(days));
+            this.setBanExpr(LocalDateTime.now().plusDays(days));
     }
 
     public void setBanForHours(int hours) {
         this.setBanExpr(LocalDateTime.now().plusHours(hours));
+    }
+    
+    public int getUserKeyBinds(String key) {
+
+        if (!userKeyBinds.containsKey(key)) {
+            return -1 ;
+        }
+        return userKeyBinds.get(key);
     }
 
     public String getStringUserKeyBinds(String key) {

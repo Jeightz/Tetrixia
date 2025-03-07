@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  *
  * @author Admin
  */
-public class changeUser extends javax.swing.JDialog {
+public class ChangeUser extends javax.swing.JDialog {
 
     private static ArrayList<UserData> data;
     private static int userIndex;
@@ -41,7 +41,7 @@ public class changeUser extends javax.swing.JDialog {
         }
     }
 
-    public changeUser(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
+    public ChangeUser(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
         super(parent, modal);
         initComponents();
         this.data = data;
@@ -280,20 +280,21 @@ public class changeUser extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(changeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(changeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(changeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(changeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                changeUser dialog = new changeUser(new javax.swing.JFrame(), true, data, userIndex);
+                ChangeUser dialog = new ChangeUser(new javax.swing.JFrame(), true, data, userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

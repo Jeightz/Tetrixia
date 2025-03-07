@@ -6,9 +6,9 @@ package UserInterface.User;
 
 import Model.UserData.UserData;
 import UserInterface.Login.SignIn;
-import UserInterface.leaderboards.leaderboards;
-import UserInterface.profile.profile;
-import UserInterface.settings.settings;
+import UserInterface.leaderboards.Leaderboards;
+import UserInterface.profile.Profile;
+import UserInterface.settings.Settings;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JLabel;
@@ -35,7 +35,7 @@ public class UserFrame extends javax.swing.JFrame {
 
     public UserFrame(ArrayList<UserData> data, int userIndex) {
         initComponents();
-        viewPanel.setViewportView(new leaderboards(data));
+        viewPanel.setViewportView(new Leaderboards(data));
         this.data = data;
         profileIndex = userIndex;
     }
@@ -218,7 +218,7 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblplayMouseExited
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
-        viewPanel.setViewportView(new profile(data, profileIndex));
+        viewPanel.setViewportView(new Profile(data, profileIndex));
         labelHoverOut(lblprofile);
 
     }//GEN-LAST:event_lblprofileMouseClicked
@@ -234,7 +234,7 @@ public class UserFrame extends javax.swing.JFrame {
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
 
         labelHoverOut(lblsettings);
-        viewPanel.setViewportView(new settings(data,profileIndex));
+        viewPanel.setViewportView(new Settings(data,profileIndex));
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -271,7 +271,7 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void lblleaderboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseClicked
         labelHoverOut(lblleaderboard);
-        viewPanel.setViewportView(new leaderboards(data));
+        viewPanel.setViewportView(new Leaderboards(data));
     }//GEN-LAST:event_lblleaderboardMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

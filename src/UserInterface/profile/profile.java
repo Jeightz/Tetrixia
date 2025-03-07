@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class profile extends javax.swing.JPanel {
+public class Profile extends javax.swing.JPanel {
 
     private ArrayList<UserData> data;
     private int userIndex;
@@ -29,7 +29,7 @@ public class profile extends javax.swing.JPanel {
 
     }
     
-    public profile(ArrayList<UserData> data,int userIndex) {
+    public Profile(ArrayList<UserData> data,int userIndex) {
         initComponents();
           lblprofilepicture.setSize(133,126);//set the size to make the lblprofilepicture not a null
           this.data = data;
@@ -258,19 +258,19 @@ public class profile extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnchangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePasswordActionPerformed
-        new changePass(null, true,data,userIndex).setVisible(true);
+        new ChangePass(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePasswordActionPerformed
 
     private void btnchangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeUsernameActionPerformed
-        new changeUser(null, true,data,userIndex).setVisible(true);
+        new ChangeUser(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeUsernameActionPerformed
 
     private void btnchangePIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePIActionPerformed
-        new changeProfInfo(null, true,data,userIndex).setVisible(true);
+        new ChangeProfInfo(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePIActionPerformed
 
     private void btnchangeProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfileActionPerformed
-        new changeProf(null, true,data,userIndex).setVisible(true);
+        new ChangeProf(null, true,data,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeProfileActionPerformed
 
 

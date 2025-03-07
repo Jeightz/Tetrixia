@@ -13,13 +13,13 @@ import javax.swing.JOptionPane;
  *
  * @author Admin
  */
-public class changeProfInfo extends javax.swing.JDialog {
+public class ChangeProfInfo extends javax.swing.JDialog {
 
     private static ArrayList<UserData> data;
     private static int userIndex;
     private txtField txt = new txtField();
 
-    public changeProfInfo(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
+    public ChangeProfInfo(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
         super(parent, modal);
         initComponents();
         datePicker2.getComponentDateTextField().setEnabled(false);
@@ -264,20 +264,21 @@ public class changeProfInfo extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(changeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(changeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(changeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(changeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProfInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                changeProfInfo dialog = new changeProfInfo(new javax.swing.JFrame(), true,data,userIndex);
+                ChangeProfInfo dialog = new ChangeProfInfo(new javax.swing.JFrame(), true,data,userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  *
  * @author Admin
  */
-public class changePass extends javax.swing.JDialog {
+public class ChangePass extends javax.swing.JDialog {
 
     private checkPasswordField chckpass = new checkPasswordField();
 
@@ -45,7 +45,7 @@ public class changePass extends javax.swing.JDialog {
 
     }
 
-    public changePass(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
+    public ChangePass(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
         super(parent, modal);
         initComponents();
         this.userIndex = userIndex;
@@ -380,20 +380,21 @@ public class changePass extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(changePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(changePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(changePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(changePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                changePass dialog = new changePass(new javax.swing.JFrame(), true, data, userIndex);
+                ChangePass dialog = new ChangePass(new javax.swing.JFrame(), true, data, userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

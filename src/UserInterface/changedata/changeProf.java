@@ -7,17 +7,17 @@ package UserInterface.changedata;
 import Function.Image.FitImage;
 import Function.file.file;
 import Model.UserData.UserData;
-import UserInterface.profile.profile;
+import UserInterface.profile.Profile;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 
-public class changeProf extends javax.swing.JDialog {
+public class ChangeProf extends javax.swing.JDialog {
     private static ArrayList<UserData> data;
    private  File profile = null;
   private static int userIndex;
-    public changeProf(java.awt.Frame parent, boolean modal,ArrayList<UserData> data ,int userIndex) {
+    public ChangeProf(java.awt.Frame parent, boolean modal,ArrayList<UserData> data ,int userIndex) {
         super(parent, modal);
         initComponents();
         this.data = data;
@@ -130,7 +130,7 @@ public class changeProf extends javax.swing.JDialog {
             UserData us = data.get(userIndex);
             us.updateProfile(data,userIndex,profile);
             JOptionPane.showMessageDialog(null,"THE PROFILE IS SUCCESSFULLY UPDATE","SUCCESSFULLY UPDATED",JOptionPane.INFORMATION_MESSAGE);
-            //reset the profile to null
+            //reset the Profile to null
             profile = null;
             profilePic.setIcon(null);
             return;
@@ -151,20 +151,21 @@ public class changeProf extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(changeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(changeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(changeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(changeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                changeProf dialog = new changeProf(new javax.swing.JFrame(), true,data,userIndex);
+                ChangeProf dialog = new ChangeProf(new javax.swing.JFrame(), true,data,userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

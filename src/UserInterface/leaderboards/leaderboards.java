@@ -11,10 +11,10 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class leaderboards extends javax.swing.JPanel {
+public class Leaderboards extends javax.swing.JPanel {
 
    private ArrayList<UserData>data;
-    public leaderboards(ArrayList<UserData> data) {
+    public Leaderboards(ArrayList<UserData> data) {
         this.data = data; 
         initComponents();
         new UserData().addDataLeaderBoardTables(data, jTable1);
