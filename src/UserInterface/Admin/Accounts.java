@@ -4,13 +4,17 @@
  */
 package UserInterface.Admin;
 
+import Function.CheckDate.CheckDate;
 import Function.Image.FitImage;
 import Function.SeeAndUnseePass.SeeAndUnseePass;
 import Function.file.file;
 import Function.password.checkPasswordField;
 import Function.textField.txtField;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import UserInterface.Login.SignIn;
+import UserInterface.ShowData.ShowedData;
+import UserInterface.banAccount.banAccount;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -21,12 +25,44 @@ import javax.swing.JOptionPane;
  */
 public class Accounts extends javax.swing.JPanel {
 
-    private ArrayList<UserData> data = new ArrayList<>();
+    DataManager data = DataManager.getInstance();
+    private checkPasswordField chckpass = new checkPasswordField();
     File profile = null;
     private final checkPasswordField pass = new checkPasswordField();
     private final txtField txt = new txtField();
+    private UserData user = new UserData();
     private final SeeAndUnseePass cbpass = new SeeAndUnseePass();
     int userIndex = -1;
+    private AdminFrame frame;
+
+    private void componentVisibleEnable(boolean maincomponent, boolean actionComponent) {
+        txtpassword.setEnabled(maincomponent);
+        btnban.setEnabled(actionComponent);
+        btnupdate.setEnabled(actionComponent);
+        btndelete.setEnabled(actionComponent);
+        btnshowdata.setEnabled(actionComponent);
+        btnadd.setEnabled(maincomponent);
+        btncancel.setVisible(actionComponent);
+    }
+
+    private boolean checkIfItValid(String username, String pass, String firstname, String lastname, String bod, String gender) {
+
+        if (pass.length() < 5) {
+            JOptionPane.showMessageDialog(this, "Invalid SignUp! Please make the password 5 letter up.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
+        if (!isValidSignUpInput(username, firstname, lastname, gender, bod, pass) || profile == null) {
+            JOptionPane.showMessageDialog(null, "Invalid SignUp Fill Up EveryThing ", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
+        if (!new CheckDate().isAtLeast10YearsOld(datePicker2.getText())) {
+            JOptionPane.showMessageDialog(null, "The BOD is not applicable cause it is lower than 10 years old age or too high than 100", "NOT APPLICABLE BOD", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 
     private boolean isValidSignUpInput(String username, String firstName, String lastName, String gender, String birthDate, String password) {
         return !(gender.equals("Gender") || firstName.isEmpty() || lastName.isEmpty() || username.isEmpty()
@@ -43,19 +79,22 @@ public class Accounts extends javax.swing.JPanel {
         cbgender.insertItemAt("Gender", 0);
         cbgender.setSelectedIndex(0);
         profile = null;
+        lblpictureHolder.setIcon(null);
         txtpassword.setText("Password");
     }
 
     public Accounts() {
         initComponents();
-        new UserData().addDataAccountTable(data, myTable1);
+        new UserData().addDataAccountTable(data.getData(), myTable1);
+        this.frame = frame;
         chckseeUnsee.setVisible(false);
         txtpassword.setEchoChar((char) 0);
         btnban.setEnabled(false);
         btndelete.setEnabled(false);
         btnupdate.setEnabled(false);
+        btnshowdata.setEnabled(false);
+        btncancel.setVisible(false);
         this.datePicker2.getComponentDateTextField().setEnabled(false);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -65,20 +104,24 @@ public class Accounts extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         myTable1 = new UserInterface.CustomComponents.MyTable();
         jPanel2 = new javax.swing.JPanel();
+        txtpassword = new UserInterface.CustomComponents.MyPasswordField();
         txtlastname = new UserInterface.CustomComponents.MyTextField();
-        chckseeUnsee = new javax.swing.JCheckBox();
         cbgender = new javax.swing.JComboBox<>();
         datePicker2 = new com.github.lgooddatepicker.components.DatePicker();
         txtfirstname = new UserInterface.CustomComponents.MyTextField();
         txtusername = new UserInterface.CustomComponents.MyTextField();
         myButton1 = new UserInterface.CustomComponents.MyButton();
         lblpictureHolder = new javax.swing.JLabel();
-        txtpassword = new UserInterface.CustomComponents.MyPasswordField();
+        jPanel1 = new javax.swing.JPanel();
+        chckseeUnsee = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         btnadd = new UserInterface.CustomComponents.MyButton();
         btnupdate = new UserInterface.CustomComponents.MyButton();
         btndelete = new UserInterface.CustomComponents.MyButton();
         btnban = new UserInterface.CustomComponents.MyButton();
+        btnshowdata = new UserInterface.CustomComponents.MyButton();
+        btncancel = new UserInterface.CustomComponents.MyButton();
+        txtsearch = new UserInterface.CustomComponents.MyTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(621, 570));
@@ -108,7 +151,36 @@ public class Accounts extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        txtpassword.setText("Password");
+        txtpassword.setToolTipText("");
+        txtpassword.setCornerRadius(50);
+        txtpassword.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/password.png"))); // NOI18N
+        txtpassword.setName("txtpassword"); // NOI18N
+        txtpassword.setNextFocusableComponent(txtfirstname);
+        txtpassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtpasswordFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtpasswordFocusLost(evt);
+            }
+        });
+        txtpassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpasswordActionPerformed(evt);
+            }
+        });
+        txtpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtpasswordKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtpasswordKeyReleased(evt);
+            }
+        });
+
         txtlastname.setText("LastName");
+        txtlastname.setNextFocusableComponent(cbgender);
         txtlastname.setRadius(50);
         txtlastname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -124,14 +196,8 @@ public class Accounts extends javax.swing.JPanel {
             }
         });
 
-        chckseeUnsee.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/see.png"))); // NOI18N
-        chckseeUnsee.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chckseeUnseeActionPerformed(evt);
-            }
-        });
-
         cbgender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gender", "Male", "Female" }));
+        cbgender.setNextFocusableComponent(datePicker2);
         cbgender.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbgenderItemStateChanged(evt);
@@ -139,6 +205,7 @@ public class Accounts extends javax.swing.JPanel {
         });
 
         txtfirstname.setText("FirstName");
+        txtfirstname.setNextFocusableComponent(txtlastname);
         txtfirstname.setRadius(50);
         txtfirstname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -155,6 +222,7 @@ public class Accounts extends javax.swing.JPanel {
         });
 
         txtusername.setText("Username");
+        txtusername.setNextFocusableComponent(txtpassword);
         txtusername.setRadius(50);
         txtusername.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -184,21 +252,33 @@ public class Accounts extends javax.swing.JPanel {
 
         lblpictureHolder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        txtpassword.setText("Password");
-        txtpassword.setCornerRadius(50);
-        txtpassword.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtpasswordFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtpasswordFocusLost(evt);
-            }
-        });
-        txtpassword.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtpasswordMouseClicked(evt);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        chckseeUnsee.setText("ShowPassword");
+        chckseeUnsee.setForeground(new java.awt.Color(0, 0, 0));
+        chckseeUnsee.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/see.png"))); // NOI18N
+        chckseeUnsee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chckseeUnseeActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chckseeUnsee, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(41, 41, 41))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(chckseeUnsee, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -216,42 +296,45 @@ public class Accounts extends javax.swing.JPanel {
                     .addComponent(txtusername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtfirstname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbgender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20)
+                .addGap(13, 13, 13)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(datePicker2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtpassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chckseeUnsee))
-                    .addComponent(txtlastname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(10, 10, 10))
+                        .addGap(8, 8, 8))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(3, 3, 3))
+                            .addComponent(txtlastname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(datePicker2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(7, 7, 7))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblpictureHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblpictureHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
+                        .addGap(140, 140, 140)
                         .addComponent(myButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(30, 30, 30)
                 .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(20, 20, 20)
                 .addComponent(cbgender, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(chckseeUnsee, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20)
+                .addGap(44, 44, 44)
+                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(20, 20, 20)
                 .addComponent(datePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -303,7 +386,58 @@ public class Accounts extends javax.swing.JPanel {
         btnban.setColorOver(new java.awt.Color(255, 204, 102));
         btnban.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnban.setRadius(50);
+        btnban.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbanActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnban);
+
+        btnshowdata.setText("Show UserData");
+        btnshowdata.setColorClick(new java.awt.Color(51, 102, 255));
+        btnshowdata.setColorOver(new java.awt.Color(102, 102, 255));
+        btnshowdata.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnshowdata.setRadius(50);
+        btnshowdata.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnshowdataActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnshowdata);
+
+        btncancel.setText("Cancel");
+        btncancel.setColorClick(new java.awt.Color(51, 102, 255));
+        btncancel.setColorOver(new java.awt.Color(102, 102, 255));
+        btncancel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btncancel.setRadius(50);
+        btncancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btncancel);
+
+        txtsearch.setText("Search");
+        txtsearch.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/3741750_bussiness_ecommerce_marketplace_onlinestore_search_icon (1).png"))); // NOI18N
+        txtsearch.setRadius(40);
+        txtsearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtsearchFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtsearchFocusLost(evt);
+            }
+        });
+        txtsearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtsearchMouseClicked(evt);
+            }
+        });
+        txtsearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtsearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -311,16 +445,23 @@ public class Accounts extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE))
                 .addGap(1, 1, 1))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtsearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -344,7 +485,7 @@ public class Accounts extends javax.swing.JPanel {
     }//GEN-LAST:event_txtusernameMouseClicked
 
     private void txtfirstnameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfirstnameFocusGained
-        txt.checkTextField(txtfirstname, "FIrstName");
+        txt.checkTextField(txtfirstname, "FirstName");
     }//GEN-LAST:event_txtfirstnameFocusGained
 
     private void txtfirstnameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfirstnameFocusLost
@@ -367,18 +508,6 @@ public class Accounts extends javax.swing.JPanel {
         txt.checkTextField(txtlastname, "LastName");
     }//GEN-LAST:event_txtlastnameMouseClicked
 
-    private void txtpasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusGained
-        pass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
-    }//GEN-LAST:event_txtpasswordFocusGained
-
-    private void txtpasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusLost
-        pass.FocusLostPass(txtpassword, "Password");
-    }//GEN-LAST:event_txtpasswordFocusLost
-
-    private void txtpasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtpasswordMouseClicked
-        pass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
-    }//GEN-LAST:event_txtpasswordMouseClicked
-
     private void myButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myButton1ActionPerformed
         profile = new file().FilePictureFilter(profile);
         new FitImage().risizelabel(profile, lblpictureHolder);
@@ -389,21 +518,27 @@ public class Accounts extends javax.swing.JPanel {
     }//GEN-LAST:event_chckseeUnseeActionPerformed
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
-        String pass = txtpassword.getPassword().toString();
-        String username = txtusername.getText();
-        String lastname = txtlastname.getText();
-        String firstname = txtfirstname.getText();
-        String bod = datePicker2.getComponentDateTextField().getText();
-        String gender = cbgender.getSelectedItem().toString();
-        if (!isValidSignUpInput(username, firstname, lastname, gender, bod, pass)|| profile == null) {
-            JOptionPane.showMessageDialog(null, "Invalid SignUp Fill Up EveryThing ", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
+        String pass = String.valueOf(txtpassword.getPassword()).trim();
+        String username = txtusername.getText().trim();
+        String lastname = txtlastname.getText().trim();
+        String firstname = txtfirstname.getText().trim();
+        String bod = datePicker2.getComponentDateTextField().getText().trim();
+        String gender = cbgender.getSelectedItem().toString().trim();
+
+        if (user.isUsernameDuplication(data.getData(), username)) {
+            JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        data.add(new UserData(data, username, pass, firstname, bod, gender, profile, bod));
-        JOptionPane.showMessageDialog(new SignIn(data), "SUCCESSFULLY ADD AN ACCOUNT", "ADD ACOOUNT", JOptionPane.INFORMATION_MESSAGE);
-        resetInputData();
-        new UserData().addDataAccountTable(data, myTable1);
 
+        if (checkIfItValid(username, pass, firstname, lastname, bod, gender)) {
+
+            data.addUser(new UserData(data.getData(), username, pass, firstname, lastname, gender, profile, bod));
+            JOptionPane.showMessageDialog(null, "SUCCESSFULLY ADD AN ACCOUNT", "ADD ACOOUNT", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println(username + " and pass " + pass);
+            resetInputData();
+            new UserData().addDataAccountTable(data.getData(), myTable1);
+            return;
+        }
     }//GEN-LAST:event_btnaddActionPerformed
 
 
@@ -411,82 +546,137 @@ public class Accounts extends javax.swing.JPanel {
         int row = myTable1.getSelectedRow();
         int col = 1;//get the value in the index 1
         String selectedUsername = (String) myTable1.getValueAt(row, col);
-        userIndex = new UserData().findUserIndex(data, selectedUsername);
-        UserData us = data.get(userIndex);
+        userIndex = new UserData().findUserIndex(data.getData(), selectedUsername);
+        user = data.getData().get(userIndex);
         if (row != -1) {
             txtusername.setText(selectedUsername);
-            txtfirstname.setText(us.getFirstName());
-            txtlastname.setText(us.getLastName());
-            datePicker2.setText(us.getBOD());
-            cbgender.setSelectedItem(us.getGender());
-            profile = us.getProfile();
+            txtfirstname.setText(user.getFirstName());
+            txtlastname.setText(user.getLastName());
+            datePicker2.setText(user.getBOD());
+            cbgender.setSelectedItem(user.getGender());
+            profile = user.getProfile();
             new FitImage().risizelabel(profile, lblpictureHolder);
-            txtpassword.setEnabled(false);
-            btnban.setEnabled(true);
-            btnupdate.setEnabled(true);
-            btndelete.setEnabled(true);
-            btnadd.setEnabled(false);
+            componentVisibleEnable(false, true);
+
         }
     }//GEN-LAST:event_myTable1MouseClicked
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
-        String pass = txtpassword.getPassword().toString();
+        String pass = txtpassword.getPassword().toString().trim();
         String username = txtusername.getText();
         String lastname = txtlastname.getText();
         String firstname = txtfirstname.getText();
         String bod = datePicker2.getComponentDateTextField().getText();
         String gender = cbgender.getSelectedItem().toString();
+        if (user.isUsernameDuplication(data.getData(), username)) {
+            JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         if (userIndex == -1) {
             JOptionPane.showMessageDialog(null, "NO DATA HAS FOUND TO UPDATE", "UPDATE NO DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if (!isValidSignUpInput(username, firstname, lastname, gender, bod, pass) || profile == null) {
-            JOptionPane.showMessageDialog(null, "Invalid Update Fill Up EveryThing Or Please dont Leave Empty", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
-            return;
+
+        checkIfItValid(username, pass, firstname, lastname, bod, gender);
+        user = data.getData().get(this.userIndex);
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO UPDATE THE DATA USERNAME:" + user.getUsername(), "UPDATE DATA?", JOptionPane.YES_NO_OPTION);
+        if (choose == JOptionPane.YES_OPTION) {
+
+            new UserData().updatePersonData(data.getData(), userIndex, firstname, lastname, gender, bod);
+            new UserData().updateProfile(data.getData(), userIndex, profile);
+            new UserData().updateUsername(data.getData(), userIndex, username);
+            resetInputData();
+            JOptionPane.showMessageDialog(null, "Successfully update the Account", "SUCCESSFULLY UPDATED", JOptionPane.INFORMATION_MESSAGE);
+            new UserData().addDataAccountTable(data.getData(), myTable1);
+            this.componentVisibleEnable(true, false);
         }
-
-        new UserData().updatePersonData(data, userIndex, firstname, lastname, gender, bod);
-        new UserData().updateProfile(data, userIndex, profile);
-        new UserData().updateUsername(data, userIndex, username);
-        resetInputData();
-
-        JOptionPane.showMessageDialog(null, "Successfully update the Account", "SUCCESSFULLY UPDATED", JOptionPane.INFORMATION_MESSAGE);
-        new UserData().addDataAccountTable(data, myTable1);
-      componentEnanbleAfterOperation();
     }//GEN-LAST:event_btnupdateActionPerformed
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
-        new UserData().deleteData(data, userIndex);
-        JOptionPane.showMessageDialog(null, "Successfully deleted the Account", "SUCCESSFULLY DELETED ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
-        resetInputData();
-        new UserData().addDataAccountTable(data, myTable1);
-        componentEnanbleAfterOperation();
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO DELETE THIS DATA", "DELETE DATA ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (choose == JOptionPane.YES_OPTION) {
+            data.deleteUser(user);
+            new UserData().deleteData(data.getData(), userIndex);
+            JOptionPane.showMessageDialog(null, "Successfully deleted the Account", "SUCCESSFULLY DELETED ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
+            resetInputData();
+            new UserData().addDataAccountTable(data.getData(), myTable1);
+            componentVisibleEnable(true,false);
+
+        }
     }//GEN-LAST:event_btndeleteActionPerformed
-    private void componentEnanbleAfterOperation(){
-        txtpassword.setEnabled(true);
-        btnban.setEnabled(false);
-        btnupdate.setEnabled(false);
-        btndelete.setEnabled(false);
-        btnadd.setEnabled(true);
-    }
+    
     private void cbgenderItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbgenderItemStateChanged
         if (!cbgender.equals("Gender")) {
             cbgender.removeItem("Gender");
         }
-        if(profile == null){
-        profile = new file().FileCheckGender(profile, cbgender, lblpictureHolder);
+        if (profile == null) {
+            profile = new file().FileCheckGender(profile, cbgender, lblpictureHolder);
         }
     }//GEN-LAST:event_cbgenderItemStateChanged
+
+    private void btnshowdataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnshowdataActionPerformed
+        if (userIndex != -1 && data != null) {
+            System.out.print(userIndex);
+            new ShowedData(null, true, data.getData(), userIndex).setVisible(true);
+        }
+    }//GEN-LAST:event_btnshowdataActionPerformed
+
+    private void txtpasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusGained
+        chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
+    }//GEN-LAST:event_txtpasswordFocusGained
+
+    private void txtpasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusLost
+        chckpass.FocusLostPass(txtpassword, "Password");
+    }//GEN-LAST:event_txtpasswordFocusLost
+
+    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
+    }//GEN-LAST:event_txtpasswordActionPerformed
+
+    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
+        chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
+    }//GEN-LAST:event_txtpasswordKeyPressed
+
+    private void txtpasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyReleased
+        chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
+    }//GEN-LAST:event_txtpasswordKeyReleased
+
+    private void btnbanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbanActionPerformed
+        new banAccount(null, true, userIndex).setVisible(true);
+    }//GEN-LAST:event_btnbanActionPerformed
+
+    private void txtsearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtsearchFocusGained
+        txt.checkTextField(txtsearch, "Search");
+    }//GEN-LAST:event_txtsearchFocusGained
+
+    private void txtsearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtsearchFocusLost
+        txt.checkTextFieldEmpty(txtsearch, "Search");
+    }//GEN-LAST:event_txtsearchFocusLost
+
+    private void txtsearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtsearchMouseClicked
+        txt.checkTextField(txtsearch, "Search");
+    }//GEN-LAST:event_txtsearchMouseClicked
+
+    private void txtsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsearchActionPerformed
+        new UserData().filterAccount(data.getData(), myTable1, txtsearch.getText());
+    }//GEN-LAST:event_txtsearchActionPerformed
+
+    private void btncancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelActionPerformed
+        componentVisibleEnable(true,false); 
+    }//GEN-LAST:event_btncancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UserInterface.CustomComponents.MyButton btnadd;
     private UserInterface.CustomComponents.MyButton btnban;
+    private UserInterface.CustomComponents.MyButton btncancel;
     private UserInterface.CustomComponents.MyButton btndelete;
+    private UserInterface.CustomComponents.MyButton btnshowdata;
     private UserInterface.CustomComponents.MyButton btnupdate;
     private javax.swing.JComboBox<String> cbgender;
     private javax.swing.JCheckBox chckseeUnsee;
     private com.github.lgooddatepicker.components.DatePicker datePicker2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -496,6 +686,7 @@ public class Accounts extends javax.swing.JPanel {
     private UserInterface.CustomComponents.MyTextField txtfirstname;
     private UserInterface.CustomComponents.MyTextField txtlastname;
     private UserInterface.CustomComponents.MyPasswordField txtpassword;
+    private UserInterface.CustomComponents.MyTextField txtsearch;
     private UserInterface.CustomComponents.MyTextField txtusername;
     // End of variables declaration//GEN-END:variables
 }

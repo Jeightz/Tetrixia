@@ -2,11 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package UserInterface.game;
+package Model.Tetromino;
 
 import java.awt.Color;
 
 public class Tetromino {
+
     private Color color;
     private int tetromino[][];
     private int posX;
@@ -14,16 +15,14 @@ public class Tetromino {
     private int[][][] TetrominoRotatedState;
     private int CurrentRotation;
 
-   
-    
     public Tetromino(int shape[][], Color color) {
         tetromino = shape;
         this.color = color;
         this.posX = 0;
         this.posY = 0;
-         GenerateAllRotationState(shape);
+        GenerateAllRotationState(shape);
     }
-    
+
     /**
      * generate all the rotation state of the current tetromino
      *
@@ -79,7 +78,6 @@ public class Tetromino {
         return RotatedTetromino;
     }
 
-    
     /**
      * a function that will copy the original shape of the shape cause of son of
      * the bitch java is the default thing in the parameter on the function is a
@@ -148,15 +146,13 @@ public class Tetromino {
     public int getPosY() {
         return posY;
     }
-    
+
     /**
-     * rotate the tetromino shape 
+     * rotate the tetromino shape
      */
-    public void RotateTetromino(){
-        CurrentRotation =(1+ CurrentRotation) % TetrominoRotatedState.length;
+    public void RotateTetromino() {
+        CurrentRotation = (1 + CurrentRotation) % TetrominoRotatedState.length;
     }
-    
-        
 
     /**
      * return the current Y Position of the Tetromino
@@ -193,16 +189,17 @@ public class Tetromino {
     public int[][] getTetromino() {
         return TetrominoRotatedState[CurrentRotation];
     }
-    
+
     public int[][] getNextRotationState() {
         int nextRotation = (CurrentRotation + 1) % TetrominoRotatedState.length;
         return TetrominoRotatedState[nextRotation];
     }
-    
+
     public void setTetromino(int[][] tetromino) {
         this.tetromino = tetromino;
+        GenerateAllRotationState(tetromino);
+        this.CurrentRotation = 0; 
     }
-
 
     public void updatePos(int x, int y) {
         posX += x;

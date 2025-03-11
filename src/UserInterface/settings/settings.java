@@ -32,6 +32,7 @@ public class Settings extends javax.swing.JPanel {
         txtright.setText(da.getStringUserKeyBinds("MOVE_RIGHT"));
         txtrotate.setText(da.getStringUserKeyBinds("ROTATE"));
         txtHardDrop.setText(da.getStringUserKeyBinds("HARD_DROP"));
+        txtHold.setText(da.getStringUserKeyBinds("HOLD"));
     }
 
     public Settings(ArrayList<UserData> data, int index) {
@@ -60,6 +61,10 @@ public class Settings extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         txtHardDrop = new UserInterface.CustomComponents.MyTextField();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtHold = new UserInterface.CustomComponents.MyTextField();
+        OnAndOffMusic = new javax.swing.JToggleButton();
+        jLabel7 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(621, 570));
@@ -154,6 +159,36 @@ public class Settings extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Hard Drop:");
 
+        jLabel6.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("HOLD:");
+
+        txtHold.setEditable(false);
+        txtHold.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        txtHold.setRadius(50);
+        txtHold.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHoldActionPerformed(evt);
+            }
+        });
+        txtHold.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtHoldKeyPressed(evt);
+            }
+        });
+
+        OnAndOffMusic.setText("ON");
+        OnAndOffMusic.setActionCommand("");
+        OnAndOffMusic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OnAndOffMusicActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setText("MUSIC:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,9 +217,22 @@ public class Settings extends javax.swing.JPanel {
                         .addComponent(txtrotate, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
-                        .addComponent(jLabel5)
-                        .addGap(17, 17, 17)
-                        .addComponent(txtHardDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(17, 17, 17)
+                                .addComponent(txtHardDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(17, 17, 17))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtHold, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(OnAndOffMusic, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(130, 130, 130))
         );
         layout.setVerticalGroup(
@@ -212,7 +260,15 @@ public class Settings extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(txtHardDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(163, 163, 163))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(txtHold, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(OnAndOffMusic, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -252,14 +308,33 @@ public class Settings extends javax.swing.JPanel {
         userPressKey(data, index, txtHardDrop, "HARD_DROP", evt);
     }//GEN-LAST:event_txtHardDropKeyPressed
 
+    private void txtHoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoldActionPerformed
+    }//GEN-LAST:event_txtHoldActionPerformed
+
+    private void txtHoldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHoldKeyPressed
+        userPressKey(data, index, txtHold, "HOLD", evt);
+    }//GEN-LAST:event_txtHoldKeyPressed
+
+    private void OnAndOffMusicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OnAndOffMusicActionPerformed
+        if(OnAndOffMusic.isSelected()){
+            data.get(index).setIsMusicOn(false);
+            return;
+        }
+            data.get(index).setIsMusicOn(true);
+    }//GEN-LAST:event_OnAndOffMusicActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton OnAndOffMusic;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private UserInterface.CustomComponents.MyTextField txtHardDrop;
+    private UserInterface.CustomComponents.MyTextField txtHold;
     private UserInterface.CustomComponents.MyTextField txtdown;
     private UserInterface.CustomComponents.MyTextField txtleft;
     private UserInterface.CustomComponents.MyTextField txtright;

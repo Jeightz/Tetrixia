@@ -20,15 +20,22 @@ public class checkPasswordField {
     }
 
     public void HoverAndClickPassword(JPasswordField txtpass, JCheckBox chck, String txt) {
+
         if (txtpass.getPassword().length != 0 && !new String(txtpass.getPassword()).equals(txt)) {
             chck.setVisible(true);
             txtpass.setEchoChar('\u263A');
+
+            if (chck.isSelected()) {
+                txtpass.setEchoChar((char) 0);
+            }
+
             return;
+        } else {
+            txtpass.setText("");
+            txtpass.setEchoChar((char) 0);
+            chck.setVisible(false);
         }
 
-        txtpass.setText("");
-        txtpass.setEchoChar((char) 0);
-        chck.setVisible(false);
     }
 
     public boolean isConfirmPassAndPassSame(String pass, String confirmpass) {

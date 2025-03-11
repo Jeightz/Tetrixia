@@ -5,6 +5,7 @@
 package UserInterface.changedata;
 
 import Function.textField.txtField;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -14,17 +15,15 @@ import javax.swing.JOptionPane;
  * @author Admin
  */
 public class ChangeProfInfo extends javax.swing.JDialog {
-
-    private static ArrayList<UserData> data;
+    DataManager data = DataManager.getInstance();
     private static int userIndex;
     private txtField txt = new txtField();
 
-    public ChangeProfInfo(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
+    public ChangeProfInfo(java.awt.Frame parent, boolean modal, int userIndex) {
         super(parent, modal);
         initComponents();
         datePicker2.getComponentDateTextField().setEnabled(false);
         this.userIndex = userIndex;
-        this.data = data;
     }
 
     private boolean isValidToUpdate() {
@@ -236,9 +235,9 @@ public class ChangeProfInfo extends javax.swing.JDialog {
     }//GEN-LAST:event_cbgenderActionPerformed
 
     private void btnChangeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeInfoActionPerformed
-       UserData us = data.get(userIndex);
+       UserData us = data.getData().get(userIndex);
        if(isValidToUpdate()){
-           us.updatePersonData(data, userIndex, txtFirstname.getText(), txtlastname.getText(), cbgender.getSelectedItem().toString(), datePicker2.getText());
+           us.updatePersonData(data.getData(), userIndex, txtFirstname.getText(), txtlastname.getText(), cbgender.getSelectedItem().toString(), datePicker2.getText());
            JOptionPane.showMessageDialog(null, "SUCCESSFULLY UPDATED","UPDATE SUCCESSFULLY",JOptionPane.INFORMATION_MESSAGE);
            resetComponents();
            return;
@@ -278,7 +277,7 @@ public class ChangeProfInfo extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangeProfInfo dialog = new ChangeProfInfo(new javax.swing.JFrame(), true,data,userIndex);
+                ChangeProfInfo dialog = new ChangeProfInfo(new javax.swing.JFrame(), true,userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

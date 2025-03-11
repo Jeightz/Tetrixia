@@ -2,26 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package UserInterface.changedata;
+package UserInterface.banAccount;
 
-import Function.Image.FitImage;
-import Function.file.file;
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
-import java.io.File;
+import java.awt.Frame;
 import javax.swing.JOptionPane;
 
+public class banAccount extends javax.swing.JDialog {
 
-public class ChangeProf extends javax.swing.JDialog {
-   private  File profile = null;
-   private DataManager data = DataManager.getInstance();
-  private static int userIndex;
-    public ChangeProf(java.awt.Frame parent, boolean modal,int userIndex) {
-        super(parent, modal);
+    private DataManager data = DataManager.getInstance();
+    private static int userIndex = -1;
+    private UserData user;
+
+    public banAccount(Frame owner, boolean modal, int userindex) {
+        super(owner, modal);
         initComponents();
-        
-        this.userIndex = userIndex;
-    
+        userIndex = userindex;
+        datePicker.getComponentDateTextField().setEnabled(false);
+        timePicker.getComponentTimeTextField().setEnabled(false);
+        user = data.getData().get(userindex);
     }
 
     @SuppressWarnings("unchecked")
@@ -31,9 +31,11 @@ public class ChangeProf extends javax.swing.JDialog {
         headerPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         bodyPanel = new javax.swing.JPanel();
-        btnChangeUsername = new UserInterface.CustomComponents.MyButton();
+        datePicker = new com.github.lgooddatepicker.components.DatePicker();
+        timePicker = new com.github.lgooddatepicker.components.TimePicker();
         myButton1 = new UserInterface.CustomComponents.MyButton();
-        profilePic = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,30 +63,33 @@ public class ChangeProf extends javax.swing.JDialog {
 
         bodyPanel.setBackground(new java.awt.Color(255, 255, 255));
         bodyPanel.setLayout(null);
+        bodyPanel.add(datePicker);
+        datePicker.setBounds(30, 70, 220, 40);
+        bodyPanel.add(timePicker);
+        timePicker.setBounds(300, 70, 210, 40);
 
-        btnChangeUsername.setText("Change Profile");
-        btnChangeUsername.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        btnChangeUsername.setRadius(50);
-        btnChangeUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChangeUsernameActionPerformed(evt);
-            }
-        });
-        bodyPanel.add(btnChangeUsername);
-        btnChangeUsername.setBounds(352, 265, 174, 39);
-
-        myButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/pic.png"))); // NOI18N
+        myButton1.setText("BAN ACCOUNT");
+        myButton1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        myButton1.setRadius(50);
         myButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 myButton1ActionPerformed(evt);
             }
         });
         bodyPanel.add(myButton1);
-        myButton1.setBounds(190, 200, 40, 40);
+        myButton1.setBounds(390, 270, 130, 40);
 
-        profilePic.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        bodyPanel.add(profilePic);
-        profilePic.setBounds(20, 30, 210, 210);
+        jLabel2.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Time:");
+        bodyPanel.add(jLabel2);
+        jLabel2.setBounds(290, 30, 228, 31);
+
+        jLabel3.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("DATE:");
+        bodyPanel.add(jLabel3);
+        jLabel3.setBounds(20, 30, 84, 31);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,24 +122,13 @@ public class ChangeProf extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void myButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myButton1ActionPerformed
-        profile = new file().FilePictureFilter(profile) ;
-   if(profile != null){
-        new FitImage().risizelabel(profile,profilePic);
-   }
-    }//GEN-LAST:event_myButton1ActionPerformed
-
-    private void btnChangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeUsernameActionPerformed
-        if(profile != null){
-            UserData us = data.getData().get(userIndex);
-            us.updateProfile(data.getData(),userIndex,profile);
-            JOptionPane.showMessageDialog(null,"THE PROFILE IS SUCCESSFULLY UPDATE","SUCCESSFULLY UPDATED",JOptionPane.INFORMATION_MESSAGE);
-            //reset the Profile to null
-            profile = null;
-            profilePic.setIcon(null);
+        if (datePicker.getText().isEmpty() || timePicker.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "PLEASE FILL THE ALL THE DATA ", "PLEASE FILL ALL DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        JOptionPane.showMessageDialog(null, "NO PICTURE DETECTED ","NO PICTURE",JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_btnChangeUsernameActionPerformed
+        user.banUserUntilDateTimeByIndex(data.getData(), userIndex, datePicker.getText(), timePicker.getText());
+
+    }//GEN-LAST:event_myButton1ActionPerformed
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -149,21 +143,23 @@ public class ChangeProf extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(banAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(banAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(banAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangeProf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(banAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangeProf dialog = new ChangeProf(new javax.swing.JFrame(), true,userIndex);
+                banAccount dialog = new banAccount(new javax.swing.JFrame(), true, userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -177,10 +173,12 @@ public class ChangeProf extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bodyPanel;
-    private UserInterface.CustomComponents.MyButton btnChangeUsername;
+    private com.github.lgooddatepicker.components.DatePicker datePicker;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private UserInterface.CustomComponents.MyButton myButton1;
-    private javax.swing.JLabel profilePic;
+    private com.github.lgooddatepicker.components.TimePicker timePicker;
     // End of variables declaration//GEN-END:variables
 }

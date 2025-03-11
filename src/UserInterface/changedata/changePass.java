@@ -5,6 +5,7 @@
 package UserInterface.changedata;
 
 import Function.password.checkPasswordField;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -16,12 +17,10 @@ import javax.swing.JOptionPane;
 public class ChangePass extends javax.swing.JDialog {
 
     private checkPasswordField chckpass = new checkPasswordField();
-
-    private static ArrayList<UserData> data;
-    private static int userIndex;
-
+    static  int userIndex;
+   DataManager data = DataManager.getInstance();
     private void changePass() {
-        UserData us = data.get(userIndex);
+        UserData us = data.getData().get(userIndex);
         String oldPass = us.userPasswordHash(txtOldpass.getPassword().toString());
         String newPass = txtNewpass.getPassword().toString();
         String confirmNewPass = txtnewConfirmPass.getPassword().toString();
@@ -40,16 +39,15 @@ public class ChangePass extends javax.swing.JDialog {
             return;
         }
 
-        us.updatePassword(data, userIndex, newPass);
+        us.updatePassword(data.getData(), userIndex, newPass);
         JOptionPane.showMessageDialog(null, "SUCCESSFULL UPDATE THE PASSWORD", "SUCCESSFULYY UPDATED", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
-    public ChangePass(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
+    public ChangePass(java.awt.Frame parent, boolean modal ,int userIndex) {
         super(parent, modal);
         initComponents();
         this.userIndex = userIndex;
-        this.data = data;
         txtNewpass.setEchoChar((char) 0);
         txtOldpass.setEchoChar((char) 0);
         txtnewConfirmPass.setEchoChar((char) 0);
@@ -394,7 +392,7 @@ public class ChangePass extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangePass dialog = new ChangePass(new javax.swing.JFrame(), true, data, userIndex);
+                ChangePass dialog = new ChangePass(new javax.swing.JFrame(), true,userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

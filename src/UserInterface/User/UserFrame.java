@@ -4,15 +4,19 @@
  */
 package UserInterface.User;
 
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import UserInterface.Login.SignIn;
+import UserInterface.game.Game;
 import UserInterface.leaderboards.Leaderboards;
 import UserInterface.profile.Profile;
 import UserInterface.settings.Settings;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -20,8 +24,8 @@ import javax.swing.JOptionPane;
  */
 public class UserFrame extends javax.swing.JFrame {
 
+    DataManager data = DataManager.getInstance();
     static int profileIndex = -1;
-    static ArrayList<UserData> data;
 
     public void labelHover(JLabel lbl) {
         lbl.setForeground(Color.black);
@@ -33,10 +37,9 @@ public class UserFrame extends javax.swing.JFrame {
         lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
     }
 
-    public UserFrame(ArrayList<UserData> data, int userIndex) {
+    public UserFrame(int userIndex) {
         initComponents();
-        viewPanel.setViewportView(new Leaderboards(data));
-        this.data = data;
+        viewPanel.setViewportView(new Leaderboards(data.getData()));
         profileIndex = userIndex;
     }
 
@@ -52,7 +55,7 @@ public class UserFrame extends javax.swing.JFrame {
         lbllogout = new javax.swing.JLabel();
         viewPanel = new javax.swing.JScrollPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -206,7 +209,8 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void lblplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseClicked
         labelHoverOut(lblplay);
-
+        new Game(profileIndex).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_lblplayMouseClicked
 
     private void lblplayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseEntered
@@ -218,7 +222,7 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblplayMouseExited
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
-        viewPanel.setViewportView(new Profile(data, profileIndex));
+        viewPanel.setViewportView(new Profile(data.getData(), profileIndex));
         labelHoverOut(lblprofile);
 
     }//GEN-LAST:event_lblprofileMouseClicked
@@ -234,7 +238,7 @@ public class UserFrame extends javax.swing.JFrame {
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
 
         labelHoverOut(lblsettings);
-        viewPanel.setViewportView(new Settings(data,profileIndex));
+        viewPanel.setViewportView(new Settings(data.getData(), profileIndex));
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -247,10 +251,10 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void lbllogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseClicked
         labelHoverOut(lbllogout);
-        new UserData().userLogout(data,profileIndex);
+        new UserData().userLogout(data.getData(), profileIndex);
         this.dispose();
-        JOptionPane.showMessageDialog(null,"SUCCESSFULLY LOGOUT(RECORDED)","LOGOUT!",JOptionPane.INFORMATION_MESSAGE);
-        new SignIn(data).setVisible(true);
+        JOptionPane.showMessageDialog(null, "SUCCESSFULLY LOGOUT(RECORDED)", "LOGOUT!", JOptionPane.INFORMATION_MESSAGE);
+        new SignIn(null, false).setVisible(true);
     }//GEN-LAST:event_lbllogoutMouseClicked
 
     private void lbllogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseEntered
@@ -271,18 +275,22 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void lblleaderboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblleaderboardMouseClicked
         labelHoverOut(lblleaderboard);
-        viewPanel.setViewportView(new Leaderboards(data));
+        viewPanel.setViewportView(new Leaderboards(data.getData()));
     }//GEN-LAST:event_lblleaderboardMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO LOGOUT?", "LOGOUT?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
         if (choose == JOptionPane.YES_OPTION) {
-            dispose();
-            new UserData().userLogout(data, profileIndex);
-            new SignIn(data).setVisible(true);
+
+            new UserData().userLogout(data.getData(), profileIndex);
+            this.dispose();
+            JOptionPane.showMessageDialog(null, "SUCCESSFULLY LOGOUT(RECORDED)", "LOGOUT!", JOptionPane.INFORMATION_MESSAGE);
+            new SignIn(null, false).setVisible(true);
+            return;
 
         }
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }//GEN-LAST:event_formWindowClosing
 
     /**
@@ -318,7 +326,7 @@ public class UserFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserFrame(data, profileIndex).setVisible(true);
+                new UserFrame(profileIndex).setVisible(true);
             }
         });
     }

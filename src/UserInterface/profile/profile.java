@@ -6,6 +6,7 @@ package UserInterface.profile;
 
 import Function.Image.FitImage;
 import Model.UserData.UserData;
+import UserInterface.LogInAndOut.LogInAndOut;
 import UserInterface.changedata.*;
 import java.util.ArrayList;
 
@@ -61,6 +62,7 @@ public class Profile extends javax.swing.JPanel {
         btnchangeUsername = new UserInterface.CustomComponents.MyButton();
         btnchangePI = new UserInterface.CustomComponents.MyButton();
         btnchangeProfile = new UserInterface.CustomComponents.MyButton();
+        btnchangeProfile1 = new UserInterface.CustomComponents.MyButton();
         lable1 = new javax.swing.JLabel();
         lblfirstName = new javax.swing.JLabel();
         lblprofilepicture = new javax.swing.JLabel();
@@ -153,17 +155,31 @@ public class Profile extends javax.swing.JPanel {
             }
         });
 
+        btnchangeProfile1.setBackground(new java.awt.Color(0, 204, 0));
+        btnchangeProfile1.setText("See In/Out");
+        btnchangeProfile1.setBorderColor(new java.awt.Color(0, 204, 0));
+        btnchangeProfile1.setColor(new java.awt.Color(0, 204, 0));
+        btnchangeProfile1.setColorClick(new java.awt.Color(51, 255, 51));
+        btnchangeProfile1.setColorOver(new java.awt.Color(0, 255, 0));
+        btnchangeProfile1.setFont(new java.awt.Font("Retro Gaming", 0, 14)); // NOI18N
+        btnchangeProfile1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnchangeProfile1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 12, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnchangePassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnchangeUsername, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnchangePI, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnchangeProfile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addComponent(btnchangeProfile1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +192,9 @@ public class Profile extends javax.swing.JPanel {
                 .addComponent(btnchangePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnchangeProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnchangeProfile1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(187, Short.MAX_VALUE))
         );
 
         lable1.setFont(new java.awt.Font("Retro Gaming", 1, 24)); // NOI18N
@@ -219,7 +237,7 @@ public class Profile extends javax.swing.JPanel {
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblgender, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(129, Short.MAX_VALUE))
+                        .addContainerGap(117, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lable2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -258,26 +276,31 @@ public class Profile extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnchangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePasswordActionPerformed
-        new ChangePass(null, true,data,userIndex).setVisible(true);
+        new ChangePass(null, true,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePasswordActionPerformed
 
     private void btnchangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeUsernameActionPerformed
-        new ChangeUser(null, true,data,userIndex).setVisible(true);
+        new ChangeUser(null, true,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeUsernameActionPerformed
 
     private void btnchangePIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePIActionPerformed
-        new ChangeProfInfo(null, true,data,userIndex).setVisible(true);
+        new ChangeProfInfo(null, true,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePIActionPerformed
 
     private void btnchangeProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfileActionPerformed
-        new ChangeProf(null, true,data,userIndex).setVisible(true);
+        new ChangeProf(null, true,userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeProfileActionPerformed
+
+    private void btnchangeProfile1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfile1ActionPerformed
+        new LogInAndOut(null,true,data,userIndex).setVisible(true);
+    }//GEN-LAST:event_btnchangeProfile1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UserInterface.CustomComponents.MyButton btnchangePI;
     private UserInterface.CustomComponents.MyButton btnchangePassword;
     private UserInterface.CustomComponents.MyButton btnchangeProfile;
+    private UserInterface.CustomComponents.MyButton btnchangeProfile1;
     private UserInterface.CustomComponents.MyButton btnchangeUsername;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;

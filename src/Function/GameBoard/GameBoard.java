@@ -2,10 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package UserInterface.game;
+package Function.GameBoard;
 
+import Model.Tetromino.Tetromino;
+import Function.GameAudio.GameBackGroundMusic;
 import Model.UserData.UserData;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
@@ -18,30 +21,42 @@ import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements Runnable {
 
-    private final int cellSize = 8;
+    private int cellSize = 8;
     private final int gridHeight = 20;
     private final int gridWidth = 10;
+    private ArrayList<UserData> data;
+    private int profileIndex;
+
     private ArrayList<Tetromino> tetro = new ArrayList<>();
     private Tetromino CurrentTetromino;
     private Tetromino NextTetromino;
+    private Tetromino HoldTetromino;
     private boolean isLineFull = false;
-
-    private boolean isGameOver = false;
     private boolean isGamePause = false;
+    private boolean isGameOver = false;
     private int score = 0;
     private Color gridTetroLockColor[][] = new Color[gridHeight][gridWidth];
     private int grid[][] = new int[gridHeight][gridWidth];
 
-    private final int previewBoxSize = 4;
-    private final int previewBoxX = gridWidth * cellSize + 20;
-    private final int previewBoxY = 10;
+    //box next piece preview
+    private int previewBoxSize = 4;
+    private int previewBoxX = gridWidth * cellSize + 20;
+    private int previewBoxY = 40;
 
+    private int holdBoxSize = 4;
+    private int holdBoxX = gridWidth * cellSize + 20;
+    private int holdBoxY = gridHeight * cellSize + 20;
+    private boolean canHold = true; //  prevent continuous holds
+
+    //game loop
     private int Fps = 60;
     private Thread gameThread;
     private long lastTime = System.nanoTime();
     private long CurrentTime;
     private double delta = 0;
     private long drawInterval = 1000000000;
+
+    private GameBackGroundMusic music;
 
     public boolean isIsGameOver() {
         return isGameOver;
@@ -59,14 +74,88 @@ public class GameBoard extends JPanel implements Runnable {
         this.isGamePause = isGamePause;
     }
 
-    public GameBoard(JFrame frame) {
+    public GameBoard(JFrame frame, ArrayList<UserData> data, int profileIndex, GameBackGroundMusic music) {
         this.setBounds(frame.getBounds());
-        this.setBackground(Color.red);
+        this.setBackground(Color.black);
+        this.data = data;
+        this.profileIndex = profileIndex;
         addTetromino();
         initializeGame();
         this.setFocusable(true);
         this.requestFocusInWindow();
         addKeyListener(new UserKeyAdapter());
+        resizeGame(frame.getWidth(), frame.getHeight());
+        this.music = music;
+        music.loadMusic();
+        music.toggleMusic(this.data.get(profileIndex).isIsMusicOn());
+    }
+
+    public void resizeGame(int frameWidth, int frameHeight) {
+        int maxCellWidth = frameWidth / (gridWidth + 8);
+        int maxCellHeight = (frameHeight / gridHeight) - 1;
+        cellSize = Math.min(maxCellWidth, maxCellHeight);
+        cellSize = Math.max(cellSize, 8);
+        this.setBounds(0, 0, frameWidth, frameHeight);
+
+        previewBoxX = gridWidth * cellSize + 20;
+        holdBoxX = gridWidth * cellSize + 20;
+
+        holdBoxY = gridWidth * cellSize + 20;
+
+        // Ensure grid arrays match dimensions
+        if (grid.length != gridHeight || grid[0].length != gridWidth) {
+            resizeGridArrays();
+        }
+
+        repaint();
+    }
+
+    private void resizeGridArrays() {
+        int[][] newGrid = new int[gridHeight][gridWidth];
+        Color[][] newColors = new Color[gridHeight][gridWidth];
+
+        // Copy existing data
+        for (int row = 0; row < Math.min(grid.length, gridHeight); row++) {
+            for (int col = 0; col < Math.min(grid[0].length, gridWidth); col++) {
+                newGrid[row][col] = grid[row][col];
+                newColors[row][col] = gridTetroLockColor[row][col];
+            }
+        }
+
+        // Initialize new cells
+        for (int row = 0; row < gridHeight; row++) {
+            for (int col = 0; col < gridWidth; col++) {
+                if (row >= grid.length || col >= grid[0].length) {
+                    newGrid[row][col] = 0;
+                    newColors[row][col] = Color.BLACK;
+                }
+            }
+        }
+
+        grid = newGrid;
+        gridTetroLockColor = newColors;
+    }
+
+    private void HoldTheTetromino() {
+        if (!canHold) {
+            return;
+        }
+        if (HoldTetromino == null) {
+            HoldTetromino = CurrentTetromino;
+            CurrentTetromino = NextTetromino;
+            generateNextTetromino();
+        } else {
+            Tetromino temp = CurrentTetromino;
+            CurrentTetromino = HoldTetromino;
+            HoldTetromino = temp;
+        }
+
+        CurrentTetromino.setPosX(gridWidth / 2 - CurrentTetromino.getTetrominoWidth() / 2);
+        CurrentTetromino.setPosY(0 - CurrentTetromino.getTetrominoLenght() + 1);
+        HoldTetromino.setCurrentRotation(0);
+        canHold = false;
+
+        repaint();
     }
 
     private void initializeGame() {
@@ -95,6 +184,8 @@ public class GameBoard extends JPanel implements Runnable {
         Random rand = new Random();
         int nextTetromino = rand.nextInt(7);
         NextTetromino = new Tetromino(tetro.get(nextTetromino).getTetromino(), tetro.get(nextTetromino).getColor());
+        NextTetromino.setCurrentRotation(0);
+    
 
     }
 
@@ -116,7 +207,7 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     private boolean checkBoundary(int offSetX, int offSetY, int tetromino[][]) {
-        return processTetromino(offSetX, offSetY, tetromino, (x, y) -> x < 0 || x >= gridWidth || y < 0 || y >= gridHeight);
+        return processTetromino(offSetX, offSetY, tetromino, (x, y) -> x < 0 || x >= gridWidth || y >= gridHeight);
     }
 
     private boolean checkPieceCollision(int offSetX, int offSetY, int tetromino[][]) {
@@ -133,6 +224,10 @@ public class GameBoard extends JPanel implements Runnable {
     }
      */
     public void RotateTetromino() {
+        if (isGameOver || isGamePause) {
+            return;
+        }
+
         int[][] nextTetrominoRotationState = CurrentTetromino.getNextRotationState();
 
         if (!checkPieceCollision(0, 0, nextTetrominoRotationState) && !checkBoundary(0, 0, nextTetrominoRotationState)) {
@@ -162,18 +257,36 @@ public class GameBoard extends JPanel implements Runnable {
 
     private void lockPiece() {
         int[][] piece = CurrentTetromino.getTetromino();
+        boolean lockAboveGrid = false;
+
         for (int row = 0; row < piece.length; row++) {
             for (int col = 0; col < piece[row].length; col++) {
                 if (piece[row][col] != 0) {
                     int x = CurrentTetromino.getPosX() + col;
                     int y = CurrentTetromino.getPosY() + row;
 
-                    if (y >= 0 && y < gridHeight && x >= 0 && x < gridWidth) {
+                    if (y < 0) {
+                        lockAboveGrid = true;
+                    } else if (y >= 0 && y < gridHeight && x >= 0 && x < gridWidth) {
                         grid[y][x] = 1;
                         gridTetroLockColor[y][x] = CurrentTetromino.getColor();
                     }
                 }
             }
+        }
+
+        canHold = true;
+
+        // If any part of the locked piece is above the grid, it's game over
+        if (lockAboveGrid) {
+            isGameOver = true;
+
+            repaint();
+            return;
+        }
+
+        if (!isGameOver) {
+            spawnPiece();
         }
     }
 
@@ -222,6 +335,14 @@ public class GameBoard extends JPanel implements Runnable {
         }
     }
 
+    public void recordScore() {
+        int DataScore = data.get(profileIndex).getPlayerScore();
+        if (DataScore < score) {
+            data.get(profileIndex).setPlayerScore(score);
+
+        }
+    }
+
     private void spawnPiece() {
         if (NextTetromino == null) {
             Random rand = new Random();
@@ -233,7 +354,7 @@ public class GameBoard extends JPanel implements Runnable {
         generateNextTetromino();
 
         CurrentTetromino.setPosX(gridWidth / 2 - CurrentTetromino.getTetrominoWidth());
-        CurrentTetromino.setPosY(0 - CurrentTetromino.getTetrominoLenght());
+        CurrentTetromino.setPosY(1 - CurrentTetromino.getTetrominoLenght());
 
     }
 
@@ -276,7 +397,7 @@ public class GameBoard extends JPanel implements Runnable {
         g2d.setColor(Color.WHITE);
         g2d.drawRect(previewBoxX, previewBoxY, previewBoxSize * cellSize, previewBoxSize * cellSize);
 
-        g2d.drawString("SCORE: " + score, previewBoxX, previewBoxY + 50);
+        g2d.drawString("SCORE: " + score, previewBoxX, previewBoxY - 10);
 
         int[][] shape = NextTetromino.getTetromino();
         int tetrominoWidth = shape[0].length;
@@ -296,6 +417,56 @@ public class GameBoard extends JPanel implements Runnable {
                     g2d.setColor(Color.BLACK);
                     g2d.drawRect(x, y, cellSize, cellSize);
                     g2d.setColor(NextTetromino.getColor());
+                }
+            }
+        }
+    }
+
+    private void drawHoldPieceBox(Graphics2D g2d) {
+        if (CurrentTetromino == null || isGameOver) {
+            return;
+        }
+
+        // Box title
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font("Arial", Font.BOLD, 14));
+        g2d.drawString("HOLD", holdBoxX, holdBoxY - 5);
+
+        // Box background and border
+        g2d.setColor(new Color(30, 30, 30));
+        g2d.fillRect(holdBoxX, holdBoxY, holdBoxSize * cellSize, holdBoxSize * cellSize);
+        g2d.setColor(Color.WHITE);
+        g2d.drawRect(holdBoxX, holdBoxY, holdBoxSize * cellSize, holdBoxSize * cellSize);
+
+        // If there's a held piece, draw it
+        if (HoldTetromino != null) {
+            int[][] shape = HoldTetromino.getTetromino();
+            int tetrominoWidth = shape[0].length;
+            int tetrominoHeight = shape.length;
+
+            // Calculate position to center the tetromino in the hold box
+            int startX = holdBoxX + (holdBoxSize * cellSize - tetrominoWidth * cellSize) / 2;
+            int startY = holdBoxY + (holdBoxSize * cellSize - tetrominoHeight * cellSize) / 2;
+
+            // Darken color if can't hold
+            g2d.setColor(canHold ? HoldTetromino.getColor()
+                    : new Color(HoldTetromino.getColor().getRed() / 2,
+                            HoldTetromino.getColor().getGreen() / 2,
+                            HoldTetromino.getColor().getBlue() / 2));
+
+            for (int row = 0; row < tetrominoHeight; row++) {
+                for (int col = 0; col < tetrominoWidth; col++) {
+                    if (shape[row][col] != 0) {
+                        int x = startX + col * cellSize;
+                        int y = startY + row * cellSize;
+                        g2d.fillRect(x, y, cellSize, cellSize);
+                        g2d.setColor(Color.BLACK);
+                        g2d.drawRect(x, y, cellSize, cellSize);
+                        g2d.setColor(canHold ? HoldTetromino.getColor()
+                                : new Color(HoldTetromino.getColor().getRed() / 2,
+                                        HoldTetromino.getColor().getGreen() / 2,
+                                        HoldTetromino.getColor().getBlue() / 2));
+                    }
                 }
             }
         }
@@ -322,9 +493,50 @@ public class GameBoard extends JPanel implements Runnable {
 
             }
         }
+        drawGhostPiece(g2d);
+
+    }
+
+    private void drawGhostPiece(Graphics2D g2d) {
+        if (CurrentTetromino == null || isGameOver) {
+            return;//prevent crashes
+        }
+        int ghostY = CurrentTetromino.getPosY();
+        int dropDistance = 0;//to make sure that i will not check everframe to potential slowing down the rendering of the game
+        while (!checkPieceCollision(0, dropDistance + 1, CurrentTetromino.getTetromino())
+                && !checkIsPieceBottom(0, dropDistance + 1, CurrentTetromino.getTetromino())) {
+            dropDistance++;
+        }
+
+        if (dropDistance > 0) {
+            int shape[][] = CurrentTetromino.getTetromino();
+            ghostY += dropDistance;
+            //set the  color and make it 128 opacity
+            Color ghostColor = new Color(
+                    CurrentTetromino.getColor().getRed(),
+                    CurrentTetromino.getColor().getGreen(),
+                    CurrentTetromino.getColor().getBlue(),
+                    128
+            );
+            g2d.setColor(ghostColor);
+
+            for (int row = 0; row < shape.length; row++) {
+                for (int col = 0; col < shape[row].length; col++) {
+                    if (shape[row][col] != 0) {
+                        int x = (CurrentTetromino.getPosX() + col) * cellSize;
+                        int y = (ghostY + row) * cellSize;
+                        g2d.fillRect(x, y, cellSize, cellSize);
+                        g2d.setColor(Color.BLACK);
+                        g2d.drawRect(x, y, cellSize, cellSize);
+                        g2d.setColor(ghostColor);
+                    }
+                }
+            }
+        }
     }
 
     private void drawGameOver(Graphics2D g2d) {
+
         if (isGameOver) {
             g2d.setColor(new Color(0, 0, 0, 150));
             g2d.fillRect(0, 0, gridWidth * cellSize, gridHeight * cellSize);
@@ -332,6 +544,7 @@ public class GameBoard extends JPanel implements Runnable {
             g2d.drawString("GAME OVER", gridWidth * cellSize / 2 - 40, gridHeight * cellSize / 2);
             g2d.drawString("Score: " + score, gridWidth * cellSize / 2 - 30, gridHeight * cellSize / 2 + 20);
             g2d.drawString("Press R to restart", gridWidth * cellSize / 2 - 50, gridHeight * cellSize / 2 + 40);
+            recordScore();
         }
     }
 
@@ -354,9 +567,14 @@ public class GameBoard extends JPanel implements Runnable {
         drawGameOver(g2d);
         drawPaused(g2d);
         drawNextPiecePreview(g2d);
+        drawHoldPieceBox(g2d);
     }
 
     private void moveLeft() {
+        if (isGameOver || isGamePause) {
+            return;
+        }
+
         int[][] shape = CurrentTetromino.getTetromino();
         if (!checkPieceCollision(-1, 0, shape) && !checkBoundary(-1, 0, shape)) {
             CurrentTetromino.updatePos(-1, 0);
@@ -365,6 +583,9 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     private void moveRight() {
+        if (isGameOver || isGamePause) {
+            return;
+        }
         int[][] shape = CurrentTetromino.getTetromino();
         if (!checkPieceCollision(1, 0, shape) && !checkBoundary(1, 0, shape)) {
             CurrentTetromino.updatePos(1, 0);
@@ -373,6 +594,9 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     private void moveDown() {
+        if (isGameOver || isGamePause) {
+            return;
+        }
         int[][] shape = CurrentTetromino.getTetromino();
         if (checkPieceCollision(0, 1, shape) || checkIsPieceBottom(0, 1, shape)) {
             lockPiece();
@@ -380,8 +604,7 @@ public class GameBoard extends JPanel implements Runnable {
             if (lineremove > 0) {
                 updateScoreUser(lineremove);
             }
-            spawnPiece();
-
+         
         } else {
             CurrentTetromino.updatePos(0, 1);
             repaint();
@@ -389,6 +612,10 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     private void hardDrop() {
+        if (isGameOver || isGamePause) {
+            return;
+        }
+
         while (true) {
             int[][] shape = CurrentTetromino.getTetromino();
             if (checkPieceCollision(0, 1, shape) || checkIsPieceBottom(0, 1, shape)) {
@@ -404,22 +631,21 @@ public class GameBoard extends JPanel implements Runnable {
     private void restartgame() {
         if (gameThread != null && gameThread.isAlive()) {
             gameThread.interrupt();
-            try {
-                gameThread.join(1000); // Wait for thread to finish
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            gameThread = null;
         }
+
         isGameOver = false;
         isGamePause = false;
         score = 0;
         clearGrid();
+        HoldTetromino = null;
+        NextTetromino = null;
         spawnPiece();
         startGameThread();
         repaint();
     }
 
-    private void togglePause() {
+    public void togglePause() {
         isGamePause = !isGamePause;
         repaint();
     }
@@ -433,11 +659,14 @@ public class GameBoard extends JPanel implements Runnable {
                 lastTime = CurrentTime;
 
                 while (delta >= 1) {
-                    moveDown();
+                    if (!isGameOver) {
+                        moveDown();
+                    }
                     delta--;
                 }
                 repaint();
             }
+            lastTime = System.nanoTime();
 
             try {
                 Thread.sleep(1000 / Fps);
@@ -464,27 +693,31 @@ public class GameBoard extends JPanel implements Runnable {
                 }
                 return;
             }
+            UserData da = data.get(profileIndex);
+            int keyCode = e.getKeyCode();
+            int moveLeftKey = da.getUserKeyBinds("MOVE_LEFT");
+            int moveRightKey = da.getUserKeyBinds("MOVE_RIGHT");
+            int moveDownKey = da.getUserKeyBinds("MOVE_DOWN");
+            int rotateKey = da.getUserKeyBinds("ROTATE");
+            int hardDropKey = da.getUserKeyBinds("HARD_DROP");
+            int holdKey = da.getUserKeyBinds("HOLD");
 
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT:
-                    moveLeft();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    moveRight();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    moveDown();
-                    break;
-                case KeyEvent.VK_UP:
-                    RotateTetromino();
-                    break;
-                case KeyEvent.VK_SPACE:
-                    hardDrop();
-                    break;
-                case KeyEvent.VK_P:
-                    togglePause();
-                    break;
+            if (keyCode == moveLeftKey) {
+                moveLeft();
+            } else if (keyCode == moveRightKey) {
+                moveRight();
+            } else if (keyCode == moveDownKey) {
+                moveDown();
+            } else if (keyCode == rotateKey) {
+                RotateTetromino();
+            } else if (keyCode == hardDropKey) {
+                hardDrop();
+            } else if (keyCode == KeyEvent.VK_P) {
+                togglePause();
+            } else if (keyCode == holdKey) {
+                HoldTheTetromino();
             }
+
         }
     }
 

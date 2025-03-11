@@ -18,30 +18,30 @@ import javax.swing.JLabel;
  * @author Admin
  */
 public class FitImage {
-        
-      //put an image on the label and fit it in 
-     public void risizelabel(File f,JLabel com){
-       
-         try{
-            BufferedImage img = ImageIO.read(f.getAbsoluteFile());      
-          Image img1 =  img.getScaledInstance(com.getWidth(), com.getHeight(), Image.SCALE_SMOOTH);
-           ImageIcon format = new ImageIcon(img1);
+
+    //put an image on the label and fit it in 
+    public void risizelabel(File f, JLabel com) {
+
+        try {
+            BufferedImage img = ImageIO.read(f.getAbsoluteFile());
+            Image img1 = img.getScaledInstance(com.getWidth(), com.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon format = new ImageIcon(img1);
             com.setIcon(format);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-  
-  }
-     
-       public void resizeimagelabel(ByteArrayInputStream bais,JLabel com){
-         try{
-            BufferedImage img = ImageIO.read(bais);      
-          Image img1 =  img.getScaledInstance(com.getWidth(), com.getHeight(), Image.SCALE_SMOOTH);
-           ImageIcon format = new ImageIcon(img1);
+
+    }
+
+    public void resizeimagelabel(ByteArrayInputStream bais, JLabel com) {
+        try {
+            BufferedImage img = ImageIO.read(bais);
+            Image img1 = img.getScaledInstance(com.getWidth(), com.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon format = new ImageIcon(img1);
             com.setIcon(format);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-  
-  }
-}   
+
+    }
+}

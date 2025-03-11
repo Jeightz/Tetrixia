@@ -5,6 +5,7 @@
 package UserInterface.changedata;
 
 import Function.textField.txtField;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -14,15 +15,14 @@ import javax.swing.JOptionPane;
  * @author Admin
  */
 public class ChangeUser extends javax.swing.JDialog {
-
-    private static ArrayList<UserData> data;
+    DataManager data = DataManager.getInstance();
     private static int userIndex;
 
     private void changeUser() {
         String oldUser = txtOldUsername.getText();
         String newUser = txtNewUsername.getText();
         String ConfrimNewUser = txtConfrimNewUsername.getText();
-        UserData us = data.get(userIndex);
+        UserData us = data.getData().get(userIndex);
         if (oldUser.isEmpty() || oldUser.equals("Old Username")
                 || newUser.equals("New Username") || newUser.isEmpty()
                 || ConfrimNewUser.equals("Confirm New Password") || ConfrimNewUser.isEmpty()) {
@@ -39,12 +39,13 @@ public class ChangeUser extends javax.swing.JDialog {
 
             return;
         }
+us.setUsername(newUser); 
+JOptionPane.showMessageDialog(null, "Username updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public ChangeUser(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int userIndex) {
+    public ChangeUser(java.awt.Frame parent, boolean modal, int userIndex) {
         super(parent, modal);
         initComponents();
-        this.data = data;
         this.userIndex = userIndex;
     }
 
@@ -294,7 +295,7 @@ public class ChangeUser extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangeUser dialog = new ChangeUser(new javax.swing.JFrame(), true, data, userIndex);
+                ChangeUser dialog = new ChangeUser(new javax.swing.JFrame(), true, userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

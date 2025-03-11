@@ -1,27 +1,40 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ */
 package UserInterface.Login;
 
+import Function.CheckDate.CheckDate;
 import Function.Image.FitImage;
 import Function.SeeAndUnseePass.SeeAndUnseePass;
 import Function.file.file;
-import java.awt.Color;
-import Function.textField.txtField;
 import Function.password.checkPasswordField;
+import Function.textField.txtField;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-public class SignIn extends javax.swing.JFrame {
+/**
+ *
+ * @author Admin
+ */
+public class SignIn extends javax.swing.JDialog {
 
-    private static ArrayList<UserData> data = new ArrayList<UserData>();
+    DataManager dataManager = DataManager.getInstance();
     private File profile = null;
     private static final txtField txtfield = new txtField();
     private static final checkPasswordField chckpass = new checkPasswordField();
     private static final SeeAndUnseePass chckbox = new SeeAndUnseePass();
+    private int userDataIndex = -1;
     private UserData user = new UserData();
-    private static int userDataIndex = -1;
 
     private void login() {
+
+        ArrayList<UserData> data = dataManager.getData();
+
         String pass = String.valueOf(txtpassword.getPassword());
         if (pass.equals("Password") || txtusername.getText().equals("Username")) {
             JOptionPane.showMessageDialog(this, "Invalid Username and PAssword ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
@@ -29,6 +42,7 @@ public class SignIn extends javax.swing.JFrame {
         }
 
         userDataIndex = user.userLogin(data, txtusername.getText(), pass);
+        System.out.print(userDataIndex);
         if (userDataIndex < 0) {
             JOptionPane.showMessageDialog(this, "No Data Of Username Found ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -40,7 +54,22 @@ public class SignIn extends javax.swing.JFrame {
 
     }
 
+    private void defaultAdminAccount() {
+        ArrayList<UserData> data = dataManager.getData();
+
+        if (!user.isUsernameDuplication(data, "admin")) {
+
+            File pictureprof = new File(System.getProperty("user.dir") + "\\src\\image\\boyprofile.jpg");
+            user = new UserData(data, "admin", "admin", "System", "Administrator", "Other", pictureprof, "January 1, 2000");
+            user.setUserType("Admin");
+            dataManager.addUser(user);
+        }
+
+    }
+
     private void SignUp() {
+        ArrayList<UserData> data = dataManager.getData();
+
         String password = String.valueOf(txtpasswordSignup1.getPassword()).trim();
         String confirmPassword = String.valueOf(txtconfirmpasswordSignup.getPassword()).trim();
         String username = txtusernameSignUp.getText().trim();
@@ -53,12 +82,28 @@ public class SignIn extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+
+        if (!chckpass.isConfirmPassAndPassSame(password, confirmPassword)) {
+            JOptionPane.showMessageDialog(null, "THE PASSWORD YOU INPUP IS NOT MATCH TO CONFIRM PASSWORD", "PASSWORD NOT MATCH", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (password.length() < 5) {
+            JOptionPane.showMessageDialog(this, "Invalid SignUp! Please make the password 5 letter up.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         if (!isValidSignUpInput(username, firstName, lastName, gender, birthDate, password, confirmPassword)) {
             JOptionPane.showMessageDialog(this, "Invalid SignUp! Please fill in all fields correctly.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        data.add(new UserData(data, username, password, firstName, lastName, gender, profile, birthDate));
+        if (!new CheckDate().isAtLeast10YearsOld(datePicker2.getText())) {
+            JOptionPane.showMessageDialog(null, "The BOD is not applicable cause it is lower than 10 years old age or too high than 100", "NOT APPLICABLE BOD", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        dataManager.addUser(new UserData(data, username, password, firstName, lastName, gender, profile, birthDate));
 
         JOptionPane.showMessageDialog(this, "User Successfully Registered", "Register", JOptionPane.INFORMATION_MESSAGE);
 
@@ -70,8 +115,7 @@ public class SignIn extends javax.swing.JFrame {
                 || password.isEmpty() || confirmPassword.isEmpty() || birthDate.isEmpty()
                 || firstName.equalsIgnoreCase("FirstName") || lastName.equalsIgnoreCase("LastName")
                 || username.equalsIgnoreCase("Username") || password.equalsIgnoreCase("Password")
-                || confirmPassword.equalsIgnoreCase("Confirm Password")
-                || !chckpass.isConfirmPassAndPassSame(password, confirmPassword));
+                || confirmPassword.equalsIgnoreCase("Confirm Password"));
     }
 
     private void resetSignUpForm() {
@@ -89,16 +133,17 @@ public class SignIn extends javax.swing.JFrame {
         txtconfirmpasswordSignup.setEchoChar((char) 0);
         cbgender.removeAllItems();
 
-        cbgender.insertItemAt("Gender",0);
+        cbgender.insertItemAt("Gender", 0);
         cbgender.insertItemAt("Male", 1);
         cbgender.insertItemAt("Female", 2);
         profile = null;
-          
+
     }
 
-    public SignIn(ArrayList<UserData> data) {
+    public SignIn(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-        this.data = data;
+        defaultAdminAccount();
         txtpassword.setEchoChar((char) 0);
         chckseeUnsee.setVisible(false);
         txtpasswordSignup1.setEchoChar((char) 0);
@@ -106,7 +151,6 @@ public class SignIn extends javax.swing.JFrame {
         chckseeUnseeConfirmPassSignup.setVisible(false);
         chckseeUnseeSignup1.setVisible(false);
         datePicker2.getComponentDateTextField().setEnabled(false);
-
     }
 
     /**
@@ -118,6 +162,7 @@ public class SignIn extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         tabLogInOut = new javax.swing.JTabbedPane();
         signIn = new UserInterface.CustomComponents.MyPanel();
         btnsignIn = new UserInterface.CustomComponents.MyButton();
@@ -140,13 +185,18 @@ public class SignIn extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         cbgender = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Signup");
-        setBackground(new java.awt.Color(0, 255, 0));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(0, 153, 0));
+        jPanel1.setLayout(null);
 
         signIn.setBackground(new java.awt.Color(0, 153, 0));
         signIn.setBottomLeftRadius(150);
@@ -161,7 +211,6 @@ public class SignIn extends javax.swing.JFrame {
         btnsignIn.setToolTipText("");
         btnsignIn.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnsignIn.setName("btnSignUp"); // NOI18N
-        btnsignIn.setNextFocusableComponent(jLabel1);
         btnsignIn.setRadius(50);
         btnsignIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +219,6 @@ public class SignIn extends javax.swing.JFrame {
         });
         signIn.add(btnsignIn);
         btnsignIn.setBounds(70, 352, 235, 46);
-        btnsignIn.getAccessibleContext().setAccessibleName("");
 
         chckseeUnsee.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/see.png"))); // NOI18N
         chckseeUnsee.addActionListener(new java.awt.event.ActionListener() {
@@ -185,7 +233,6 @@ public class SignIn extends javax.swing.JFrame {
         txtpassword.setCornerRadius(50);
         txtpassword.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/password.png"))); // NOI18N
         txtpassword.setName("txtpassword"); // NOI18N
-        txtpassword.setNextFocusableComponent(btnsignIn);
         txtpassword.setToolTipText("");
         txtpassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -214,7 +261,6 @@ public class SignIn extends javax.swing.JFrame {
         txtusername.setText("Username");
         txtusername.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/username.png"))); // NOI18N
         txtusername.setName("txtusername"); // NOI18N
-        txtusername.setNextFocusableComponent(txtpassword);
         txtusername.setRadius(50);
         txtusername.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -236,7 +282,6 @@ public class SignIn extends javax.swing.JFrame {
         });
         signIn.add(txtusername);
         txtusername.setBounds(70, 146, 235, 54);
-        txtusername.getAccessibleContext().setAccessibleName("txtusername");
 
         jLabel1.setText("Havent Had AccountYet?");
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -334,6 +379,7 @@ public class SignIn extends javax.swing.JFrame {
         txtusernameSignUp.setText("Username");
         txtusernameSignUp.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/username.png"))); // NOI18N
         txtusernameSignUp.setName("txtusername"); // NOI18N
+        txtusernameSignUp.setNextFocusableComponent(txtpassword);
         txtusernameSignUp.setRadius(50);
         txtusernameSignUp.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -427,7 +473,6 @@ public class SignIn extends javax.swing.JFrame {
         txtpasswordSignup1.setBounds(40, 190, 290, 54);
 
         datePicker2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        datePicker2.setNextFocusableComponent(btnsignIn);
         signUp.add(datePicker2);
         datePicker2.setBounds(130, 390, 200, 50);
 
@@ -497,58 +542,21 @@ public class SignIn extends javax.swing.JFrame {
 
         tabLogInOut.addTab("tab1", signUp);
 
-        getContentPane().add(tabLogInOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, -40, 350, 570));
+        jPanel1.add(tabLogInOut);
+        tabLogInOut.setBounds(430, -40, 350, 610);
 
-        jPanel1.setBackground(new java.awt.Color(0, 153, 0));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 530, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 530));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
+    private void btnsignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsignInActionPerformed
         login();
-    }//GEN-LAST:event_txtpasswordActionPerformed
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        tabLogInOut.setSelectedIndex(1);
-
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_btnsignInActionPerformed
 
     private void chckseeUnseeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeActionPerformed
         chckbox.unseeAndseeIconChange(chckseeUnsee, txtpassword);
     }//GEN-LAST:event_chckseeUnseeActionPerformed
-
-    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
-        chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
-    }//GEN-LAST:event_txtpasswordKeyPressed
-
-    private void txtpasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyReleased
-        chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
-    }//GEN-LAST:event_txtpasswordKeyReleased
-
-    private void txtusernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtusernameMouseClicked
-        txtfield.checkTextField(txtusername, "Username");
-    }//GEN-LAST:event_txtusernameMouseClicked
-
-    private void txtusernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameFocusGained
-        txtfield.checkTextField(txtusername, "Username");
-    }//GEN-LAST:event_txtusernameFocusGained
-
-    private void txtusernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameFocusLost
-        txtfield.checkTextFieldEmpty(txtusername, "Username");
-    }//GEN-LAST:event_txtusernameFocusLost
 
     private void txtpasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusGained
         chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
@@ -558,45 +566,37 @@ public class SignIn extends javax.swing.JFrame {
         chckpass.FocusLostPass(txtpassword, "Password");
     }//GEN-LAST:event_txtpasswordFocusLost
 
-    private void chckseeUnseeSignup1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeSignup1ActionPerformed
-        chckbox.unseeAndseeIconChange(chckseeUnseeSignup1, txtpasswordSignup1);
-    }//GEN-LAST:event_chckseeUnseeSignup1ActionPerformed
+    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
+        login();
+    }//GEN-LAST:event_txtpasswordActionPerformed
 
-    private void txtusernameSignUpFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusGained
-        txtfield.checkTextField(txtusernameSignUp, "Username");
-    }//GEN-LAST:event_txtusernameSignUpFocusGained
+    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
+        chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
+    }//GEN-LAST:event_txtpasswordKeyPressed
 
-    private void txtusernameSignUpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusLost
-        txtfield.checkTextFieldEmpty(txtusernameSignUp, "Username");
-    }//GEN-LAST:event_txtusernameSignUpFocusLost
+    private void txtpasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyReleased
+        chckpass.HoverAndClickPassword(txtpassword, chckseeUnsee, "Password");
+    }//GEN-LAST:event_txtpasswordKeyReleased
 
-    private void txtusernameSignUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtusernameSignUpMouseClicked
-        txtfield.checkTextField(txtusernameSignUp, "Username");
-    }//GEN-LAST:event_txtusernameSignUpMouseClicked
+    private void txtusernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameFocusGained
+        txtfield.checkTextField(txtusername, "Username");
+    }//GEN-LAST:event_txtusernameFocusGained
 
-    private void txtpasswordSignup1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordSignup1FocusGained
-        chckpass.HoverAndClickPassword(txtpasswordSignup1, chckseeUnseeSignup1, "Password");
-    }//GEN-LAST:event_txtpasswordSignup1FocusGained
+    private void txtusernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameFocusLost
+        txtfield.checkTextFieldEmpty(txtusername, "Username");
+    }//GEN-LAST:event_txtusernameFocusLost
 
-    private void txtpasswordSignup1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordSignup1FocusLost
-        chckpass.FocusLostPass(txtpasswordSignup1, "Password");
-    }//GEN-LAST:event_txtpasswordSignup1FocusLost
+    private void txtusernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtusernameMouseClicked
+        txtfield.checkTextField(txtusername, "Username");
+    }//GEN-LAST:event_txtusernameMouseClicked
 
-    private void txtpasswordSignup1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtpasswordSignup1MouseClicked
-        chckpass.HoverAndClickPassword(txtpasswordSignup1, chckseeUnseeSignup1, "Password");
-    }//GEN-LAST:event_txtpasswordSignup1MouseClicked
+    private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
+        login();
+    }//GEN-LAST:event_txtusernameActionPerformed
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        this.tabLogInOut.setSelectedIndex(0);
-    }//GEN-LAST:event_jLabel2MouseClicked
-
-    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
-        jLabel2.setForeground(new Color(0, 153, 255));
-    }//GEN-LAST:event_jLabel2MouseEntered
-
-    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
-        jLabel2.setForeground(new Color(0, 51, 255));
-    }//GEN-LAST:event_jLabel2MouseExited
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        tabLogInOut.setSelectedIndex(1);
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
         jLabel1.setForeground(new Color(0, 153, 255));
@@ -610,31 +610,29 @@ public class SignIn extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cbgenderActionPerformed
 
-    private void txtconfirmpasswordSignupFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupFocusGained
-        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, chckseeUnseeConfirmPassSignup, "Confirm Password");
-    }//GEN-LAST:event_txtconfirmpasswordSignupFocusGained
-
-    private void txtconfirmpasswordSignupFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupFocusLost
-        chckpass.FocusLostPass(txtconfirmpasswordSignup, "Confirm Password");
-    }//GEN-LAST:event_txtconfirmpasswordSignupFocusLost
-
-    private void txtconfirmpasswordSignupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupMouseClicked
-        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, chckseeUnseeConfirmPassSignup, "Confirm Password");
-    }//GEN-LAST:event_txtconfirmpasswordSignupMouseClicked
-
-    private void chckseeUnseeConfirmPassSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeConfirmPassSignupActionPerformed
-        chckbox.unseeAndseeIconChange(chckseeUnseeConfirmPassSignup, txtconfirmpasswordSignup);
-    }//GEN-LAST:event_chckseeUnseeConfirmPassSignupActionPerformed
-
     private void cbgenderItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbgenderItemStateChanged
         if (!cbgender.equals("Gender")) {
             cbgender.removeItem("Gender");
         }
+
         if (profile == null) {
             profile = new file().FileCheckGender(profile, cbgender, lblPictureHolder);
-
+            return;
         }
+
     }//GEN-LAST:event_cbgenderItemStateChanged
+
+    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+        jLabel2.setForeground(new Color(0, 51, 255));
+    }//GEN-LAST:event_jLabel2MouseExited
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+        jLabel2.setForeground(new Color(0, 153, 255));
+    }//GEN-LAST:event_jLabel2MouseEntered
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        this.tabLogInOut.setSelectedIndex(0);
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     private void myButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myButton1ActionPerformed
         profile = new file().FilePictureFilter(profile);
@@ -643,79 +641,121 @@ public class SignIn extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_myButton1ActionPerformed
 
-    private void txtpasswordSignup1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordSignup1KeyPressed
-        chckpass.HoverAndClickPassword(txtpasswordSignup1, chckseeUnseeSignup1, "Password");
-    }//GEN-LAST:event_txtpasswordSignup1KeyPressed
+    private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
+        SignUp();
+    }//GEN-LAST:event_btnSignUpActionPerformed
 
     private void txtpasswordSignup1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordSignup1KeyReleased
         chckpass.HoverAndClickPassword(txtpasswordSignup1, chckseeUnseeSignup1, "Password");
     }//GEN-LAST:event_txtpasswordSignup1KeyReleased
 
-    private void txtconfirmpasswordSignupKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupKeyPressed
-        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, this.chckseeUnseeConfirmPassSignup, "Confirm Password");
-    }//GEN-LAST:event_txtconfirmpasswordSignupKeyPressed
-
-    private void txtconfirmpasswordSignupKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupKeyReleased
-        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, this.chckseeUnseeConfirmPassSignup, "Confirm Password");
-    }//GEN-LAST:event_txtconfirmpasswordSignupKeyReleased
-
-    private void txtfirstnameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfirstnameFocusGained
-        txtfield.checkTextField(txtfirstname, "FirstName");
-    }//GEN-LAST:event_txtfirstnameFocusGained
-
-    private void txtfirstnameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfirstnameFocusLost
-        txtfield.checkTextFieldEmpty(txtfirstname, "FirstName");
-    }//GEN-LAST:event_txtfirstnameFocusLost
-
-    private void txtfirstnameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtfirstnameMouseClicked
-        txtfield.checkTextField(txtfirstname, "FirstName");
-    }//GEN-LAST:event_txtfirstnameMouseClicked
-
-    private void txtlastnameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtlastnameFocusGained
-        txtfield.checkTextField(txtlastname, "LastName");
-    }//GEN-LAST:event_txtlastnameFocusGained
-
-    private void txtlastnameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtlastnameFocusLost
-        txtfield.checkTextFieldEmpty(txtlastname, "LastName");
-    }//GEN-LAST:event_txtlastnameFocusLost
-
-    private void txtlastnameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtlastnameMouseClicked
-        txtfield.checkTextField(txtlastname, "LastName");
-    }//GEN-LAST:event_txtlastnameMouseClicked
-
-    private void txtusernameSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameSignUpActionPerformed
-        SignUp();
-    }//GEN-LAST:event_txtusernameSignUpActionPerformed
-
-    private void btnsignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsignInActionPerformed
-        login();
-    }//GEN-LAST:event_btnsignInActionPerformed
-
-    private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
-        login();
-    }//GEN-LAST:event_txtusernameActionPerformed
-
-    private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
-        SignUp();
-
-    }//GEN-LAST:event_btnSignUpActionPerformed
+    private void txtpasswordSignup1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordSignup1KeyPressed
+        chckpass.HoverAndClickPassword(txtpasswordSignup1, chckseeUnseeSignup1, "Password");
+    }//GEN-LAST:event_txtpasswordSignup1KeyPressed
 
     private void txtpasswordSignup1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordSignup1ActionPerformed
         SignUp();
     }//GEN-LAST:event_txtpasswordSignup1ActionPerformed
 
+    private void txtpasswordSignup1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtpasswordSignup1MouseClicked
+        chckpass.HoverAndClickPassword(txtpasswordSignup1, chckseeUnseeSignup1, "Password");
+    }//GEN-LAST:event_txtpasswordSignup1MouseClicked
+
+    private void txtpasswordSignup1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordSignup1FocusLost
+        chckpass.FocusLostPass(txtpasswordSignup1, "Password");
+    }//GEN-LAST:event_txtpasswordSignup1FocusLost
+
+    private void txtpasswordSignup1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordSignup1FocusGained
+        chckpass.HoverAndClickPassword(txtpasswordSignup1, chckseeUnseeSignup1, "Password");
+    }//GEN-LAST:event_txtpasswordSignup1FocusGained
+
+    private void txtconfirmpasswordSignupKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupKeyReleased
+        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, this.chckseeUnseeConfirmPassSignup, "Confirm Password");
+    }//GEN-LAST:event_txtconfirmpasswordSignupKeyReleased
+
+    private void txtconfirmpasswordSignupKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupKeyPressed
+        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, this.chckseeUnseeConfirmPassSignup, "Confirm Password");
+    }//GEN-LAST:event_txtconfirmpasswordSignupKeyPressed
+
     private void txtconfirmpasswordSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupActionPerformed
         SignUp();
     }//GEN-LAST:event_txtconfirmpasswordSignupActionPerformed
+
+    private void txtconfirmpasswordSignupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupMouseClicked
+        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, chckseeUnseeConfirmPassSignup, "Confirm Password");
+    }//GEN-LAST:event_txtconfirmpasswordSignupMouseClicked
+
+    private void txtconfirmpasswordSignupFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupFocusLost
+        chckpass.FocusLostPass(txtconfirmpasswordSignup, "Confirm Password");
+    }//GEN-LAST:event_txtconfirmpasswordSignupFocusLost
+
+    private void txtconfirmpasswordSignupFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtconfirmpasswordSignupFocusGained
+        chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, chckseeUnseeConfirmPassSignup, "Confirm Password");
+    }//GEN-LAST:event_txtconfirmpasswordSignupFocusGained
+
+    private void txtusernameSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameSignUpActionPerformed
+        SignUp();
+    }//GEN-LAST:event_txtusernameSignUpActionPerformed
+
+    private void txtusernameSignUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtusernameSignUpMouseClicked
+        txtfield.checkTextField(txtusernameSignUp, "Username");
+    }//GEN-LAST:event_txtusernameSignUpMouseClicked
+
+    private void txtusernameSignUpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusLost
+        txtfield.checkTextFieldEmpty(txtusernameSignUp, "Username");
+    }//GEN-LAST:event_txtusernameSignUpFocusLost
+
+    private void txtusernameSignUpFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusGained
+        txtfield.checkTextField(txtusernameSignUp, "Username");
+    }//GEN-LAST:event_txtusernameSignUpFocusGained
+
+    private void chckseeUnseeSignup1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeSignup1ActionPerformed
+        chckbox.unseeAndseeIconChange(chckseeUnseeSignup1, txtpasswordSignup1);
+    }//GEN-LAST:event_chckseeUnseeSignup1ActionPerformed
+
+    private void chckseeUnseeConfirmPassSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeConfirmPassSignupActionPerformed
+        chckbox.unseeAndseeIconChange(chckseeUnseeConfirmPassSignup, txtconfirmpasswordSignup);
+    }//GEN-LAST:event_chckseeUnseeConfirmPassSignupActionPerformed
 
     private void txtfirstnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfirstnameActionPerformed
         SignUp();
     }//GEN-LAST:event_txtfirstnameActionPerformed
 
+    private void txtfirstnameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtfirstnameMouseClicked
+        txtfield.checkTextField(txtfirstname, "FirstName");
+    }//GEN-LAST:event_txtfirstnameMouseClicked
+
+    private void txtfirstnameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfirstnameFocusLost
+        txtfield.checkTextFieldEmpty(txtfirstname, "FirstName");
+    }//GEN-LAST:event_txtfirstnameFocusLost
+
+    private void txtfirstnameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfirstnameFocusGained
+        txtfield.checkTextField(txtfirstname, "FirstName");
+    }//GEN-LAST:event_txtfirstnameFocusGained
+
     private void txtlastnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtlastnameActionPerformed
         SignUp();
     }//GEN-LAST:event_txtlastnameActionPerformed
 
+    private void txtlastnameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtlastnameMouseClicked
+        txtfield.checkTextField(txtlastname, "LastName");
+    }//GEN-LAST:event_txtlastnameMouseClicked
+
+    private void txtlastnameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtlastnameFocusLost
+        txtfield.checkTextFieldEmpty(txtlastname, "LastName");
+    }//GEN-LAST:event_txtlastnameFocusLost
+
+    private void txtlastnameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtlastnameFocusGained
+        txtfield.checkTextField(txtlastname, "LastName");
+    }//GEN-LAST:event_txtlastnameFocusGained
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        System.exit(0);//stop the jvm
+    }//GEN-LAST:event_formWindowClosing
+
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -740,10 +780,17 @@ public class SignIn extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SignIn(data).setVisible(true);
+                SignIn dialog = new SignIn(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
