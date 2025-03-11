@@ -285,7 +285,7 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="txtusername" noResource="true"/>
                     <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                      <ComponentRef name="txtpassword"/>
+                      <ComponentRef name="txtpasswordSignup1"/>
                     </Property>
                     <Property name="radius" type="int" value="50"/>
                   </Properties>

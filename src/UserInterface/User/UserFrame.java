@@ -222,7 +222,7 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblplayMouseExited
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
-        viewPanel.setViewportView(new Profile(data.getData(), profileIndex));
+        viewPanel.setViewportView(new Profile(profileIndex));
         labelHoverOut(lblprofile);
 
     }//GEN-LAST:event_lblprofileMouseClicked

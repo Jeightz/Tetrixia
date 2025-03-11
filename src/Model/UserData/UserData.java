@@ -6,6 +6,7 @@ import UserInterface.User.UserFrame;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,6 +18,7 @@ import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserData {
 
@@ -44,6 +46,10 @@ public class UserData {
     private LocalDateTime banExpr;
     private String userType;
     private boolean isMusicOn;
+
+    //password hashing
+    private static String pepper = null;
+    private static final int randomGenNum = 10;
 
     public String getUserType() {
         return userType;
@@ -192,6 +198,36 @@ public class UserData {
 
     }
 
+    
+    
+     public String userPasswordHash(String password) {
+        /*
+        byte[] hashBytes = new byte[0];
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            hashBytes = digest.digest(password.getBytes("UTF-8"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Base64.getEncoder().encodeToString(hashBytes);
+         */
+        try {
+            generatePepper();
+            String pepperedPassword = password + pepper;
+            String salt = BCrypt.gensalt(randomGenNum);
+            String hashedPassword = BCrypt.hashpw(pepperedPassword, salt);
+
+            return hashedPassword;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+     }
+     
+     
     public UserData(ArrayList<UserData> data, String Username, String Password, String FirstName, String LastName,
             String gender, File profile, String BOD) {
 
@@ -208,24 +244,10 @@ public class UserData {
         this.isMusicOn = true;
     }
 
-    public String userPasswordHash(String password) {
-        byte[] hashBytes = new byte[0];
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            hashBytes = digest.digest(password.getBytes("UTF-8"));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return Base64.getEncoder().encodeToString(hashBytes);
-    }
-
     public int userLogin(ArrayList<UserData> data, String username, String password) {
         for (int i = 0; i < data.size(); i++) {
             UserData user = data.get(i);
-            if (user.getUsername().equals(username) && user.getPassword().equals(userPasswordHash(password))) {
+            if (user.getUsername().equals(username) &&  user.verifyPassword(password, this.Password)) {
                 if (user.getBanExpr() != null && LocalDateTime.now().isBefore(user.getBanExpr())) {
                     JOptionPane.showMessageDialog(null,
                             "Your account is banned until: " + user.getBanExpr(),
@@ -506,5 +528,30 @@ public class UserData {
             JOptionPane.showMessageDialog(null, "No results found for: " + search);
         }
     }
+
+    private void generatePepper() {
+       if(pepper == null){
+            SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[randomGenNum];
+        random.nextBytes(bytes);
+        pepper = Base64.getEncoder().encodeToString(bytes);
+       }
+        System.out.println(pepper);
+        System.out.println(Password);
+    }
+
+    public boolean verifyPassword(String plainPassword, String hashedPassword) {
+        try {
+            generatePepper();
+
+            String pepperedPassword = plainPassword + pepper;
+            return BCrypt.checkpw(pepperedPassword, hashedPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
 }

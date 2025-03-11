@@ -8,20 +8,22 @@ import Function.Image.FitImage;
 import Function.file.file;
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
+import UserInterface.profile.Profile;
 import java.io.File;
 import javax.swing.JOptionPane;
 
-
 public class ChangeProf extends javax.swing.JDialog {
-   private  File profile = null;
-   private DataManager data = DataManager.getInstance();
-  private static int userIndex;
-    public ChangeProf(java.awt.Frame parent, boolean modal,int userIndex) {
+    private Profile pro ;
+    private File profile = null;
+    private DataManager data = DataManager.getInstance();
+    private static int userIndex;
+
+    public ChangeProf(java.awt.Frame parent, boolean modal, int userIndex) {
         super(parent, modal);
         initComponents();
-        
+
         this.userIndex = userIndex;
-    
+       pro = Profile.getInstance( userIndex);
     }
 
     @SuppressWarnings("unchecked")
@@ -117,23 +119,24 @@ public class ChangeProf extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void myButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myButton1ActionPerformed
-        profile = new file().FilePictureFilter(profile) ;
-   if(profile != null){
-        new FitImage().risizelabel(profile,profilePic);
-   }
+        profile = new file().FilePictureFilter(profile);
+        if (profile != null) {
+            new FitImage().risizelabel(profile, profilePic);
+        }
     }//GEN-LAST:event_myButton1ActionPerformed
 
     private void btnChangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeUsernameActionPerformed
-        if(profile != null){
+        if (profile != null) {
             UserData us = data.getData().get(userIndex);
-            us.updateProfile(data.getData(),userIndex,profile);
-            JOptionPane.showMessageDialog(null,"THE PROFILE IS SUCCESSFULLY UPDATE","SUCCESSFULLY UPDATED",JOptionPane.INFORMATION_MESSAGE);
+            us.updateProfile(data.getData(), userIndex, profile);
+            JOptionPane.showMessageDialog(null, "THE PROFILE IS SUCCESSFULLY UPDATE", "SUCCESSFULLY UPDATED", JOptionPane.INFORMATION_MESSAGE);
             //reset the Profile to null
             profile = null;
             profilePic.setIcon(null);
+            pro.updateProfile();
             return;
         }
-        JOptionPane.showMessageDialog(null, "NO PICTURE DETECTED ","NO PICTURE",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "NO PICTURE DETECTED ", "NO PICTURE", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnChangeUsernameActionPerformed
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -163,7 +166,7 @@ public class ChangeProf extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangeProf dialog = new ChangeProf(new javax.swing.JFrame(), true,userIndex);
+                ChangeProf dialog = new ChangeProf(new javax.swing.JFrame(), true, userIndex);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -4,9 +4,11 @@
  */
 package UserInterface.changedata;
 
+import Function.CheckDate.CheckDate;
 import Function.textField.txtField;
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
+import UserInterface.profile.Profile;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -18,12 +20,14 @@ public class ChangeProfInfo extends javax.swing.JDialog {
     DataManager data = DataManager.getInstance();
     private static int userIndex;
     private txtField txt = new txtField();
-
+    private Profile pro ;
+    
     public ChangeProfInfo(java.awt.Frame parent, boolean modal, int userIndex) {
         super(parent, modal);
         initComponents();
         datePicker2.getComponentDateTextField().setEnabled(false);
         this.userIndex = userIndex;
+        pro = Profile.getInstance(userIndex);
     }
 
     private boolean isValidToUpdate() {
@@ -236,10 +240,15 @@ public class ChangeProfInfo extends javax.swing.JDialog {
 
     private void btnChangeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeInfoActionPerformed
        UserData us = data.getData().get(userIndex);
+         if (!new CheckDate().isAtLeast10YearsOld(datePicker2.getText())) {
+            JOptionPane.showMessageDialog(null, "The BOD is not applicable cause it is lower than 10 years old age or too high than 100", "NOT APPLICABLE BOD", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
        if(isValidToUpdate()){
            us.updatePersonData(data.getData(), userIndex, txtFirstname.getText(), txtlastname.getText(), cbgender.getSelectedItem().toString(), datePicker2.getText());
            JOptionPane.showMessageDialog(null, "SUCCESSFULLY UPDATED","UPDATE SUCCESSFULLY",JOptionPane.INFORMATION_MESSAGE);
            resetComponents();
+           pro.updateProfile();
            return;
        }
      JOptionPane.showMessageDialog(null, "PLEASE FILL ALL THE DATA","INVALID UPDATE",JOptionPane.INFORMATION_MESSAGE);

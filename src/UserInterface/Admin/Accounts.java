@@ -12,6 +12,7 @@ import Function.password.checkPasswordField;
 import Function.textField.txtField;
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
+import UserInterface.DeletedDatas.DeletedData;
 import UserInterface.Login.SignIn;
 import UserInterface.ShowData.ShowedData;
 import UserInterface.banAccount.banAccount;
@@ -34,7 +35,20 @@ public class Accounts extends javax.swing.JPanel {
     private final SeeAndUnseePass cbpass = new SeeAndUnseePass();
     int userIndex = -1;
     private AdminFrame frame;
-
+    private static Accounts instants = null;
+    
+    
+    public static  Accounts getInstance (){
+        if(instants == null){
+            instants = new Accounts();
+        }
+        return instants;
+    }
+    
+    public void updateData(){
+        user.addDataAccountTable(data.getData(), myTable1);
+    }
+    
     private void componentVisibleEnable(boolean maincomponent, boolean actionComponent) {
         txtpassword.setEnabled(maincomponent);
         btnban.setEnabled(actionComponent);
@@ -85,7 +99,7 @@ public class Accounts extends javax.swing.JPanel {
 
     public Accounts() {
         initComponents();
-        new UserData().addDataAccountTable(data.getData(), myTable1);
+        updateData();
         this.frame = frame;
         chckseeUnsee.setVisible(false);
         txtpassword.setEchoChar((char) 0);
@@ -95,6 +109,17 @@ public class Accounts extends javax.swing.JPanel {
         btnshowdata.setEnabled(false);
         btncancel.setVisible(false);
         this.datePicker2.getComponentDateTextField().setEnabled(false);
+        checkDeletedUsers();
+
+    }
+
+    private void checkDeletedUsers() {
+        if (data.getDeletedAccounts().size() <= 0) {
+            btndeleteAccountRecords.setVisible(false);
+            return;
+        }
+        
+        btndeleteAccountRecords.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -121,6 +146,7 @@ public class Accounts extends javax.swing.JPanel {
         btnban = new UserInterface.CustomComponents.MyButton();
         btnshowdata = new UserInterface.CustomComponents.MyButton();
         btncancel = new UserInterface.CustomComponents.MyButton();
+        btndeleteAccountRecords = new UserInterface.CustomComponents.MyButton();
         txtsearch = new UserInterface.CustomComponents.MyTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -417,6 +443,18 @@ public class Accounts extends javax.swing.JPanel {
         });
         jPanel3.add(btncancel);
 
+        btndeleteAccountRecords.setText("Deleted Account Records");
+        btndeleteAccountRecords.setColorClick(new java.awt.Color(51, 102, 255));
+        btndeleteAccountRecords.setColorOver(new java.awt.Color(102, 102, 255));
+        btndeleteAccountRecords.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btndeleteAccountRecords.setRadius(50);
+        btndeleteAccountRecords.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndeleteAccountRecordsActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btndeleteAccountRecords);
+
         txtsearch.setText("Search");
         txtsearch.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/3741750_bussiness_ecommerce_marketplace_onlinestore_search_icon (1).png"))); // NOI18N
         txtsearch.setRadius(40);
@@ -446,7 +484,7 @@ public class Accounts extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(1, 1, 1))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
@@ -601,11 +639,11 @@ public class Accounts extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Successfully deleted the Account", "SUCCESSFULLY DELETED ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
             resetInputData();
             new UserData().addDataAccountTable(data.getData(), myTable1);
-            componentVisibleEnable(true,false);
-
+            componentVisibleEnable(true, false);
+            checkDeletedUsers();
         }
     }//GEN-LAST:event_btndeleteActionPerformed
-    
+
     private void cbgenderItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbgenderItemStateChanged
         if (!cbgender.equals("Gender")) {
             cbgender.removeItem("Gender");
@@ -662,8 +700,13 @@ public class Accounts extends javax.swing.JPanel {
     }//GEN-LAST:event_txtsearchActionPerformed
 
     private void btncancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelActionPerformed
-        componentVisibleEnable(true,false); 
+        componentVisibleEnable(true, false);
+        resetInputData();
     }//GEN-LAST:event_btncancelActionPerformed
+
+    private void btndeleteAccountRecordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteAccountRecordsActionPerformed
+       new DeletedData(null,false).setVisible(true);
+    }//GEN-LAST:event_btndeleteAccountRecordsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -671,6 +714,7 @@ public class Accounts extends javax.swing.JPanel {
     private UserInterface.CustomComponents.MyButton btnban;
     private UserInterface.CustomComponents.MyButton btncancel;
     private UserInterface.CustomComponents.MyButton btndelete;
+    private UserInterface.CustomComponents.MyButton btndeleteAccountRecords;
     private UserInterface.CustomComponents.MyButton btnshowdata;
     private UserInterface.CustomComponents.MyButton btnupdate;
     private javax.swing.JComboBox<String> cbgender;

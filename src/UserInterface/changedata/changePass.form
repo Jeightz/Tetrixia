@@ -204,7 +204,7 @@
         </Component>
         <Component class="UserInterface.CustomComponents.MyPasswordField" name="txtnewConfirmPass">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Confirm New Password"/>
+            <Property name="text" type="java.lang.String" value="Confrim New Password"/>
             <Property name="cornerRadius" type="int" value="50"/>
           </Properties>
           <Events>

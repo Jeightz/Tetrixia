@@ -6,6 +6,7 @@ package UserInterface.Admin;
 
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
+import static UserInterface.Admin.AdminFrame.userIndex;
 import UserInterface.Login.SignIn;
 import UserInterface.game.Game;
 import UserInterface.leaderboards.Leaderboards;
@@ -17,12 +18,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Admin
- */
 public class AdminFrame extends javax.swing.JFrame {
-    DataManager data = DataManager.getInstance();
+    private DataManager data = DataManager.getInstance();
+     private Profile pro  ;
+
     static int userIndex;
     public void labelHover(JLabel lbl) {
         lbl.setForeground(Color.black);
@@ -39,6 +38,7 @@ public class AdminFrame extends javax.swing.JFrame {
         initComponents();
         ViewPanel.setViewportView(new Accounts());
         this.userIndex = userIndex;
+         pro  = Profile.getInstance(userIndex);
     }
 
     @SuppressWarnings("unchecked")
@@ -246,7 +246,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
         labelHoverOut(lblprofile);
-        ViewPanel.setViewportView(new Profile(data.getData(),userIndex));
+        ViewPanel.setViewportView(pro);
     }//GEN-LAST:event_lblprofileMouseClicked
 
     private void lblprofileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseEntered
@@ -304,7 +304,8 @@ public class AdminFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblleaderboardMouseClicked
 
     private void lblaccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblaccountMouseClicked
-        ViewPanel.setViewportView(new Accounts());
+       Accounts acc = Accounts.getInstance();
+        ViewPanel.setViewportView(acc);
     }//GEN-LAST:event_lblaccountMouseClicked
 
     private void lblaccountMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblaccountMouseEntered

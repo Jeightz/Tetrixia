@@ -72,7 +72,7 @@ public class SignIn extends javax.swing.JDialog {
 
         String password = String.valueOf(txtpasswordSignup1.getPassword()).trim();
         String confirmPassword = String.valueOf(txtconfirmpasswordSignup.getPassword()).trim();
-        String username = txtusernameSignUp.getText().trim();
+        String username = txtusername.getText().trim();
         String lastName = txtlastname.getText().trim();
         String firstName = txtfirstname.getText().trim();
         String gender = cbgender.getSelectedItem().toString();
@@ -119,7 +119,7 @@ public class SignIn extends javax.swing.JDialog {
     }
 
     private void resetSignUpForm() {
-        txtusernameSignUp.setText("Username");
+        txtusername.setText("Username");
         txtpasswordSignup1.setText("Password");
         txtconfirmpasswordSignup.setText("Confirm Password");
         txtlastname.setText("LastName");
@@ -379,7 +379,7 @@ public class SignIn extends javax.swing.JDialog {
         txtusernameSignUp.setText("Username");
         txtusernameSignUp.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/username.png"))); // NOI18N
         txtusernameSignUp.setName("txtusername"); // NOI18N
-        txtusernameSignUp.setNextFocusableComponent(txtpassword);
+        txtusernameSignUp.setNextFocusableComponent(txtpasswordSignup1);
         txtusernameSignUp.setRadius(50);
         txtusernameSignUp.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -693,22 +693,6 @@ public class SignIn extends javax.swing.JDialog {
         chckpass.HoverAndClickPassword(txtconfirmpasswordSignup, chckseeUnseeConfirmPassSignup, "Confirm Password");
     }//GEN-LAST:event_txtconfirmpasswordSignupFocusGained
 
-    private void txtusernameSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameSignUpActionPerformed
-        SignUp();
-    }//GEN-LAST:event_txtusernameSignUpActionPerformed
-
-    private void txtusernameSignUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtusernameSignUpMouseClicked
-        txtfield.checkTextField(txtusernameSignUp, "Username");
-    }//GEN-LAST:event_txtusernameSignUpMouseClicked
-
-    private void txtusernameSignUpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusLost
-        txtfield.checkTextFieldEmpty(txtusernameSignUp, "Username");
-    }//GEN-LAST:event_txtusernameSignUpFocusLost
-
-    private void txtusernameSignUpFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusGained
-        txtfield.checkTextField(txtusernameSignUp, "Username");
-    }//GEN-LAST:event_txtusernameSignUpFocusGained
-
     private void chckseeUnseeSignup1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeSignup1ActionPerformed
         chckbox.unseeAndseeIconChange(chckseeUnseeSignup1, txtpasswordSignup1);
     }//GEN-LAST:event_chckseeUnseeSignup1ActionPerformed
@@ -752,6 +736,22 @@ public class SignIn extends javax.swing.JDialog {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.exit(0);//stop the jvm
     }//GEN-LAST:event_formWindowClosing
+
+    private void txtusernameSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameSignUpActionPerformed
+        SignUp();
+    }//GEN-LAST:event_txtusernameSignUpActionPerformed
+
+    private void txtusernameSignUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtusernameSignUpMouseClicked
+        txtfield.checkTextField(txtusernameSignUp, "Username");
+    }//GEN-LAST:event_txtusernameSignUpMouseClicked
+
+    private void txtusernameSignUpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusLost
+        txtfield.checkTextFieldEmpty(txtusernameSignUp, "Username");
+    }//GEN-LAST:event_txtusernameSignUpFocusLost
+
+    private void txtusernameSignUpFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameSignUpFocusGained
+        txtfield.checkTextField(txtusernameSignUp, "Username");
+    }//GEN-LAST:event_txtusernameSignUpFocusGained
 
     /**
      * @param args the command line arguments
