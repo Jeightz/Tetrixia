@@ -198,9 +198,7 @@ public class UserData {
 
     }
 
-    
-    
-     public String userPasswordHash(String password) {
+    public static String userPasswordHash(String password) {
         /*
         byte[] hashBytes = new byte[0];
         try {
@@ -225,9 +223,8 @@ public class UserData {
             e.printStackTrace();
             return null;
         }
-     }
-     
-     
+    }
+
     public UserData(ArrayList<UserData> data, String Username, String Password, String FirstName, String LastName,
             String gender, File profile, String BOD) {
 
@@ -242,12 +239,20 @@ public class UserData {
         this.newAddUSerKeyBinds();
         this.userType = "User";
         this.isMusicOn = true;
+
+        System.out.println(Username);
+        System.out.println(Password);
+        System.out.println(FirstName);
+        System.out.println(LastName);
+        System.out.println(gender);
+        System.out.println(BOD);
+
     }
 
     public int userLogin(ArrayList<UserData> data, String username, String password) {
         for (int i = 0; i < data.size(); i++) {
             UserData user = data.get(i);
-            if (user.getUsername().equals(username) &&  user.verifyPassword(password, this.Password)) {
+            if (user.getUsername().equals(username) && user.verifyPassword(password, user.Password)) {
                 if (user.getBanExpr() != null && LocalDateTime.now().isBefore(user.getBanExpr())) {
                     JOptionPane.showMessageDialog(null,
                             "Your account is banned until: " + user.getBanExpr(),
@@ -329,7 +334,6 @@ public class UserData {
     public void userLogout(ArrayList<UserData> data, int userindex) {
         UserData us = data.get(userindex);
         us.logoutHistory.add(LocalDateTime.now());
-
     }
 
     public boolean isUsernameDuplication(ArrayList<UserData> data, String username) {
@@ -529,20 +533,21 @@ public class UserData {
         }
     }
 
-    private void generatePepper() {
-       if(pepper == null){
+    private static void generatePepper() {
+        if (pepper == null) {
             SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[randomGenNum];
-        random.nextBytes(bytes);
-        pepper = Base64.getEncoder().encodeToString(bytes);
-       }
-        System.out.println(pepper);
-        System.out.println(Password);
+            byte[] bytes = new byte[randomGenNum];
+            random.nextBytes(bytes);
+            pepper = Base64.getEncoder().encodeToString(bytes);
+        }
+
     }
 
-    public boolean verifyPassword(String plainPassword, String hashedPassword) {
+    public static boolean verifyPassword(String plainPassword, String hashedPassword) {
         try {
             generatePepper();
+
+            
 
             String pepperedPassword = plainPassword + pepper;
             return BCrypt.checkpw(pepperedPassword, hashedPassword);
@@ -551,7 +556,5 @@ public class UserData {
             return false;
         }
     }
-
-
 
 }

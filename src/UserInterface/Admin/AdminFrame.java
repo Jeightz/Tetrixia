@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 
 public class AdminFrame extends javax.swing.JFrame {
     private DataManager data = DataManager.getInstance();
+
      private Profile pro  ;
 
     static int userIndex;
@@ -320,10 +321,8 @@ public class AdminFrame extends javax.swing.JFrame {
         int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO LOGOUT?", "LOGOUT?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         
         if (choose == JOptionPane.YES_OPTION) {
-            System.out.println(choose);
             dispose();
-            DataManager managerData = DataManager.getInstance();
-            new UserData().userLogout(managerData.getData(), userIndex);
+            new UserData().userLogout(data.getData(), userIndex);
             new SignIn(null, false).setVisible(true);
         }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

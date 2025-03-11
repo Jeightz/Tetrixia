@@ -48,9 +48,7 @@ public class SignIn extends javax.swing.JDialog {
             return;
         }
         this.setVisible(false);
-        this.txtusername.setText("Username");
-        this.txtpassword.setText("Password");
-        this.txtpassword.setEchoChar((char) 0);
+       
 
     }
 
@@ -72,7 +70,7 @@ public class SignIn extends javax.swing.JDialog {
 
         String password = String.valueOf(txtpasswordSignup1.getPassword()).trim();
         String confirmPassword = String.valueOf(txtconfirmpasswordSignup.getPassword()).trim();
-        String username = txtusername.getText().trim();
+        String username = txtusernameSignUp.getText().trim();
         String lastName = txtlastname.getText().trim();
         String firstName = txtfirstname.getText().trim();
         String gender = cbgender.getSelectedItem().toString();
@@ -81,6 +79,7 @@ public class SignIn extends javax.swing.JDialog {
         if (user.isUsernameDuplication(data, username)) {
             JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
             return;
+            
         }
 
         if (!chckpass.isConfirmPassAndPassSame(password, confirmPassword)) {
@@ -95,6 +94,7 @@ public class SignIn extends javax.swing.JDialog {
 
         if (!isValidSignUpInput(username, firstName, lastName, gender, birthDate, password, confirmPassword)) {
             JOptionPane.showMessageDialog(this, "Invalid SignUp! Please fill in all fields correctly.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
+          
             return;
         }
 
