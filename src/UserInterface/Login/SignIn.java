@@ -30,7 +30,6 @@ public class SignIn extends javax.swing.JDialog {
     private static final SeeAndUnseePass chckbox = new SeeAndUnseePass();
     private int userDataIndex = -1;
     private UserData user = new UserData();
-
     private void login() {
 
         ArrayList<UserData> data = dataManager.getData();
@@ -42,7 +41,6 @@ public class SignIn extends javax.swing.JDialog {
         }
 
         userDataIndex = user.userLogin(data, txtusername.getText(), pass);
-        System.out.print(userDataIndex);
         if (userDataIndex < 0) {
             JOptionPane.showMessageDialog(this, "No Data Of Username Found ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -119,23 +117,18 @@ public class SignIn extends javax.swing.JDialog {
     }
 
     private void resetSignUpForm() {
-        txtusername.setText("Username");
+        txtusernameSignUp.setText("Username");
         txtpasswordSignup1.setText("Password");
         txtconfirmpasswordSignup.setText("Confirm Password");
         txtlastname.setText("LastName");
         this.lblPictureHolder.setIcon(null);
-
+        
         txtfirstname.setText("FirstName");
         chckseeUnseeConfirmPassSignup.setVisible(false);
         chckseeUnseeSignup1.setVisible(false);
         datePicker2.setText("");
         txtpasswordSignup1.setEchoChar((char) 0);
         txtconfirmpasswordSignup.setEchoChar((char) 0);
-        cbgender.removeAllItems();
-
-        cbgender.insertItemAt("Gender", 0);
-        cbgender.insertItemAt("Male", 1);
-        cbgender.insertItemAt("Female", 2);
         profile = null;
 
     }
@@ -208,10 +201,11 @@ public class SignIn extends javax.swing.JDialog {
         signIn.setLayout(null);
 
         btnsignIn.setText("SignIn");
-        btnsignIn.setToolTipText("");
         btnsignIn.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnsignIn.setName("btnSignUp"); // NOI18N
+        btnsignIn.setNextFocusableComponent(jLabel1);
         btnsignIn.setRadius(50);
+        btnsignIn.setToolTipText("");
         btnsignIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnsignInActionPerformed(evt);
@@ -233,6 +227,7 @@ public class SignIn extends javax.swing.JDialog {
         txtpassword.setCornerRadius(50);
         txtpassword.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/password.png"))); // NOI18N
         txtpassword.setName("txtpassword"); // NOI18N
+        txtpassword.setNextFocusableComponent(btnsignIn);
         txtpassword.setToolTipText("");
         txtpassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {

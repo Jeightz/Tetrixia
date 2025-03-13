@@ -263,6 +263,7 @@ public class UserData {
                 if ("Admin".equals(user.userType)) {
                     user.loginHistory.add(LocalDateTime.now());
                     new AdminFrame(i).setVisible(true);
+                    
                     return i;
                 }
                 user.loginHistory.add(LocalDateTime.now());
@@ -272,7 +273,10 @@ public class UserData {
         }
         return -1;
     }
-
+    public HashMap<String,Integer> getuserKeys(){
+        return userKeyBinds;
+    }
+    
     public void userLoginAndOutHistory(JTable table, ArrayList<UserData> data, int userIndex) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -280,7 +284,7 @@ public class UserData {
         ArrayList<LocalDateTime> logins = user.getLoginHistory();
         ArrayList<LocalDateTime> logouts = user.getLogoutHistory();
 
-        int maxSize = Math.max(logins.size(), logouts.size());
+        int maxSize = Math.max(logins.size(), logouts.size());  
         for (int i = 0; i < maxSize; i++) {
             String loginTime = (i < logins.size()) ? logins.get(i).toString() : "";
             String logoutTime = (i < logouts.size()) ? logouts.get(i).toString() : "";
@@ -552,9 +556,8 @@ public class UserData {
             String pepperedPassword = plainPassword + pepper;
             return BCrypt.checkpw(pepperedPassword, hashedPassword);
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
-
+    
 }

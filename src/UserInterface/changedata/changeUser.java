@@ -8,7 +8,6 @@ import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import UserInterface.profile.Profile;
 import javax.swing.JOptionPane;
-import org.mindrot.jbcrypt.BCrypt;
 /**
  *
  * @author Admin

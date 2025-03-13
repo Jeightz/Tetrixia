@@ -12,17 +12,16 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class DataManager {
-     private static DataManager instance = null; 
 
+    private static DataManager instance = null;
     private final ArrayList<UserData> data;
     private final ArrayList<UserData> deletedAccounts;
 
-    private DataManager() { 
+    private DataManager() {
         this.data = new ArrayList<>();
         this.deletedAccounts = new ArrayList<>();
     }
 
-    
     public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
@@ -33,6 +32,7 @@ public class DataManager {
     public ArrayList<UserData> getData() {
         return data;
     }
+
 
     public ArrayList<UserData> getDeletedAccounts() {
         return deletedAccounts;

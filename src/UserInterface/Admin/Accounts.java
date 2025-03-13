@@ -33,14 +33,17 @@ public class Accounts extends javax.swing.JPanel {
     private final txtField txt = new txtField();
     private UserData user = new UserData();
     private final SeeAndUnseePass cbpass = new SeeAndUnseePass();
-    int userIndex = -1;
+    private static int userIndex = -1;
     private AdminFrame frame;
     private static Accounts instants = null;
     
     
-    public static  Accounts getInstance (){
+    public static  Accounts getInstance (int userIndex){
         if(instants == null){
-            instants = new Accounts();
+            instants = new Accounts(userIndex);
+        }else{
+            Accounts.userIndex = userIndex;
+            
         }
         return instants;
     }
@@ -95,11 +98,14 @@ public class Accounts extends javax.swing.JPanel {
         profile = null;
         lblpictureHolder.setIcon(null);
         txtpassword.setText("Password");
-    }
+        txtpassword.setEchoChar((char)0);
+        chckseeUnsee.setVisible(false);
+                }
 
-    public Accounts() {
+    public Accounts(int userIndex) {
         initComponents();
         updateData();
+        this.userIndex = userIndex; 
         this.frame = frame;
         chckseeUnsee.setVisible(false);
         txtpassword.setEchoChar((char) 0);
@@ -572,7 +578,6 @@ public class Accounts extends javax.swing.JPanel {
 
             data.addUser(new UserData(data.getData(), username, pass, firstname, lastname, gender, profile, bod));
             JOptionPane.showMessageDialog(null, "SUCCESSFULLY ADD AN ACCOUNT", "ADD ACOOUNT", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println(username + " and pass " + pass);
             resetInputData();
             new UserData().addDataAccountTable(data.getData(), myTable1);
             return;
@@ -705,7 +710,10 @@ public class Accounts extends javax.swing.JPanel {
     }//GEN-LAST:event_btncancelActionPerformed
 
     private void btndeleteAccountRecordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteAccountRecordsActionPerformed
-       new DeletedData(null,false).setVisible(true);
+        DeletedData deletedData = DeletedData.getInstants();
+        
+        deletedData.setVisible(true);
+        
     }//GEN-LAST:event_btndeleteAccountRecordsActionPerformed
 
 

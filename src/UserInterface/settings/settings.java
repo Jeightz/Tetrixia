@@ -8,6 +8,9 @@ import Function.textField.txtField;
 import Model.UserData.UserData;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class Settings extends javax.swing.JPanel {
@@ -18,14 +21,34 @@ public class Settings extends javax.swing.JPanel {
     private void userPressKey(ArrayList<UserData> data, int userIndex, JTextField text, String keyName, KeyEvent e) {
         int vkCode = e.getKeyCode();
         String nameKeyPress = KeyEvent.getKeyText(vkCode);
-        UserData da = data.get(userIndex);
+        UserData userData = data.get(userIndex);
 
-        da.updateUserKeyBinds(keyName, vkCode);
+        boolean isDuplicate = false;
+        String duplicateAction = null;
+        HashMap<String, Integer> keyBinds = userData.getuserKeys();
+        for (Map.Entry<String, Integer> entry : keyBinds.entrySet()) {
+            if (entry.getValue() == vkCode && !entry.getKey().equals(keyName)) {
+                isDuplicate = true;
+                duplicateAction = entry.getKey();
+                break;
+            }
+        }
+
+        if (isDuplicate) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "This key (" + nameKeyPress + ") is already assigned to: " + duplicateAction,
+                    "Duplicate Key Binding",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        userData.updateUserKeyBinds(keyName, vkCode);
         text.setText(nameKeyPress);
-
     }
-    
-    private void loaduserSettings(){
+
+    private void loaduserSettings() {
         UserData da = data.get(index);
         txtleft.setText(da.getStringUserKeyBinds("MOVE_LEFT"));
         txtdown.setText(da.getStringUserKeyBinds("MOVE_DOWN"));
@@ -316,11 +339,11 @@ public class Settings extends javax.swing.JPanel {
     }//GEN-LAST:event_txtHoldKeyPressed
 
     private void OnAndOffMusicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OnAndOffMusicActionPerformed
-        if(OnAndOffMusic.isSelected()){
+        if (OnAndOffMusic.isSelected()) {
             data.get(index).setIsMusicOn(false);
             return;
         }
-            data.get(index).setIsMusicOn(true);
+        data.get(index).setIsMusicOn(true);
     }//GEN-LAST:event_OnAndOffMusicActionPerformed
 
 

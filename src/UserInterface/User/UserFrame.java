@@ -26,6 +26,7 @@ public class UserFrame extends javax.swing.JFrame {
 
     DataManager data = DataManager.getInstance();
     static int profileIndex = -1;
+    Profile pro;
 
     public void labelHover(JLabel lbl) {
         lbl.setForeground(Color.black);
@@ -41,6 +42,7 @@ public class UserFrame extends javax.swing.JFrame {
         initComponents();
         viewPanel.setViewportView(new Leaderboards(data.getData()));
         profileIndex = userIndex;
+        pro = Profile.getInstance(userIndex);
     }
 
     @SuppressWarnings("unchecked")
@@ -209,6 +211,7 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void lblplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseClicked
         labelHoverOut(lblplay);
+        pro.updateProfile();
         new Game(profileIndex).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_lblplayMouseClicked
@@ -222,7 +225,7 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblplayMouseExited
 
     private void lblprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblprofileMouseClicked
-        viewPanel.setViewportView(new Profile(profileIndex));
+        viewPanel.setViewportView(pro);
         labelHoverOut(lblprofile);
 
     }//GEN-LAST:event_lblprofileMouseClicked
@@ -255,6 +258,8 @@ public class UserFrame extends javax.swing.JFrame {
         this.dispose();
         JOptionPane.showMessageDialog(null, "SUCCESSFULLY LOGOUT(RECORDED)", "LOGOUT!", JOptionPane.INFORMATION_MESSAGE);
         new SignIn(null, false).setVisible(true);
+        new UserData().userLogout(data.getData(), profileIndex);
+
     }//GEN-LAST:event_lbllogoutMouseClicked
 
     private void lbllogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseEntered
@@ -282,13 +287,12 @@ public class UserFrame extends javax.swing.JFrame {
         int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO LOGOUT?", "LOGOUT?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
         if (choose == JOptionPane.YES_OPTION) {
-
             new UserData().userLogout(data.getData(), profileIndex);
             this.dispose();
             JOptionPane.showMessageDialog(null, "SUCCESSFULLY LOGOUT(RECORDED)", "LOGOUT!", JOptionPane.INFORMATION_MESSAGE);
             new SignIn(null, false).setVisible(true);
+            new UserData().userLogout(data.getData(), profileIndex);
             return;
-
         }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }//GEN-LAST:event_formWindowClosing

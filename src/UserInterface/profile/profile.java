@@ -16,11 +16,12 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class Profile extends javax.swing.JPanel {
+
     private static Profile instance = null;
     private DataManager data = DataManager.getInstance();
-    private int userIndex;
-    
-    public void updateProfile(){
+    private static int userIndex;
+
+    public void updateProfile() {
         UserData us = data.getData().get(userIndex);
         lblfirstName.setText(us.getFirstName());
         lbllastname.setText(us.getLastName());
@@ -31,25 +32,25 @@ public class Profile extends javax.swing.JPanel {
         new FitImage().risizelabel(us.getProfile(), lblprofilepicture);
 
     }
-    
-     public static Profile getInstance(int userIndex) {
+
+    public static Profile getInstance(int userIndex) {
         if (instance == null) {
             instance = new Profile(userIndex);
+        } else {
+            Profile.userIndex = userIndex;
+            instance.updateProfile();
         }
         return instance;
     }
 
     public Profile(int userIndex) {
         initComponents();
-          lblprofilepicture.setSize(133,126);//set the size to make the lblprofilepicture not a null
-         
+        lblprofilepicture.setSize(133, 126);//set the size to make the lblprofilepicture not a null
+
         this.userIndex = userIndex;
         updateProfile();
     }
 
-    
-
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -280,23 +281,23 @@ public class Profile extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnchangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePasswordActionPerformed
-        new ChangePass(null, true,userIndex).setVisible(true);
+        new ChangePass(null, true, userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePasswordActionPerformed
 
     private void btnchangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeUsernameActionPerformed
-        new ChangeUser(null, false,userIndex).setVisible(true);
+        new ChangeUser(null, false, userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeUsernameActionPerformed
 
     private void btnchangePIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePIActionPerformed
-        new ChangeProfInfo(null, true,userIndex).setVisible(true);
+        new ChangeProfInfo(null, true, userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangePIActionPerformed
 
     private void btnchangeProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfileActionPerformed
-        new ChangeProf(null, true,userIndex).setVisible(true);
+        new ChangeProf(null, true, userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeProfileActionPerformed
 
     private void btnchangeProfile1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfile1ActionPerformed
-        new LogInAndOut(null,true,data.getData(),userIndex).setVisible(true);
+        new LogInAndOut(null, true, data.getData(), userIndex).setVisible(true);
     }//GEN-LAST:event_btnchangeProfile1ActionPerformed
 
 
@@ -320,6 +321,4 @@ public class Profile extends javax.swing.JPanel {
     private javax.swing.JLabel lblusername;
     // End of variables declaration//GEN-END:variables
 
-  
-   
 }

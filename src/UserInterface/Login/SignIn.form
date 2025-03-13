@@ -86,12 +86,15 @@
                 <Component class="UserInterface.CustomComponents.MyButton" name="btnsignIn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="SignIn"/>
-                    <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="14" style="1"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="btnSignUp" noResource="true"/>
+                    <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="jLabel1"/>
+                    </Property>
                     <Property name="radius" type="int" value="50"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnsignInActionPerformed"/>
@@ -125,6 +128,9 @@
                       <Image iconType="3" name="/image/password.png"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="txtpassword" noResource="true"/>
+                    <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="btnsignIn"/>
+                    </Property>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <Events>
