@@ -3,11 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package UserInterface.changedata;
+
 import Function.textField.txtField;
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import UserInterface.profile.Profile;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -16,14 +18,13 @@ public class ChangeUser extends javax.swing.JDialog {
 
     private DataManager data = DataManager.getInstance();
     private Profile pro;
-       
-    private static int userIndex;
+
 
     private void changeUser() {
         String oldUser = txtOldUsername.getText();
         String newUser = txtNewUsername.getText();
         String ConfrimNewUser = txtConfrimNewUsername.getText();
-        UserData us = data.getData().get(userIndex);
+        UserData us =data.getCurrentUser();
 
         if (oldUser.isEmpty() || oldUser.equals("Old Username")
                 || newUser.equals("New Username") || newUser.isEmpty()
@@ -31,7 +32,7 @@ public class ChangeUser extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "INVALID UPDATE PLEASE FILL UP ALL THE DATA", "INVALID UPDATE", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if (us.isUsernameDuplication(data.getData(), newUser)) {
+        if (us.isUsernameDuplication( data.getData(),newUser)) {
             JOptionPane.showMessageDialog(null, "USERNAME IS DUPLICATE", "DIDNT MATCH", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -48,19 +49,19 @@ public class ChangeUser extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "THE NEW AND CONFIRM DIDNT MATCH PLEASE MATCH IT", "DIDNT MATCH", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        pro.updateProfile();
         us.setUsername(newUser);
+        pro.updateProfile();
+
         JOptionPane.showMessageDialog(null, "Username updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
     }
 
-    public ChangeUser(java.awt.Frame parent, boolean modal, int userIndex) {
+    public ChangeUser(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        pro = Profile.getInstance(userIndex);
-        this.userIndex = userIndex;
+        pro = Profile.getInstance();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -110,7 +111,7 @@ public class ChangeUser extends javax.swing.JDialog {
         bodyPanel.add(btnChangeUsername);
         btnChangeUsername.setBounds(352, 265, 174, 39);
 
-        txtConfrimNewUsername.setText("Confirm New Username");
+        txtConfrimNewUsername.setText("Confrim New Username");
         txtConfrimNewUsername.setRadius(50);
         txtConfrimNewUsername.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -181,8 +182,8 @@ public class ChangeUser extends javax.swing.JDialog {
 
         headerPanel.setBackground(new java.awt.Color(0, 204, 0));
 
-        jLabel1.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
         jLabel1.setText("Change Username");
+        jLabel1.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
 
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
@@ -302,7 +303,7 @@ public class ChangeUser extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangeUser dialog = new ChangeUser(new javax.swing.JFrame(), true, userIndex);
+                ChangeUser dialog = new ChangeUser(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

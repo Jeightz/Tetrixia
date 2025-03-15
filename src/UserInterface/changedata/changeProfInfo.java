@@ -18,16 +18,14 @@ import javax.swing.JOptionPane;
  */
 public class ChangeProfInfo extends javax.swing.JDialog {
     DataManager data = DataManager.getInstance();
-    private static int userIndex;
     private txtField txt = new txtField();
     private Profile pro ;
     
-    public ChangeProfInfo(java.awt.Frame parent, boolean modal, int userIndex) {
+    public ChangeProfInfo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         datePicker2.getComponentDateTextField().setEnabled(false);
-        this.userIndex = userIndex;
-        pro = Profile.getInstance(userIndex);
+        pro = Profile.getInstance();
     }
 
     private boolean isValidToUpdate() {
@@ -239,16 +237,17 @@ public class ChangeProfInfo extends javax.swing.JDialog {
     }//GEN-LAST:event_cbgenderActionPerformed
 
     private void btnChangeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeInfoActionPerformed
-       UserData us = data.getData().get(userIndex);
+       UserData us = data.getCurrentUser();
          if (!new CheckDate().isAtLeast10YearsOld(datePicker2.getText())) {
             JOptionPane.showMessageDialog(null, "The BOD is not applicable cause it is lower than 10 years old age or too high than 100", "NOT APPLICABLE BOD", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
        if(isValidToUpdate()){
-           us.updatePersonData(data.getData(), userIndex, txtFirstname.getText(), txtlastname.getText(), cbgender.getSelectedItem().toString(), datePicker2.getText());
+           us.updatePersonData(data.getCurrentUser(), txtFirstname.getText(), txtlastname.getText(), cbgender.getSelectedItem().toString(), datePicker2.getText());
            JOptionPane.showMessageDialog(null, "SUCCESSFULLY UPDATED","UPDATE SUCCESSFULLY",JOptionPane.INFORMATION_MESSAGE);
            resetComponents();
            pro.updateProfile();
+           this.dispose();
            return;
        }
      JOptionPane.showMessageDialog(null, "PLEASE FILL ALL THE DATA","INVALID UPDATE",JOptionPane.INFORMATION_MESSAGE);
@@ -286,7 +285,7 @@ public class ChangeProfInfo extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangeProfInfo dialog = new ChangeProfInfo(new javax.swing.JFrame(), true,userIndex);
+                ChangeProfInfo dialog = new ChangeProfInfo(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

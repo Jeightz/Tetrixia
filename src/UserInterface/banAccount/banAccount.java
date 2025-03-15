@@ -12,16 +12,14 @@ import javax.swing.JOptionPane;
 public class banAccount extends javax.swing.JDialog {
 
     private DataManager data = DataManager.getInstance();
-    private static int userIndex = -1;
-    private UserData user;
+    private static UserData user;
 
-    public banAccount(Frame owner, boolean modal, int userindex) {
+    public banAccount(Frame owner, boolean modal,UserData data) {
         super(owner, modal);
         initComponents();
-        userIndex = userindex;
         datePicker.getComponentDateTextField().setEnabled(false);
         timePicker.getComponentTimeTextField().setEnabled(false);
-        user = data.getData().get(userindex);
+        user = data;
     }
 
     @SuppressWarnings("unchecked")
@@ -126,7 +124,7 @@ public class banAccount extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "PLEASE FILL THE ALL THE DATA ", "PLEASE FILL ALL DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        user.banUserUntilDateTimeByIndex(data.getData(), userIndex, datePicker.getText(), timePicker.getText());
+        user.banUserUntilDateTimeByIndex(data.getData(),user, datePicker.getText(), timePicker.getText());
 
     }//GEN-LAST:event_myButton1ActionPerformed
     public static void main(String args[]) {
@@ -159,7 +157,7 @@ public class banAccount extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                banAccount dialog = new banAccount(new javax.swing.JFrame(), true, userIndex);
+                banAccount dialog = new banAccount(new javax.swing.JFrame(), true,user);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

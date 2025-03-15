@@ -18,11 +18,12 @@ import java.util.ArrayList;
 public class Profile extends javax.swing.JPanel {
 
     private static Profile instance = null;
-    private DataManager data = DataManager.getInstance();
-    private static int userIndex;
+    private static DataManager data = DataManager.getInstance();
+    private static UserData userData;
 
     public void updateProfile() {
-        UserData us = data.getData().get(userIndex);
+        UserData us = data.getCurrentUser();
+        
         lblfirstName.setText(us.getFirstName());
         lbllastname.setText(us.getLastName());
         lblusername.setText(us.getUsername());
@@ -33,21 +34,18 @@ public class Profile extends javax.swing.JPanel {
 
     }
 
-    public static Profile getInstance(int userIndex) {
+    public static Profile getInstance() {
         if (instance == null) {
-            instance = new Profile(userIndex);
+            instance = new Profile();
         } else {
-            Profile.userIndex = userIndex;
             instance.updateProfile();
         }
         return instance;
     }
 
-    public Profile(int userIndex) {
+    public Profile() {
         initComponents();
         lblprofilepicture.setSize(133, 126);//set the size to make the lblprofilepicture not a null
-
-        this.userIndex = userIndex;
         updateProfile();
     }
 
@@ -178,14 +176,11 @@ public class Profile extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnchangePassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnchangeUsername, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnchangePI, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnchangeProfile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addComponent(btnchangeProfile1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnchangePI, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnchangeUsername, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+            .addComponent(btnchangePassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnchangeProfile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,23 +276,23 @@ public class Profile extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnchangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePasswordActionPerformed
-        new ChangePass(null, true, userIndex).setVisible(true);
+        new ChangePass(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangePasswordActionPerformed
 
     private void btnchangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeUsernameActionPerformed
-        new ChangeUser(null, false, userIndex).setVisible(true);
+        new ChangeUser(null, false).setVisible(true);
     }//GEN-LAST:event_btnchangeUsernameActionPerformed
 
     private void btnchangePIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangePIActionPerformed
-        new ChangeProfInfo(null, true, userIndex).setVisible(true);
+        new ChangeProfInfo(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangePIActionPerformed
 
     private void btnchangeProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfileActionPerformed
-        new ChangeProf(null, true, userIndex).setVisible(true);
+        new ChangeProf(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangeProfileActionPerformed
 
     private void btnchangeProfile1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnchangeProfile1ActionPerformed
-        new LogInAndOut(null, true, data.getData(), userIndex).setVisible(true);
+        new LogInAndOut(null, true).setVisible(true);
     }//GEN-LAST:event_btnchangeProfile1ActionPerformed
 
 

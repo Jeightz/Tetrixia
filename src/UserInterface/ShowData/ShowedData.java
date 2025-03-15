@@ -5,6 +5,7 @@
 package UserInterface.ShowData;
 
 import Function.Image.FitImage;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import java.util.ArrayList;
 
@@ -13,13 +14,10 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class ShowedData extends javax.swing.JDialog {
-
-    private static ArrayList<UserData> data;
-    private static int index;
-    private UserData us;
+    private DataManager data = DataManager.getInstance();
+    private static UserData us;
 
     public void updateProfile() {
-        us = data.get(index);
         lblfirstName1.setText(us.getFirstName());
         lbllastname1.setText(us.getLastName());
         lblusername1.setText(us.getUsername());
@@ -29,15 +27,13 @@ public class ShowedData extends javax.swing.JDialog {
 
     }
 
-    public ShowedData(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int index) {
+    public ShowedData(java.awt.Frame parent, boolean modal,UserData data) {
         super(parent, modal);
-        initComponents();
+            initComponents();
         lblprofilepicture1.setSize(133, 126);//set the size to make the lblprofilepicture not a null
-        this.data = data;
-        this.index = index;
-     
+        us = data;
         updateProfile();
-        us.userLoginAndOutHistory(myTable1, data, index);
+        us.userLoginAndOutHistory(myTable1,data);
     }
 
     /**
@@ -259,7 +255,7 @@ public class ShowedData extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ShowedData dialog = new ShowedData(new javax.swing.JFrame(), true, data, index);
+                ShowedData dialog = new ShowedData(new javax.swing.JFrame(), true,us);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

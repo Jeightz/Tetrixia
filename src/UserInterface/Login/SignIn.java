@@ -28,11 +28,9 @@ public class SignIn extends javax.swing.JDialog {
     private static final txtField txtfield = new txtField();
     private static final checkPasswordField chckpass = new checkPasswordField();
     private static final SeeAndUnseePass chckbox = new SeeAndUnseePass();
-    private int userDataIndex = -1;
     private UserData user = new UserData();
-    private void login() {
 
-        ArrayList<UserData> data = dataManager.getData();
+    private void login() {
 
         String pass = String.valueOf(txtpassword.getPassword());
         if (pass.equals("Password") || txtusername.getText().equals("Username")) {
@@ -40,21 +38,17 @@ public class SignIn extends javax.swing.JDialog {
             return;
         }
 
-        userDataIndex = user.userLogin(data, txtusername.getText(), pass);
-        if (userDataIndex < 0) {
-            JOptionPane.showMessageDialog(this, "No Data Of Username Found ", "NO Data Found", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-        this.setVisible(false);
-       
+        UserData loggedInUser = user.userLogin(txtusername.getText(), pass);
 
+        if (loggedInUser != null) {
+            this.dispose();
+        }
     }
 
     private void defaultAdminAccount() {
         ArrayList<UserData> data = dataManager.getData();
 
         if (!user.isUsernameDuplication(data, "admin")) {
-
             File pictureprof = new File(System.getProperty("user.dir") + "\\src\\image\\boyprofile.jpg");
             user = new UserData(data, "admin", "admin", "System", "Administrator", "Other", pictureprof, "January 1, 2000");
             user.setUserType("Admin");
@@ -73,11 +67,22 @@ public class SignIn extends javax.swing.JDialog {
         String firstName = txtfirstname.getText().trim();
         String gender = cbgender.getSelectedItem().toString();
         String birthDate = datePicker2.getText().trim();
+        if (!isValidSignUpInput(username, firstName, lastName, gender, birthDate, password, confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Invalid SignUp! Please fill in all fields correctly.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
 
-        if (user.isUsernameDuplication(data, username)) {
+            return;
+        }
+
+        if (user.isUsernameDuplication(dataManager.getDeletedAccounts(), username)) {
             JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
             return;
-            
+
+        }
+
+        if (user.isUsernameDuplication(dataManager.getData(), username)) {
+            JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
+            return;
+
         }
 
         if (!chckpass.isConfirmPassAndPassSame(password, confirmPassword)) {
@@ -87,12 +92,6 @@ public class SignIn extends javax.swing.JDialog {
 
         if (password.length() < 5) {
             JOptionPane.showMessageDialog(this, "Invalid SignUp! Please make the password 5 letter up.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        if (!isValidSignUpInput(username, firstName, lastName, gender, birthDate, password, confirmPassword)) {
-            JOptionPane.showMessageDialog(this, "Invalid SignUp! Please fill in all fields correctly.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
-          
             return;
         }
 
@@ -122,7 +121,7 @@ public class SignIn extends javax.swing.JDialog {
         txtconfirmpasswordSignup.setText("Confirm Password");
         txtlastname.setText("LastName");
         this.lblPictureHolder.setIcon(null);
-        
+
         txtfirstname.setText("FirstName");
         chckseeUnseeConfirmPassSignup.setVisible(false);
         chckseeUnseeSignup1.setVisible(false);

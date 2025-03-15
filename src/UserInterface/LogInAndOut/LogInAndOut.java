@@ -4,8 +4,8 @@
  */
 package UserInterface.LogInAndOut;
 
-import Model.UserData.UserData;
-import java.util.ArrayList;
+import Model.DataManager.DataManager;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -14,16 +14,13 @@ import javax.swing.JOptionPane;
  */
 public class LogInAndOut extends javax.swing.JDialog {
 
-    private static ArrayList<UserData> data;
-    private static int profileIndex;
-
-    public LogInAndOut(java.awt.Frame parent, boolean modal, ArrayList<UserData> data, int profileIndex) {
+    private DataManager dataManager = DataManager.getInstance();
+    public LogInAndOut(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.profileIndex = profileIndex;
-        this.data = data;
+       
         datePicker2.getComponentDateTextField().setEnabled(false);
-        data.get(profileIndex).userLoginAndOutHistory(outAndIn, data, profileIndex);
+       dataManager.getCurrentUser().userLoginAndOutHistory(outAndIn, dataManager.getCurrentUser());
     }
 
     @SuppressWarnings("unchecked")
@@ -119,7 +116,7 @@ public class LogInAndOut extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        if(!datePicker2.getText().isEmpty()){ 
-            data.get(profileIndex).filterLoginLogoutHistoryByDate(outAndIn, data, profileIndex, datePicker2.getText());
+           dataManager.getCurrentUser().filterLoginLogoutHistoryByDate(dataManager.getCurrentUser(), outAndIn, datePicker2.getText());
        }else{
            JOptionPane.showMessageDialog(this,"No Text Or Date Inputed","No  Date Inputed",JOptionPane.INFORMATION_MESSAGE);
        }
@@ -155,7 +152,7 @@ public class LogInAndOut extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LogInAndOut dialog = new LogInAndOut(new javax.swing.JFrame(), true, data, profileIndex);
+                LogInAndOut dialog = new LogInAndOut(new javax.swing.JFrame(), true );
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

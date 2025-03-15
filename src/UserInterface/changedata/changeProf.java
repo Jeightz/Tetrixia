@@ -16,14 +16,12 @@ public class ChangeProf extends javax.swing.JDialog {
     private Profile pro ;
     private File profile = null;
     private DataManager data = DataManager.getInstance();
-    private static int userIndex;
 
-    public ChangeProf(java.awt.Frame parent, boolean modal, int userIndex) {
+    public ChangeProf(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.userIndex = userIndex;
-       pro = Profile.getInstance( userIndex);
+       pro = Profile.getInstance();
     }
 
     @SuppressWarnings("unchecked")
@@ -127,13 +125,14 @@ public class ChangeProf extends javax.swing.JDialog {
 
     private void btnChangeUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeUsernameActionPerformed
         if (profile != null) {
-            UserData us = data.getData().get(userIndex);
-            us.updateProfile(data.getData(), userIndex, profile);
+            UserData us = data.getCurrentUser();
+            us.updateProfile( us,profile);
             JOptionPane.showMessageDialog(null, "THE PROFILE IS SUCCESSFULLY UPDATE", "SUCCESSFULLY UPDATED", JOptionPane.INFORMATION_MESSAGE);
             //reset the Profile to null
             profile = null;
             profilePic.setIcon(null);
             pro.updateProfile();
+            this.dispose();
             return;
         }
         JOptionPane.showMessageDialog(null, "NO PICTURE DETECTED ", "NO PICTURE", JOptionPane.INFORMATION_MESSAGE);
@@ -166,7 +165,7 @@ public class ChangeProf extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangeProf dialog = new ChangeProf(new javax.swing.JFrame(), true, userIndex);
+                ChangeProf dialog = new ChangeProf(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

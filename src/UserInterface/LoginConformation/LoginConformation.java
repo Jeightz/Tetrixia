@@ -8,7 +8,10 @@ import Function.SeeAndUnseePass.SeeAndUnseePass;
 import Function.password.checkPasswordField;
 import Function.textField.txtField;
 import Model.DataManager.DataManager;
+import Model.UserData.UserData;
 import UserInterface.DeletedDatas.DeletedData;
+import UserInterface.changedata.ChangePass;
+import UserInterface.changedata.OverwritePass;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,33 +20,52 @@ import javax.swing.JOptionPane;
  */
 public class LoginConformation extends javax.swing.JDialog {
 
-    static int userIndex;
+    static String operation;
+  
     DataManager data = DataManager.getInstance();
+    static  UserData userData;
     private static final txtField txtfield = new txtField();
     private static final checkPasswordField chckpass = new checkPasswordField();
     private static final SeeAndUnseePass chckbox = new SeeAndUnseePass();
 
-    private void login() {
+    private void login(String operation) {
         String password = String.valueOf(txtpassword.getPassword());
-        if (data.getData().get(userIndex).getUsername().equals(txtusername.getText()) && 
-            data.getData().get(userIndex).verifyPassword(password, data.getData().get(userIndex).getPassword())) {
+
+        if (!data.getCurrentUser().getUsername().equals(txtusername.getText())
+                && data.getCurrentUser().verifyPassword(password, data.getCurrentUser().getPassword())) {
+            JOptionPane.showMessageDialog(null, "INCCORRECT PASSWORD OR USERNAME TO THE PERSON(ADMIN) CURRENTLY LOGIN", "INCCORECT USERNAME AND PASSWORD", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (operation.equalsIgnoreCase("OverWritePassword")) {
+            new OverwritePass(null,true,userData).setVisible(true);
+            this.dispose();
+        }
+
+        if (operation.equalsIgnoreCase("DeleteAllData")) {
             DeletedData deletedData = DeletedData.getInstants();
             txtusername.setText("");
             txtpassword.setText("");
-            
             deletedData.deleteAllData();
             this.dispose();
             return;
         }
-        JOptionPane.showMessageDialog(null, "INCCORRECT PASSWORD OR USERNAME TO THE PERSON(ADMIN) CURRENTLY LOGIN","INCCORECT USERNAME AND PASSWORD",JOptionPane.INFORMATION_MESSAGE);
 
     }
 
-    public LoginConformation(java.awt.Frame parent, boolean modal, int userIndex) {
+    public LoginConformation(java.awt.Frame parent, boolean modal, String operation) {
         super(parent, modal);
         initComponents();
-        this.userIndex = userIndex;
-        txtpassword.setEchoChar((char)0);   
+        txtpassword.setEchoChar((char) 0);
+        userData  = data.getCurrentUser();
+        this.operation = operation;
+    }
+
+    public LoginConformation(java.awt.Frame parent, boolean modal,UserData user, String operation) {
+        super(parent, modal);
+        initComponents();
+        txtpassword.setEchoChar((char) 0);
+        userData = user;
     }
 
     /**
@@ -199,7 +221,7 @@ public class LoginConformation extends javax.swing.JDialog {
     }//GEN-LAST:event_txtusernameMouseClicked
 
     private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
-        login();
+        login(operation);
     }//GEN-LAST:event_txtusernameActionPerformed
 
     private void txtpasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusGained
@@ -211,7 +233,7 @@ public class LoginConformation extends javax.swing.JDialog {
     }//GEN-LAST:event_txtpasswordFocusLost
 
     private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
-        login();
+        login(operation);
     }//GEN-LAST:event_txtpasswordActionPerformed
 
     private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
@@ -259,7 +281,7 @@ public class LoginConformation extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LoginConformation dialog = new LoginConformation(new javax.swing.JFrame(), true, userIndex);
+                LoginConformation dialog = new LoginConformation(new javax.swing.JFrame(), true, userData, operation);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

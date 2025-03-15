@@ -5,6 +5,7 @@
 package UserInterface.settings;
 
 import Function.textField.txtField;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -14,14 +15,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class Settings extends javax.swing.JPanel {
-
-    private ArrayList<UserData> data;
-    private int index;
-
-    private void userPressKey(ArrayList<UserData> data, int userIndex, JTextField text, String keyName, KeyEvent e) {
+    private DataManager data  = DataManager.getInstance();
+    private void userPressKey(  JTextField text, String keyName, KeyEvent e) {
         int vkCode = e.getKeyCode();
         String nameKeyPress = KeyEvent.getKeyText(vkCode);
-        UserData userData = data.get(userIndex);
+        UserData userData = data.getCurrentUser();
 
         boolean isDuplicate = false;
         String duplicateAction = null;
@@ -49,7 +47,7 @@ public class Settings extends javax.swing.JPanel {
     }
 
     private void loaduserSettings() {
-        UserData da = data.get(index);
+        UserData da = data.getCurrentUser();
         txtleft.setText(da.getStringUserKeyBinds("MOVE_LEFT"));
         txtdown.setText(da.getStringUserKeyBinds("MOVE_DOWN"));
         txtright.setText(da.getStringUserKeyBinds("MOVE_RIGHT"));
@@ -58,10 +56,8 @@ public class Settings extends javax.swing.JPanel {
         txtHold.setText(da.getStringUserKeyBinds("HOLD"));
     }
 
-    public Settings(ArrayList<UserData> data, int index) {
+    public Settings() {
         initComponents();
-        this.data = data;
-        this.index = index;
         loaduserSettings();
     }
 
@@ -311,39 +307,39 @@ public class Settings extends javax.swing.JPanel {
     }//GEN-LAST:event_txtHardDropActionPerformed
 
     private void txtdownKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtdownKeyPressed
-        userPressKey(data, index, txtdown, "MOVE_DOWN", evt);
+        userPressKey( txtdown, "MOVE_DOWN", evt);
     }//GEN-LAST:event_txtdownKeyPressed
 
     private void txtleftKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtleftKeyPressed
-        userPressKey(data, index, txtleft, "MOVE_LEFT", evt);
+        userPressKey( txtleft, "MOVE_LEFT", evt);
     }//GEN-LAST:event_txtleftKeyPressed
 
     private void txtrightKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtrightKeyPressed
-        userPressKey(data, index, txtright, "MOVE_RIGHT", evt);
+        userPressKey( txtright, "MOVE_RIGHT", evt);
     }//GEN-LAST:event_txtrightKeyPressed
 
     private void txtrotateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtrotateKeyPressed
-        userPressKey(data, index, txtrotate, "ROTATE", evt);
+        userPressKey( txtrotate, "ROTATE", evt);
 
     }//GEN-LAST:event_txtrotateKeyPressed
 
     private void txtHardDropKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHardDropKeyPressed
-        userPressKey(data, index, txtHardDrop, "HARD_DROP", evt);
+        userPressKey( txtHardDrop, "HARD_DROP", evt);
     }//GEN-LAST:event_txtHardDropKeyPressed
 
     private void txtHoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoldActionPerformed
     }//GEN-LAST:event_txtHoldActionPerformed
 
     private void txtHoldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHoldKeyPressed
-        userPressKey(data, index, txtHold, "HOLD", evt);
+        userPressKey( txtHold, "HOLD", evt);
     }//GEN-LAST:event_txtHoldKeyPressed
 
     private void OnAndOffMusicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OnAndOffMusicActionPerformed
         if (OnAndOffMusic.isSelected()) {
-            data.get(index).setIsMusicOn(false);
+            data.getCurrentUser().setIsMusicOn(false);
             return;
         }
-        data.get(index).setIsMusicOn(true);
+        data.getCurrentUser().setIsMusicOn(true);
     }//GEN-LAST:event_OnAndOffMusicActionPerformed
 
 

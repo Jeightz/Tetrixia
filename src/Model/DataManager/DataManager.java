@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class DataManager {
 
+    private static UserData currentUser;
     private static DataManager instance = null;
     private final ArrayList<UserData> data;
     private final ArrayList<UserData> deletedAccounts;
@@ -20,6 +21,8 @@ public class DataManager {
     private DataManager() {
         this.data = new ArrayList<>();
         this.deletedAccounts = new ArrayList<>();
+        this.currentUser = null; 
+
     }
 
     public static DataManager getInstance() {
@@ -33,7 +36,6 @@ public class DataManager {
         return data;
     }
 
-
     public ArrayList<UserData> getDeletedAccounts() {
         return deletedAccounts;
     }
@@ -45,5 +47,18 @@ public class DataManager {
     public void deleteUser(UserData user) {
         data.remove(user);
         deletedAccounts.add(user);
+    }
+
+    public void setCurrentUser(UserData user) {
+        this.currentUser = user;
+    }
+
+    public UserData getCurrentUser() {
+        return currentUser;
+    }
+
+    public void logout(UserData data) {
+        data.userLogout( data);
+        this.currentUser = null;
     }
 }

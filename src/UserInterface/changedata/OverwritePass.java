@@ -9,26 +9,24 @@ import Function.password.checkPasswordField;
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import UserInterface.profile.Profile;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Admin
- */
-public class ChangePass extends javax.swing.JDialog {
-
+ */ 
+public class OverwritePass extends javax.swing.JDialog {
+    static UserData userToUpdateData ;
     private Profile pro;
     private checkPasswordField chckpass = new checkPasswordField();
     private SeeAndUnseePass cbseeunsee = new SeeAndUnseePass();
     DataManager data = DataManager.getInstance();
 
     private void changePass() {
-        UserData us = data.getCurrentUser();
-        String oldPass = String.valueOf(txtOldpass.getPassword());
         String newPass = String.valueOf(txtNewpass.getPassword());
         String confirmNewPass = String.valueOf(txtnewConfirmPass.getPassword());
-        if (txtOldpass.getPassword().toString().equals("Old Password") || txtOldpass.getPassword().toString().isEmpty()
-                || newPass.isEmpty() || newPass.equals("New Password")
+        if ( newPass.isEmpty() || newPass.equals("New Password")
                 || confirmNewPass.isEmpty() || confirmNewPass.equals("Confirm New Password")) {
             JOptionPane.showMessageDialog(null, "INVALID UPDATE PLEASE FILL ALL THE DATA ", "NO DATA TO UPDATE", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -38,31 +36,27 @@ public class ChangePass extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "PLEASE MAKE SURE THE NEW PASSWORD 5 length Char", "THE PASSWORD IS TOO SHORT", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if (!us.verifyPassword(oldPass, us.getPassword())) {
-            JOptionPane.showMessageDialog(null, "THE CURRENT PASSWORD DIDNT MATCH", "PASSWORD DIDNT MATCH", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
         if (!new checkPasswordField().isConfirmPassAndPassSame(newPass, confirmNewPass)) {
             JOptionPane.showMessageDialog(null, "THE NEW PASSWORD DIDNT MATCH TO THE CONFRIM PASSWORD", "PASSWORD DIDNT MATCH", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
-        us.updatePassword(data.getCurrentUser(), newPass);
+
+        userToUpdateData.updatePassword(userToUpdateData,newPass);
         JOptionPane.showMessageDialog(null, "SUCCESSFULL UPDATE THE PASSWORD", "SUCCESSFULYY UPDATED", JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
 
     }
 
-    public ChangePass(java.awt.Frame parent, boolean modal) {
+    public OverwritePass(java.awt.Frame parent, boolean modal,UserData user) {
         super(parent, modal);
         initComponents();
         txtNewpass.setEchoChar((char) 0);
-        txtOldpass.setEchoChar((char) 0);
         txtnewConfirmPass.setEchoChar((char) 0);
         this.chckseeUnseeConfirmPass.setVisible(false);
         this.chckseeUnseeNewPass.setVisible(false);
-        this.chckseeUnseeOldPass.setVisible(false);
+        
         pro = Profile.getInstance();
+        userToUpdateData = user;
     }
 
     /**
@@ -77,11 +71,8 @@ public class ChangePass extends javax.swing.JDialog {
         headerPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         bodyPanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        chckseeUnseeOldPass = new javax.swing.JCheckBox();
         chckseeUnseeNewPass = new javax.swing.JCheckBox();
         chckseeUnseeConfirmPass = new javax.swing.JCheckBox();
-        txtOldpass = new UserInterface.CustomComponents.MyPasswordField();
         txtNewpass = new UserInterface.CustomComponents.MyPasswordField();
         lblNewPassword = new javax.swing.JLabel();
         txtnewConfirmPass = new UserInterface.CustomComponents.MyPasswordField();
@@ -89,11 +80,12 @@ public class ChangePass extends javax.swing.JDialog {
         btnChangePass = new UserInterface.CustomComponents.MyButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         headerPanel.setBackground(new java.awt.Color(0, 204, 0));
 
         jLabel1.setFont(new java.awt.Font("Retro Gaming", 0, 24)); // NOI18N
-        jLabel1.setText("Change Password");
+        jLabel1.setText("Overwrite Password");
 
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
@@ -115,21 +107,6 @@ public class ChangePass extends javax.swing.JDialog {
         bodyPanel.setBackground(new java.awt.Color(255, 255, 255));
         bodyPanel.setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Retro Gaming", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("Old Password");
-        bodyPanel.add(jLabel2);
-        jLabel2.setBounds(22, 27, 120, 18);
-
-        chckseeUnseeOldPass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/see.png"))); // NOI18N
-        chckseeUnseeOldPass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chckseeUnseeOldPassActionPerformed(evt);
-            }
-        });
-        bodyPanel.add(chckseeUnseeOldPass);
-        chckseeUnseeOldPass.setBounds(230, 70, 24, 20);
-
         chckseeUnseeNewPass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/see.png"))); // NOI18N
         chckseeUnseeNewPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,7 +114,7 @@ public class ChangePass extends javax.swing.JDialog {
             }
         });
         bodyPanel.add(chckseeUnseeNewPass);
-        chckseeUnseeNewPass.setBounds(230, 140, 24, 20);
+        chckseeUnseeNewPass.setBounds(230, 80, 24, 20);
 
         chckseeUnseeConfirmPass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/see.png"))); // NOI18N
         chckseeUnseeConfirmPass.addActionListener(new java.awt.event.ActionListener() {
@@ -146,39 +123,7 @@ public class ChangePass extends javax.swing.JDialog {
             }
         });
         bodyPanel.add(chckseeUnseeConfirmPass);
-        chckseeUnseeConfirmPass.setBounds(230, 220, 24, 20);
-
-        txtOldpass.setText("Old Password");
-        txtOldpass.setCornerRadius(50);
-        txtOldpass.setNextFocusableComponent(txtNewpass);
-        txtOldpass.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtOldpassFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtOldpassFocusLost(evt);
-            }
-        });
-        txtOldpass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtOldpassMouseClicked(evt);
-            }
-        });
-        txtOldpass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOldpassActionPerformed(evt);
-            }
-        });
-        txtOldpass.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtOldpassKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtOldpassKeyReleased(evt);
-            }
-        });
-        bodyPanel.add(txtOldpass);
-        txtOldpass.setBounds(22, 57, 245, 36);
+        chckseeUnseeConfirmPass.setBounds(230, 160, 24, 20);
 
         txtNewpass.setText("New Password");
         txtNewpass.setCornerRadius(50);
@@ -210,16 +155,17 @@ public class ChangePass extends javax.swing.JDialog {
             }
         });
         bodyPanel.add(txtNewpass);
-        txtNewpass.setBounds(22, 129, 245, 36);
+        txtNewpass.setBounds(20, 70, 245, 36);
 
         lblNewPassword.setFont(new java.awt.Font("Retro Gaming", 0, 14)); // NOI18N
         lblNewPassword.setForeground(new java.awt.Color(0, 0, 0));
         lblNewPassword.setText("New Password");
         bodyPanel.add(lblNewPassword);
-        lblNewPassword.setBounds(22, 99, 125, 18);
+        lblNewPassword.setBounds(20, 40, 125, 18);
 
         txtnewConfirmPass.setText("Confrim New Password");
         txtnewConfirmPass.setCornerRadius(50);
+        txtnewConfirmPass.setNextFocusableComponent(btnChangePass);
         txtnewConfirmPass.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtnewConfirmPassFocusGained(evt);
@@ -247,13 +193,13 @@ public class ChangePass extends javax.swing.JDialog {
             }
         });
         bodyPanel.add(txtnewConfirmPass);
-        txtnewConfirmPass.setBounds(22, 207, 245, 36);
+        txtnewConfirmPass.setBounds(20, 150, 245, 36);
 
         jLabel4.setFont(new java.awt.Font("Retro Gaming", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Confirm New Password");
         bodyPanel.add(jLabel4);
-        jLabel4.setBounds(22, 177, 196, 18);
+        jLabel4.setBounds(20, 120, 196, 18);
 
         btnChangePass.setText("Change Password");
         btnChangePass.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -264,57 +210,33 @@ public class ChangePass extends javax.swing.JDialog {
             }
         });
         bodyPanel.add(btnChangePass);
-        btnChangePass.setBounds(352, 265, 174, 39);
+        btnChangePass.setBounds(130, 260, 174, 39);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bodyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(bodyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(bodyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void chckseeUnseeOldPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeOldPassActionPerformed
-        cbseeunsee.unseeAndseeIconChange(chckseeUnseeOldPass, txtOldpass);
-    }//GEN-LAST:event_chckseeUnseeOldPassActionPerformed
-
     private void chckseeUnseeNewPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeNewPassActionPerformed
-        cbseeunsee.unseeAndseeIconChange(chckseeUnseeNewPass, txtNewpass);
+      cbseeunsee.unseeAndseeIconChange(chckseeUnseeNewPass, txtNewpass);
     }//GEN-LAST:event_chckseeUnseeNewPassActionPerformed
 
     private void chckseeUnseeConfirmPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chckseeUnseeConfirmPassActionPerformed
-        cbseeunsee.unseeAndseeIconChange(chckseeUnseeConfirmPass, txtnewConfirmPass);
+              cbseeunsee.unseeAndseeIconChange(chckseeUnseeConfirmPass, txtnewConfirmPass);
     }//GEN-LAST:event_chckseeUnseeConfirmPassActionPerformed
-
-    private void txtOldpassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOldpassFocusGained
-        chckpass.HoverAndClickPassword(txtOldpass, chckseeUnseeOldPass, "Old Password");
-    }//GEN-LAST:event_txtOldpassFocusGained
-
-    private void txtOldpassFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOldpassFocusLost
-        chckpass.FocusLostPass(txtOldpass, "Old Password");
-    }//GEN-LAST:event_txtOldpassFocusLost
-
-    private void txtOldpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtOldpassMouseClicked
-        chckpass.HoverAndClickPassword(txtOldpass, chckseeUnseeOldPass, "Old Password");
-    }//GEN-LAST:event_txtOldpassMouseClicked
-
-    private void txtOldpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOldpassKeyPressed
-        chckpass.HoverAndClickPassword(txtOldpass, chckseeUnseeOldPass, "Old Password");
-    }//GEN-LAST:event_txtOldpassKeyPressed
-
-    private void txtOldpassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOldpassKeyReleased
-        chckpass.HoverAndClickPassword(txtOldpass, chckseeUnseeOldPass, "Old Password");
-    }//GEN-LAST:event_txtOldpassKeyReleased
 
     private void txtNewpassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNewpassFocusGained
         chckpass.HoverAndClickPassword(txtNewpass, chckseeUnseeNewPass, "New Password");
@@ -360,10 +282,6 @@ public class ChangePass extends javax.swing.JDialog {
         changePass();
     }//GEN-LAST:event_btnChangePassActionPerformed
 
-    private void txtOldpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOldpassActionPerformed
-        changePass();
-    }//GEN-LAST:event_txtOldpassActionPerformed
-
     private void txtNewpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewpassActionPerformed
         changePass();
     }//GEN-LAST:event_txtNewpassActionPerformed
@@ -389,21 +307,23 @@ public class ChangePass extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OverwritePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OverwritePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OverwritePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OverwritePass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChangePass dialog = new ChangePass(new javax.swing.JFrame(), true);
+                OverwritePass dialog = new OverwritePass(new javax.swing.JFrame(), true,userToUpdateData);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -420,14 +340,11 @@ public class ChangePass extends javax.swing.JDialog {
     private UserInterface.CustomComponents.MyButton btnChangePass;
     private javax.swing.JCheckBox chckseeUnseeConfirmPass;
     private javax.swing.JCheckBox chckseeUnseeNewPass;
-    private javax.swing.JCheckBox chckseeUnseeOldPass;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblNewPassword;
     private UserInterface.CustomComponents.MyPasswordField txtNewpass;
-    private UserInterface.CustomComponents.MyPasswordField txtOldpass;
     private UserInterface.CustomComponents.MyPasswordField txtnewConfirmPass;
     // End of variables declaration//GEN-END:variables
 }

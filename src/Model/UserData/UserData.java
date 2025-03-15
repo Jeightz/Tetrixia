@@ -1,6 +1,7 @@
 package Model.UserData;
 
 import Function.CheckDate.CheckDate;
+import Model.DataManager.DataManager;
 import UserInterface.Admin.AdminFrame;
 import UserInterface.User.UserFrame;
 import java.awt.event.KeyEvent;
@@ -22,9 +23,12 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class UserData {
 
+    private DataManager data = DataManager.getInstance();
+
     //map is a interface
     //hashmap as an implementation of the map
     private HashMap<String, Integer> userKeyBinds = new HashMap<>();//store the keyBind of the user
+
     private String Username;
     private String Password;
     private String FirstName;
@@ -240,51 +244,47 @@ public class UserData {
         this.userType = "User";
         this.isMusicOn = true;
 
-        System.out.println(Username);
-        System.out.println(Password);
-        System.out.println(FirstName);
-        System.out.println(LastName);
-        System.out.println(gender);
-        System.out.println(BOD);
-
     }
 
-    public int userLogin(ArrayList<UserData> data, String username, String password) {
-        for (int i = 0; i < data.size(); i++) {
-            UserData user = data.get(i);
-            if (user.getUsername().equals(username) && user.verifyPassword(password, user.Password)) {
-                if (user.getBanExpr() != null && LocalDateTime.now().isBefore(user.getBanExpr())) {
+    public UserData userLogin(String username, String password) {
+        for (UserData userData : this.data.getData()) {
+            if (userData.getUsername().equals(username) && userData.verifyPassword(password, userData.Password)) {
+                if (userData.getBanExpr() != null && LocalDateTime.now().isBefore(userData.getBanExpr())) {
                     JOptionPane.showMessageDialog(null,
-                            "Your account is banned until: " + user.getBanExpr(),
+                            "Your account is banned until: " + userData.getBanExpr(),
                             "Account Banned",
                             JOptionPane.ERROR_MESSAGE);
-                    return -1;
+                    return userData;
                 }
-                if ("Admin".equals(user.userType)) {
-                    user.loginHistory.add(LocalDateTime.now());
-                    new AdminFrame(i).setVisible(true);
-                    
-                    return i;
+                if ("Admin".equals(userData.userType)) {
+                    userData.loginHistory.add(LocalDateTime.now());
+                    data.setCurrentUser(userData);
+                    new AdminFrame().setVisible(true);
+                    return userData;
                 }
-                user.loginHistory.add(LocalDateTime.now());
-                new UserFrame(i).setVisible(true);
-                return i;
+                userData.loginHistory.add(LocalDateTime.now());
+                data.setCurrentUser(userData);
+                new UserFrame().setVisible(true);
+                return userData;
             }
         }
-        return -1;
+
+        JOptionPane.showMessageDialog(null, "THERE NO DATA FOUND ", "NO DATA FOUND", JOptionPane.INFORMATION_MESSAGE);
+        return null;
     }
-    public HashMap<String,Integer> getuserKeys(){
+
+    public HashMap<String, Integer> getuserKeys() {
         return userKeyBinds;
     }
-    
-    public void userLoginAndOutHistory(JTable table, ArrayList<UserData> data, int userIndex) {
+
+    public void userLoginAndOutHistory(JTable table, UserData userData) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        UserData user = data.get(userIndex);
-        ArrayList<LocalDateTime> logins = user.getLoginHistory();
-        ArrayList<LocalDateTime> logouts = user.getLogoutHistory();
 
-        int maxSize = Math.max(logins.size(), logouts.size());  
+        ArrayList<LocalDateTime> logins = userData.getLoginHistory();
+        ArrayList<LocalDateTime> logouts = userData.getLogoutHistory();
+
+        int maxSize = Math.max(logins.size(), logouts.size());
         for (int i = 0; i < maxSize; i++) {
             String loginTime = (i < logins.size()) ? logins.get(i).toString() : "";
             String logoutTime = (i < logouts.size()) ? logouts.get(i).toString() : "";
@@ -297,12 +297,12 @@ public class UserData {
 
     }
 
-    public void filterLoginLogoutHistoryByDate(JTable table, ArrayList<UserData> data, int userIndex, String dateString) {
+    public void filterLoginLogoutHistoryByDate(UserData userData, JTable table, String dateString) {
+        ArrayList<UserData> data = this.data.getData();
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        UserData user = data.get(userIndex);
-        ArrayList<LocalDateTime> logins = user.getLoginHistory();
-        ArrayList<LocalDateTime> logouts = user.getLogoutHistory();
+        ArrayList<LocalDateTime> logins = userData.getLoginHistory();
+        ArrayList<LocalDateTime> logouts = userData.getLogoutHistory();
         java.time.LocalDate inputDate;
         try {
             DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
@@ -335,9 +335,8 @@ public class UserData {
 
     }
 
-    public void userLogout(ArrayList<UserData> data, int userindex) {
-        UserData us = data.get(userindex);
-        us.logoutHistory.add(LocalDateTime.now());
+    public void userLogout(UserData data) {
+        data.logoutHistory.add(LocalDateTime.now());
     }
 
     public boolean isUsernameDuplication(ArrayList<UserData> data, String username) {
@@ -349,50 +348,60 @@ public class UserData {
         return false;
     }
 
-    public void deleteData(ArrayList<UserData> data, int index) {
-        if (index >= 0 && index < data.size()) {
-            data.remove(index);
-
-        } else {
-
-        }
+    public void deleteData(UserData data) {
+        this.data.getData().remove(data);
     }
 
-    public void updatePersonData(ArrayList<UserData> data, int index, String firstName, String lastName, String gender, String bod) {
+    public void updatePersonData(UserData data, String firstName, String lastName, String gender, String bod) {
         if (!new CheckDate().isAtLeast10YearsOld(bod)) {
             JOptionPane.showMessageDialog(null, "The BOD is not applicable cause it is lower than 10 years old age or too high than 100", "NOT APPLICABLE BOD", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        if (index >= 0 && index < data.size()) {
-            UserData us = data.get(index);
-            us.setFirstName(firstName);
-            us.setLastName(lastName);
-            us.setGender(gender);
-            us.setBOD(bod);
+        ArrayList<UserData> userData = this.data.getData();
+        for (UserData userdata : userData) {
+            if (userdata.equals(data)) {
+                userdata.setFirstName(firstName);
+                userdata.setLastName(lastName);
+                userdata.setGender(gender);
+                userdata.setBOD(bod);
+                break;
+            }
 
         }
     }
 
-    public void updateUsername(ArrayList<UserData> data, int index, String user) {
-        if (index >= 0 && index < data.size() && !isUsernameDuplication(data, user)) {
-            UserData us = data.get(index);
-            us.setUsername(user);
+    public void updateUsername(UserData data, String user) {
+        for (UserData userdata : this.data.getData()) {
+            if (userdata.equals(data)) {
+                userdata.setUsername(user);
+                JOptionPane.showMessageDialog(null, "SuccessFully Updatae username of the data: " + userdata.getUsername());
+                break;
+            }
         }
+
     }
 
-    public void updatePassword(ArrayList<UserData> data, int index, String pass) {
-        if (index >= 0 && index < data.size()) {
-            UserData us = data.get(index);
-            us.setPassword(userPasswordHash(pass));
+    public void updatePassword(UserData data, String user) {
+        for (UserData userdata : this.data.getData()) {
+            if (userdata == data) {
+               userdata.setPassword(userdata.userPasswordHash(user));
+                JOptionPane.showMessageDialog(null, "SuccessFully Updatae Password of the data: " + userdata.getUsername());
+                break;
+            }
         }
+
     }
 
-    public void updateProfile(ArrayList<UserData> data, int index, File pro) {
-        if (index >= 0 && index < data.size()) {
-            UserData us = data.get(index);
-            us.setProfile(pro);
+    public void updateProfile(UserData data, File pro) {
+        for (UserData userdata : this.data.getData()) {
+            if (userdata.equals(data)) {
+                userdata.setProfile(pro);
+                JOptionPane.showMessageDialog(null, "SuccessFully Updatae Profile of the data: " + userdata.getUsername());
+                break;
+            }
         }
+
     }
 
     public void addDataAccountTable(ArrayList<UserData> data, JTable table) {
@@ -402,9 +411,6 @@ public class UserData {
 
         for (UserData da : data) {
             int score = da.getPlayerScore();
-            if (score == -1) {
-                score = 0;
-            }
 
             if (da.userType.equals("User")) {
                 model.addRow(new Object[]{count++, da.getUsername(), da.FirstName + " " + da.LastName, score});
@@ -413,13 +419,15 @@ public class UserData {
         }
     }
 
-    public void addDataLeaderBoardTables(ArrayList<UserData> data, JTable table) {
+    public void addDataLeaderBoardTables(JTable table) {
+        ArrayList<UserData> data = this.data.getData();
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         int cout = model.getRowCount() + 1;
         mergeSort(data);
         for (UserData da : data) {
             model.addRow(new Object[]{cout++, da.getUsername(), da.getPlayerScore()});
+            System.out.println(da.getPlayerScore());
         }
     }
 //sorting for the leaderBoards
@@ -474,32 +482,25 @@ public class UserData {
         }
     }
 
-    public void banHoursUsername(ArrayList<UserData> data, String user, int hours) {
-        for (UserData us : data) {
-            if (us.getUsername().equals(user)) {
-                us.setBanForHours(hours);
+    public UserData findUser(ArrayList<UserData> data, String username) {
+        for (UserData userData : data) {
+            if (userData.getUsername().equals(username)) {
+                
+                return userData;
             }
-        }
 
+        }
+        JOptionPane.showMessageDialog(null, "NO DATA FOUND ", "DATA NO FOUND", JOptionPane.INFORMATION_MESSAGE);
+        return null;
     }
 
-    public int findUserIndex(ArrayList<UserData> data, String username) {
-        for (int i = 0; i < data.size(); i++) {
-            UserData us = data.get(i);
-            if (us.getUsername().equals(username)) {
-                return i;
-            }
-        }
-        return - 1;
-    }
-
-    public void banUserUntilDateTimeByIndex(ArrayList<UserData> data, int userIndex, String dateString, String timeString) {
-        if (userIndex < 0 || userIndex >= data.size()) {
+    public void banUserUntilDateTimeByIndex(ArrayList<UserData> data, UserData userData, String dateString, String timeString) {
+        if (data.size() < 0) {
             JOptionPane.showMessageDialog(null, "Invalid UserIndex.", "Invalid Index", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        UserData user = data.get(userIndex);
+        UserData user = userData;
         try {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
             LocalDate banDate = LocalDate.parse(dateString, dateFormatter);
@@ -521,6 +522,7 @@ public class UserData {
     }
 
     public void filterAccount(ArrayList<UserData> data, JTable table, String search) {
+
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         int cout = model.getRowCount() + 1;
@@ -551,13 +553,11 @@ public class UserData {
         try {
             generatePepper();
 
-            
-
             String pepperedPassword = plainPassword + pepper;
             return BCrypt.checkpw(pepperedPassword, hashedPassword);
         } catch (Exception e) {
             return false;
         }
     }
-    
+
 }

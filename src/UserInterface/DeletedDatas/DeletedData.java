@@ -26,26 +26,28 @@ public class DeletedData extends javax.swing.JDialog {
     private final txtField txt = new txtField();
     private UserData user = new UserData();
     private Accounts acc;
-    private static int userIndex = -1;
+    private UserData userData;
     private static DeletedData deletedData;
-    public DeletedData(java.awt.Frame parent, boolean modal,int userIndex) {
+
+    public DeletedData(java.awt.Frame parent, boolean modal) {
+        
         super(parent, modal);
         initComponents();
-        user.addDataAccountTable(data.getDeletedAccounts(), myTable1);
+        user.addDataAccountTable(data.getDeletedAccounts() ,myTable1);
         txtpassword.setEchoChar((char) 0);
-         acc = Accounts.getInstance(userIndex);
+         acc = Accounts.getInstance();
     }
     
     public static DeletedData getInstants(){
         if(deletedData == null){
-            deletedData = new DeletedData(null,false,userIndex);
+            deletedData = new DeletedData(null,false);
         }
         return deletedData;
     }
 
     public void deleteAllData(){
            data.getDeletedAccounts().clear();
-            user.addDataAccountTable(data.getDeletedAccounts(), myTable1);
+            user.addDataAccountTable( data.getDeletedAccounts(),myTable1);
             resetInputData();
             JOptionPane.showMessageDialog(null, "SUCCESSFULLY DELETED THE DATA ", "DELETED", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -347,8 +349,15 @@ public class DeletedData extends javax.swing.JDialog {
         int row = myTable1.getSelectedRow();
         int col = 1;//get the value in the index 1
         String selectedUsername = (String) myTable1.getValueAt(row, col);
-        userIndex = new UserData().findUserIndex(data.getDeletedAccounts(), selectedUsername);
-        user = data.getDeletedAccounts().get(userIndex);
+       userData =  new UserData().findUser(data.getDeletedAccounts(),selectedUsername);
+       UserData user = null;
+       
+       for(UserData userData: data.getDeletedAccounts()){
+           if(userData.equals(userData)){
+              user= userData;
+               break;
+           }
+       }
         if (row != -1) {
             txtusername.setText(selectedUsername);
             txtfirstname.setText(user.getFirstName());
@@ -415,7 +424,7 @@ public class DeletedData extends javax.swing.JDialog {
         int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO DELETE ALL THE DATA PERMENANTLY ?", "DELETE ALL DATA", JOptionPane.YES_NO_OPTION);
 
         if (choose == JOptionPane.YES_OPTION) {
-            new LoginConformation(null,true,userIndex).setVisible(true);
+            new LoginConformation(null,true,"DeleteAllData").setVisible(true);
 
         }
     }                                         
@@ -437,19 +446,19 @@ public class DeletedData extends javax.swing.JDialog {
     }                                         
 
     private void btnrestoryaccountActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        if (userIndex == -1) {
+        if (userData == null) {
             JOptionPane.showMessageDialog(null, "PLEASE SELECT A DATA TO RESTORT TO ", "PLEASE SELETE DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT THIS ACCOUT TO RESTORT " + data.getDeletedAccounts().get(userIndex).getUsername(), "RESTORE ACCOUNT", JOptionPane.YES_NO_OPTION);
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT THIS ACCOUT TO RESTORT " + userData.getUsername() ,"RESTORE ACCOUNT", JOptionPane.YES_NO_OPTION);
 
         if (choose != JOptionPane.YES_OPTION) {
             return;
         }
 
         JOptionPane.showMessageDialog(null, "SUCCESSFULLY RESTORE ", "RESTORE", JOptionPane.INFORMATION_MESSAGE);
-        data.addUser(data.getDeletedAccounts().get(userIndex));
-        data.getDeletedAccounts().remove(userIndex);
+        data.addUser(userData);
+        data.getDeletedAccounts().remove(userData);
         acc.updateData();
         resetInputData();
         user.addDataAccountTable(data.getDeletedAccounts(), myTable1);
@@ -470,14 +479,14 @@ public class DeletedData extends javax.swing.JDialog {
     }
 
     private void btnpernadeleteActionPerformed(java.awt.event.ActionEvent evt) {                                               
-        if (userIndex == -1) {
+        if (userData == null) {
             JOptionPane.showMessageDialog(null, "PLEASE SELECT A DATA TO RESTORT TO ", "PLEASE SELETE DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT THIS ACCOUT TO PERNAMENTLY DELETED " + data.getDeletedAccounts().get(userIndex).getUsername(), "RESTORE ACCOUNT", JOptionPane.YES_NO_OPTION);
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT THIS ACCOUT TO PERNAMENTLY DELETED " + userData.getUsername(), "RESTORE ACCOUNT", JOptionPane.YES_NO_OPTION);
 
         if (choose == JOptionPane.YES_OPTION) {
-            data.getDeletedAccounts().remove(userIndex);
+            data.getDeletedAccounts().remove(userData);
             user.addDataAccountTable(data.getDeletedAccounts(), myTable1);
             resetInputData();
         }
@@ -514,7 +523,7 @@ public class DeletedData extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DeletedData dialog = new DeletedData(new javax.swing.JFrame(), true,userIndex);
+                DeletedData dialog = new DeletedData(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

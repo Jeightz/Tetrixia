@@ -18,14 +18,12 @@ import javax.swing.JOptionPane;
 public class Game extends javax.swing.JFrame {
 
     DataManager data = DataManager.getInstance();
-    static int profIndex;
     GameBoard game;
     GameBackGroundMusic music = new GameBackGroundMusic();
 
-    public Game(int profIndex) {
+    public Game() {
         initComponents();
-        this.profIndex = profIndex;
-        game = new GameBoard(this, data.getData(), this.profIndex, music);
+        game = new GameBoard(this, music);
         add(game);
     }
 
@@ -66,10 +64,10 @@ public class Game extends javax.swing.JFrame {
             game.recordScore();
             music.toggleMusic(false);
             this.dispose();
-            if (data.getData().get(profIndex).getUserType().equals("User")) {
-                new UserFrame(profIndex).setVisible(true);
+            if (data.getCurrentUser().getUserType().equals("User")) {
+                new UserFrame().setVisible(true);
             } else {
-                new AdminFrame(profIndex).setVisible(true);
+                new AdminFrame().setVisible(true);
 
             }
 
@@ -113,7 +111,7 @@ public class Game extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Game(profIndex).setVisible(true);
+                new Game().setVisible(true);
             }
         });
     }

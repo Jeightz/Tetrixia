@@ -14,6 +14,7 @@ import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import UserInterface.DeletedDatas.DeletedData;
 import UserInterface.Login.SignIn;
+import UserInterface.LoginConformation.LoginConformation;
 import UserInterface.ShowData.ShowedData;
 import UserInterface.banAccount.banAccount;
 import java.io.File;
@@ -33,25 +34,26 @@ public class Accounts extends javax.swing.JPanel {
     private final txtField txt = new txtField();
     private UserData user = new UserData();
     private final SeeAndUnseePass cbpass = new SeeAndUnseePass();
-    private static int userIndex = -1;
     private AdminFrame frame;
+
+    private final UserData currentUserLogin = data.getCurrentUser();
+    private UserData seletedUser;
+
     private static Accounts instants = null;
-    
-    
-    public static  Accounts getInstance (int userIndex){
-        if(instants == null){
-            instants = new Accounts(userIndex);
-        }else{
-            Accounts.userIndex = userIndex;
-            
+
+    public static Accounts getInstance() {
+        if (instants == null) {
+            instants = new Accounts();
+        } else {
+
         }
         return instants;
     }
-    
-    public void updateData(){
+
+    public void updateData() {
         user.addDataAccountTable(data.getData(), myTable1);
     }
-    
+
     private void componentVisibleEnable(boolean maincomponent, boolean actionComponent) {
         txtpassword.setEnabled(maincomponent);
         btnban.setEnabled(actionComponent);
@@ -59,6 +61,7 @@ public class Accounts extends javax.swing.JPanel {
         btndelete.setEnabled(actionComponent);
         btnshowdata.setEnabled(actionComponent);
         btnadd.setEnabled(maincomponent);
+        btnOverWritePassword.setVisible(actionComponent);
         btncancel.setVisible(actionComponent);
     }
 
@@ -98,14 +101,13 @@ public class Accounts extends javax.swing.JPanel {
         profile = null;
         lblpictureHolder.setIcon(null);
         txtpassword.setText("Password");
-        txtpassword.setEchoChar((char)0);
+        txtpassword.setEchoChar((char) 0);
         chckseeUnsee.setVisible(false);
-                }
+    }
 
-    public Accounts(int userIndex) {
+    public Accounts() {
         initComponents();
         updateData();
-        this.userIndex = userIndex; 
         this.frame = frame;
         chckseeUnsee.setVisible(false);
         txtpassword.setEchoChar((char) 0);
@@ -114,6 +116,7 @@ public class Accounts extends javax.swing.JPanel {
         btnupdate.setEnabled(false);
         btnshowdata.setEnabled(false);
         btncancel.setVisible(false);
+        btnOverWritePassword.setVisible(false);
         this.datePicker2.getComponentDateTextField().setEnabled(false);
         checkDeletedUsers();
 
@@ -124,7 +127,6 @@ public class Accounts extends javax.swing.JPanel {
             btndeleteAccountRecords.setVisible(false);
             return;
         }
-        
         btndeleteAccountRecords.setVisible(true);
     }
 
@@ -151,6 +153,7 @@ public class Accounts extends javax.swing.JPanel {
         btndelete = new UserInterface.CustomComponents.MyButton();
         btnban = new UserInterface.CustomComponents.MyButton();
         btnshowdata = new UserInterface.CustomComponents.MyButton();
+        btnOverWritePassword = new UserInterface.CustomComponents.MyButton();
         btncancel = new UserInterface.CustomComponents.MyButton();
         btndeleteAccountRecords = new UserInterface.CustomComponents.MyButton();
         txtsearch = new UserInterface.CustomComponents.MyTextField();
@@ -184,11 +187,11 @@ public class Accounts extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         txtpassword.setText("Password");
-        txtpassword.setToolTipText("");
         txtpassword.setCornerRadius(50);
         txtpassword.setCustomIcon1(new javax.swing.ImageIcon(getClass().getResource("/image/password.png"))); // NOI18N
         txtpassword.setName("txtpassword"); // NOI18N
         txtpassword.setNextFocusableComponent(txtfirstname);
+        txtpassword.setToolTipText("");
         txtpassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtpasswordFocusGained(evt);
@@ -437,6 +440,18 @@ public class Accounts extends javax.swing.JPanel {
         });
         jPanel3.add(btnshowdata);
 
+        btnOverWritePassword.setText("OverWrite Password");
+        btnOverWritePassword.setColorClick(new java.awt.Color(51, 102, 255));
+        btnOverWritePassword.setColorOver(new java.awt.Color(102, 102, 255));
+        btnOverWritePassword.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnOverWritePassword.setRadius(50);
+        btnOverWritePassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOverWritePasswordActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnOverWritePassword);
+
         btncancel.setText("Cancel");
         btncancel.setColorClick(new java.awt.Color(51, 102, 255));
         btncancel.setColorOver(new java.awt.Color(102, 102, 255));
@@ -584,13 +599,23 @@ public class Accounts extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnaddActionPerformed
 
+    private void checkUser(ArrayList<UserData> data) {
+        for (UserData userData : data) {
+            if (userData.equals(seletedUser)) {
+                user = userData;
+                break;
+            }
+        }
+    }
 
     private void myTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myTable1MouseClicked
         int row = myTable1.getSelectedRow();
         int col = 1;//get the value in the index 1
         String selectedUsername = (String) myTable1.getValueAt(row, col);
-        userIndex = new UserData().findUserIndex(data.getData(), selectedUsername);
-        user = data.getData().get(userIndex);
+        seletedUser = new UserData().findUser(data.getData(), selectedUsername);
+
+        checkUser(data.getData());
+
         if (row != -1) {
             txtusername.setText(selectedUsername);
             txtfirstname.setText(user.getFirstName());
@@ -600,36 +625,40 @@ public class Accounts extends javax.swing.JPanel {
             profile = user.getProfile();
             new FitImage().risizelabel(profile, lblpictureHolder);
             componentVisibleEnable(false, true);
-
+            this.btnOverWritePassword.setVisible(true);
         }
     }//GEN-LAST:event_myTable1MouseClicked
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
-        String pass = txtpassword.getPassword().toString().trim();
+        String pass = new String(txtpassword.getPassword()).trim(); 
         String username = txtusername.getText();
         String lastname = txtlastname.getText();
         String firstname = txtfirstname.getText();
         String bod = datePicker2.getComponentDateTextField().getText();
         String gender = cbgender.getSelectedItem().toString();
-        if (user.isUsernameDuplication(data.getData(), username)) {
-            JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
 
-        if (userIndex == -1) {
+        if (seletedUser == null) {
             JOptionPane.showMessageDialog(null, "NO DATA HAS FOUND TO UPDATE", "UPDATE NO DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        checkIfItValid(username, pass, firstname, lastname, bod, gender);
-        user = data.getData().get(this.userIndex);
-        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO UPDATE THE DATA USERNAME:" + user.getUsername(), "UPDATE DATA?", JOptionPane.YES_NO_OPTION);
-        if (choose == JOptionPane.YES_OPTION) {
+        if (!seletedUser.getUsername().equals(username) && user.isUsernameDuplication(data.getData(), username)) {
+            JOptionPane.showMessageDialog(null, "THE USERNAME YOU INPUT IS ALREADY EXCIST PLEASE ENTER AGAIN", "USERNAME DUPLICATION", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (!checkIfItValid(username, pass, firstname, lastname, bod, gender)) {
+            return;  
+        }
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO UPDATE THE DATA USERNAME:" + seletedUser.getUsername(),
+                "UPDATE DATA?", JOptionPane.YES_NO_OPTION);
 
-            new UserData().updatePersonData(data.getData(), userIndex, firstname, lastname, gender, bod);
-            new UserData().updateProfile(data.getData(), userIndex, profile);
-            new UserData().updateUsername(data.getData(), userIndex, username);
-            resetInputData();
+        if (choose == JOptionPane.YES_OPTION) {
+            new UserData().updatePersonData(seletedUser, firstname, lastname, gender, bod);
+            new UserData().updateProfile(seletedUser, profile);
+            if (!seletedUser.getUsername().equals(username)) {
+                new UserData().updateUsername(seletedUser,username);
+            }
+   resetInputData();
             JOptionPane.showMessageDialog(null, "Successfully update the Account", "SUCCESSFULLY UPDATED", JOptionPane.INFORMATION_MESSAGE);
             new UserData().addDataAccountTable(data.getData(), myTable1);
             this.componentVisibleEnable(true, false);
@@ -640,7 +669,7 @@ public class Accounts extends javax.swing.JPanel {
         int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO DELETE THIS DATA", "DELETE DATA ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (choose == JOptionPane.YES_OPTION) {
             data.deleteUser(user);
-            new UserData().deleteData(data.getData(), userIndex);
+            new UserData().deleteData(seletedUser);
             JOptionPane.showMessageDialog(null, "Successfully deleted the Account", "SUCCESSFULLY DELETED ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
             resetInputData();
             new UserData().addDataAccountTable(data.getData(), myTable1);
@@ -659,9 +688,8 @@ public class Accounts extends javax.swing.JPanel {
     }//GEN-LAST:event_cbgenderItemStateChanged
 
     private void btnshowdataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnshowdataActionPerformed
-        if (userIndex != -1 && data != null) {
-            System.out.print(userIndex);
-            new ShowedData(null, true, data.getData(), userIndex).setVisible(true);
+        if (seletedUser != null) {
+            new ShowedData(null, true, seletedUser).setVisible(true);
         }
     }//GEN-LAST:event_btnshowdataActionPerformed
 
@@ -685,7 +713,7 @@ public class Accounts extends javax.swing.JPanel {
     }//GEN-LAST:event_txtpasswordKeyReleased
 
     private void btnbanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbanActionPerformed
-        new banAccount(null, true, userIndex).setVisible(true);
+        new banAccount(null, true,seletedUser).setVisible(true);
     }//GEN-LAST:event_btnbanActionPerformed
 
     private void txtsearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtsearchFocusGained
@@ -711,13 +739,21 @@ public class Accounts extends javax.swing.JPanel {
 
     private void btndeleteAccountRecordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteAccountRecordsActionPerformed
         DeletedData deletedData = DeletedData.getInstants();
-        
         deletedData.setVisible(true);
-        
+
     }//GEN-LAST:event_btndeleteAccountRecordsActionPerformed
+
+    private void btnOverWritePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOverWritePasswordActionPerformed
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU REALLY SURE YOU WANT TO OVERWRITE THE USER PASSWORD (WARNING IT MAY CAUSE TROUBLE TO THE USER)", "OVERWRITE PASSWORD", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+
+        if (choose == JOptionPane.YES_OPTION) {
+            new LoginConformation(null, true, seletedUser, "OverWritePassword").setVisible(true);
+        }
+    }//GEN-LAST:event_btnOverWritePasswordActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private UserInterface.CustomComponents.MyButton btnOverWritePassword;
     private UserInterface.CustomComponents.MyButton btnadd;
     private UserInterface.CustomComponents.MyButton btnban;
     private UserInterface.CustomComponents.MyButton btncancel;

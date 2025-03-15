@@ -6,6 +6,7 @@ package Function.GameBoard;
 
 import Model.Tetromino.Tetromino;
 import Function.GameAudio.GameBackGroundMusic;
+import Model.DataManager.DataManager;
 import Model.UserData.UserData;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,15 +18,16 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements Runnable {
 
+    private DataManager data = DataManager.getInstance();
+
     private int cellSize = 8;
     private final int gridHeight = 20;
     private final int gridWidth = 10;
-    private ArrayList<UserData> data;
-    private int profileIndex;
 
     private ArrayList<Tetromino> tetro = new ArrayList<>();
     private Tetromino CurrentTetromino;
@@ -74,11 +76,9 @@ public class GameBoard extends JPanel implements Runnable {
         this.isGamePause = isGamePause;
     }
 
-    public GameBoard(JFrame frame, ArrayList<UserData> data, int profileIndex, GameBackGroundMusic music) {
+    public GameBoard(JFrame frame, GameBackGroundMusic music) {
         this.setBounds(frame.getBounds());
         this.setBackground(Color.black);
-        this.data = data;
-        this.profileIndex = profileIndex;
         addTetromino();
         initializeGame();
         this.setFocusable(true);
@@ -87,7 +87,7 @@ public class GameBoard extends JPanel implements Runnable {
         resizeGame(frame.getWidth(), frame.getHeight());
         this.music = music;
         music.loadMusic();
-        music.toggleMusic(this.data.get(profileIndex).isIsMusicOn());
+        music.toggleMusic(this.data.getCurrentUser().isIsMusicOn());
     }
 
     public void resizeGame(int frameWidth, int frameHeight) {
@@ -185,7 +185,6 @@ public class GameBoard extends JPanel implements Runnable {
         int nextTetromino = rand.nextInt(7);
         NextTetromino = new Tetromino(tetro.get(nextTetromino).getTetromino(), tetro.get(nextTetromino).getColor());
         NextTetromino.setCurrentRotation(0);
-    
 
     }
 
@@ -336,10 +335,14 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     public void recordScore() {
-        int DataScore = data.get(profileIndex).getPlayerScore();
+        int DataScore = data.getCurrentUser().getPlayerScore();
         if (DataScore < score) {
-            data.get(profileIndex).setPlayerScore(score);
-
+            for (UserData da : data.getData()) {
+                if (da == data.getCurrentUser()) {
+                    da.setPlayerScore(score);
+                    break;
+                }
+            }
         }
     }
 
@@ -604,7 +607,7 @@ public class GameBoard extends JPanel implements Runnable {
             if (lineremove > 0) {
                 updateScoreUser(lineremove);
             }
-         
+
         } else {
             CurrentTetromino.updatePos(0, 1);
             repaint();
@@ -619,7 +622,6 @@ public class GameBoard extends JPanel implements Runnable {
         while (true) {
             int[][] shape = CurrentTetromino.getTetromino();
             if (checkPieceCollision(0, 1, shape) || checkIsPieceBottom(0, 1, shape)) {
-                score += 2;
                 break;
             }
             CurrentTetromino.updatePos(0, 1);
@@ -693,7 +695,7 @@ public class GameBoard extends JPanel implements Runnable {
                 }
                 return;
             }
-            UserData da = data.get(profileIndex);
+            UserData da = data.getCurrentUser();
             int keyCode = e.getKeyCode();
             int moveLeftKey = da.getUserKeyBinds("MOVE_LEFT");
             int moveRightKey = da.getUserKeyBinds("MOVE_RIGHT");

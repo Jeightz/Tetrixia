@@ -17,7 +17,7 @@ public class Leaderboards extends javax.swing.JPanel {
     public Leaderboards(ArrayList<UserData> data) {
         this.data = data; 
         initComponents();
-        new UserData().addDataLeaderBoardTables(data, jTable1);
+        new UserData().addDataLeaderBoardTables(jTable1);
     }
 
     /**

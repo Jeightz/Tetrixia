@@ -163,7 +163,6 @@
         <Component class="UserInterface.CustomComponents.MyPasswordField" name="txtpassword">
           <Properties>
             <Property name="text" type="java.lang.String" value="Password"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="cornerRadius" type="int" value="50"/>
             <Property name="customIcon1" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/image/password.png"/>
@@ -172,6 +171,7 @@
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtfirstname"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtpasswordFocusGained"/>
@@ -424,6 +424,24 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnshowdataActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="UserInterface.CustomComponents.MyButton" name="btnOverWritePassword">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="OverWrite Password"/>
+            <Property name="colorClick" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="66" red="33" type="rgb"/>
+            </Property>
+            <Property name="colorOver" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="66" red="66" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial" size="12" style="1"/>
+            </Property>
+            <Property name="radius" type="int" value="50"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOverWritePasswordActionPerformed"/>
           </Events>
         </Component>
         <Component class="UserInterface.CustomComponents.MyButton" name="btncancel">

@@ -6,7 +6,6 @@ package UserInterface.Admin;
 
 import Model.DataManager.DataManager;
 import Model.UserData.UserData;
-import static UserInterface.Admin.AdminFrame.userIndex;
 import UserInterface.Login.SignIn;
 import UserInterface.game.Game;
 import UserInterface.leaderboards.Leaderboards;
@@ -25,7 +24,6 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private Profile pro;
 
-    static int userIndex;
 
     public void labelHover(JLabel lbl) {
         lbl.setForeground(Color.black);
@@ -37,12 +35,11 @@ public class AdminFrame extends javax.swing.JFrame {
         lbl.setFont(new java.awt.Font("Retro Gaming", 0, 30)); // NOI18N
     }
 
-    public AdminFrame(int userIndex) {
+    public AdminFrame() {
         initComponents();
-        Acc = Accounts.getInstance(userIndex);
+        Acc = Accounts.getInstance();
         ViewPanel.setViewportView(Acc);
-        this.userIndex = userIndex;
-        pro = Profile.getInstance(userIndex);
+        pro = Profile.getInstance();
     }
 
     @SuppressWarnings("unchecked")
@@ -236,7 +233,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblplayMouseClicked
         labelHoverOut(lblplay);
-        new Game(userIndex).setVisible(true);
+        new Game().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_lblplayMouseClicked
 
@@ -263,7 +260,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lblsettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseClicked
         labelHoverOut(lblsettings);
-        ViewPanel.setViewportView(new Settings(data.getData(), userIndex));
+        ViewPanel.setViewportView(new Settings());
     }//GEN-LAST:event_lblsettingsMouseClicked
 
     private void lblsettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsettingsMouseEntered
@@ -276,9 +273,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void lbllogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoutMouseClicked
         labelHoverOut(lbllogout);
-        DataManager manager = DataManager.getInstance();
-        ArrayList<UserData> data = manager.getData();
-        new UserData().userLogout(data, userIndex);
+        new UserData().userLogout(this.data.getCurrentUser());
 
         this.dispose();
         JOptionPane.showMessageDialog(null, "SUCCESSFULLY LOGOUT(RECORDED)", "LOGOUT!", JOptionPane.INFORMATION_MESSAGE);
@@ -324,7 +319,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
         if (choose == JOptionPane.YES_OPTION) {
             dispose();
-            new UserData().userLogout(data.getData(), userIndex);
+            new UserData().userLogout(data.getCurrentUser());
             new SignIn(null, false).setVisible(true);
         }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -360,7 +355,7 @@ public class AdminFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminFrame(userIndex).setVisible(true);
+                new AdminFrame().setVisible(true);
             }
         });
     }
