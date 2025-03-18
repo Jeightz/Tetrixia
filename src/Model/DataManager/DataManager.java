@@ -7,10 +7,6 @@ package Model.DataManager;
 import Model.UserData.UserData;
 import java.util.ArrayList;
 
-/**
- *
- * @author Admin
- */
 public class DataManager {
 
     private static UserData currentUser;
@@ -21,7 +17,7 @@ public class DataManager {
     private DataManager() {
         this.data = new ArrayList<>();
         this.deletedAccounts = new ArrayList<>();
-        this.currentUser = null; 
+        this.currentUser = null;
 
     }
 
@@ -58,7 +54,7 @@ public class DataManager {
     }
 
     public void logout(UserData data) {
-        data.userLogout( data);
+        data.userLogout(data);
         this.currentUser = null;
     }
 }

@@ -69,7 +69,6 @@ public class SignIn extends javax.swing.JDialog {
         String birthDate = datePicker2.getText().trim();
         if (!isValidSignUpInput(username, firstName, lastName, gender, birthDate, password, confirmPassword)) {
             JOptionPane.showMessageDialog(this, "Invalid SignUp! Please fill in all fields correctly.", "Invalid SignUp", JOptionPane.INFORMATION_MESSAGE);
-
             return;
         }
 
@@ -177,6 +176,7 @@ public class SignIn extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         cbgender = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -539,6 +539,11 @@ public class SignIn extends javax.swing.JDialog {
         jPanel1.add(tabLogInOut);
         tabLogInOut.setBounds(430, -40, 350, 610);
 
+        jLabel4.setText("Tetrixia");
+        jLabel4.setFont(new java.awt.Font("Retro Gaming", 1, 48)); // NOI18N
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(70, 40, 350, 70);
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 570));
 
         pack();
@@ -800,6 +805,7 @@ public class SignIn extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblPictureHolder;
     private UserInterface.CustomComponents.MyButton myButton1;

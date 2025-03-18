@@ -30,28 +30,28 @@ public class DeletedData extends javax.swing.JDialog {
     private static DeletedData deletedData;
 
     public DeletedData(java.awt.Frame parent, boolean modal) {
-        
+
         super(parent, modal);
         initComponents();
-        user.addDataAccountTable(data.getDeletedAccounts() ,myTable1);
+        user.addDataAccountTable(data.getDeletedAccounts(), myTable1);
         txtpassword.setEchoChar((char) 0);
-         acc = Accounts.getInstance();
+        acc = Accounts.getInstance();
     }
-    
-    public static DeletedData getInstants(){
-        if(deletedData == null){
-            deletedData = new DeletedData(null,false);
+
+    public static DeletedData getInstants() {
+        if (deletedData == null) {
+            deletedData = new DeletedData(null, false);
         }
         return deletedData;
     }
 
-    public void deleteAllData(){
-           data.getDeletedAccounts().clear();
-            user.addDataAccountTable( data.getDeletedAccounts(),myTable1);
-            resetInputData();
-            JOptionPane.showMessageDialog(null, "SUCCESSFULLY DELETED THE DATA ", "DELETED", JOptionPane.INFORMATION_MESSAGE);
+    public void deleteAllData() {
+        data.getDeletedAccounts().clear();
+        user.addDataAccountTable(data.getDeletedAccounts(), myTable1);
+        resetInputData();
+        JOptionPane.showMessageDialog(null, "SUCCESSFULLY DELETED THE DATA ", "DELETED", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
@@ -81,19 +81,17 @@ public class DeletedData extends javax.swing.JDialog {
         jPanel1.setPreferredSize(new java.awt.Dimension(621, 570));
 
         myTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID#", "Username", "Name", "Score"
-            }
+                new Object[][]{},
+                new String[]{
+                    "ID#", "Username", "Name", "Score"
+                }
         ) {
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                 false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         myTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -115,6 +113,7 @@ public class DeletedData extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtpasswordFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtpasswordFocusLost(evt);
             }
@@ -128,6 +127,7 @@ public class DeletedData extends javax.swing.JDialog {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtpasswordKeyPressed(evt);
             }
+
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtpasswordKeyReleased(evt);
             }
@@ -140,6 +140,7 @@ public class DeletedData extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtlastnameFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtlastnameFocusLost(evt);
             }
@@ -150,7 +151,7 @@ public class DeletedData extends javax.swing.JDialog {
             }
         });
 
-        cbgender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gender", "Male", "Female" }));
+        cbgender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Gender", "Male", "Female"}));
         cbgender.setEnabled(false);
         cbgender.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -167,6 +168,7 @@ public class DeletedData extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtfirstnameFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtfirstnameFocusLost(evt);
             }
@@ -184,6 +186,7 @@ public class DeletedData extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtusernameFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtusernameFocusLost(evt);
             }
@@ -204,46 +207,46 @@ public class DeletedData extends javax.swing.JDialog {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(lblpictureHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtusername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtfirstname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbgender, 0, 219, Short.MAX_VALUE))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtpassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(8, 8, 8))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtlastname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(datePicker2, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))))
-                .addGap(7, 7, 7))
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblpictureHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtusername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtfirstname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbgender, 0, 219, Short.MAX_VALUE))
+                                .addGap(13, 13, 13)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(txtpassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(8, 8, 8))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(txtlastname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(datePicker2, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))))
+                                .addGap(7, 7, 7))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(lblpictureHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(cbgender, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(datePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(lblpictureHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(cbgender, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)
+                                .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(datePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -286,6 +289,7 @@ public class DeletedData extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtsearchFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtsearchFocusLost(evt);
             }
@@ -304,60 +308,60 @@ public class DeletedData extends javax.swing.JDialog {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(1, 1, 1))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtsearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(27, 27, 27))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(1, 1, 1))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(txtsearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(27, 27, 27))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>                        
 
-    private void myTable1MouseClicked(java.awt.event.MouseEvent evt) {                                      
+    private void myTable1MouseClicked(java.awt.event.MouseEvent evt) {
         int row = myTable1.getSelectedRow();
         int col = 1;//get the value in the index 1
         String selectedUsername = (String) myTable1.getValueAt(row, col);
-       userData =  new UserData().findUser(data.getDeletedAccounts(),selectedUsername);
-       UserData user = null;
-       
-       for(UserData userData: data.getDeletedAccounts()){
-           if(userData.equals(userData)){
-              user= userData;
-               break;
-           }
-       }
+        userData = new UserData().findUser(data.getDeletedAccounts(), selectedUsername);
+        UserData user = null;
+
+        for (UserData userData : data.getDeletedAccounts()) {
+            if (userData.equals(userData)) {
+                user = userData;
+                break;
+            }
+        }
         if (row != -1) {
             txtusername.setText(selectedUsername);
             txtfirstname.setText(user.getFirstName());
@@ -368,89 +372,89 @@ public class DeletedData extends javax.swing.JDialog {
             new FitImage().risizelabel(profile, lblpictureHolder);
 
         }
-    }                                     
+    }
 
-    private void txtpasswordFocusGained(java.awt.event.FocusEvent evt) {                                        
-    }                                       
+    private void txtpasswordFocusGained(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtpasswordFocusLost(java.awt.event.FocusEvent evt) {                                      
-    }                                     
+    private void txtpasswordFocusLost(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {
 
-    }                                           
+    }
 
-    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {                                       
-    }                                      
+    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {
+    }
 
-    private void txtpasswordKeyReleased(java.awt.event.KeyEvent evt) {                                        
-    }                                       
+    private void txtpasswordKeyReleased(java.awt.event.KeyEvent evt) {
+    }
 
-    private void txtlastnameFocusGained(java.awt.event.FocusEvent evt) {                                        
-    }                                       
+    private void txtlastnameFocusGained(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtlastnameFocusLost(java.awt.event.FocusEvent evt) {                                      
-    }                                     
+    private void txtlastnameFocusLost(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtlastnameMouseClicked(java.awt.event.MouseEvent evt) {                                         
-    }                                        
+    private void txtlastnameMouseClicked(java.awt.event.MouseEvent evt) {
+    }
 
-    private void cbgenderItemStateChanged(java.awt.event.ItemEvent evt) {                                          
+    private void cbgenderItemStateChanged(java.awt.event.ItemEvent evt) {
 
-    }                                         
+    }
 
-    private void txtfirstnameFocusGained(java.awt.event.FocusEvent evt) {                                         
-    }                                        
+    private void txtfirstnameFocusGained(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtfirstnameFocusLost(java.awt.event.FocusEvent evt) {                                       
-    }                                      
+    private void txtfirstnameFocusLost(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtfirstnameMouseClicked(java.awt.event.MouseEvent evt) {                                          
-    }                                         
+    private void txtfirstnameMouseClicked(java.awt.event.MouseEvent evt) {
+    }
 
-    private void txtusernameFocusGained(java.awt.event.FocusEvent evt) {                                        
-    }                                       
+    private void txtusernameFocusGained(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtusernameFocusLost(java.awt.event.FocusEvent evt) {                                      
-    }                                     
+    private void txtusernameFocusLost(java.awt.event.FocusEvent evt) {
+    }
 
-    private void txtusernameMouseClicked(java.awt.event.MouseEvent evt) {                                         
-    }                                        
+    private void txtusernameMouseClicked(java.awt.event.MouseEvent evt) {
+    }
 
-    private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {                                            
-    }                                           
+    private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
-    private void deleteallActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    private void deleteallActionPerformed(java.awt.event.ActionEvent evt) {
         int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT TO DELETE ALL THE DATA PERMENANTLY ?", "DELETE ALL DATA", JOptionPane.YES_NO_OPTION);
 
         if (choose == JOptionPane.YES_OPTION) {
-            new LoginConformation(null,true,"DeleteAllData").setVisible(true);
+            new LoginConformation(null, true, "DeleteAllData").setVisible(true);
 
         }
-    }                                         
+    }
 
-    private void txtsearchFocusGained(java.awt.event.FocusEvent evt) {                                      
+    private void txtsearchFocusGained(java.awt.event.FocusEvent evt) {
         txt.checkTextField(txtsearch, "Search");
-    }                                     
+    }
 
-    private void txtsearchFocusLost(java.awt.event.FocusEvent evt) {                                    
+    private void txtsearchFocusLost(java.awt.event.FocusEvent evt) {
         txt.checkTextFieldEmpty(txtsearch, "Search");
-    }                                   
+    }
 
-    private void txtsearchMouseClicked(java.awt.event.MouseEvent evt) {                                       
+    private void txtsearchMouseClicked(java.awt.event.MouseEvent evt) {
         txt.checkTextField(txtsearch, "Search");
-    }                                      
+    }
 
-    private void txtsearchActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    private void txtsearchActionPerformed(java.awt.event.ActionEvent evt) {
         new UserData().filterAccount(data.getDeletedAccounts(), myTable1, txtsearch.getText());
-    }                                         
+    }
 
-    private void btnrestoryaccountActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+    private void btnrestoryaccountActionPerformed(java.awt.event.ActionEvent evt) {
         if (userData == null) {
             JOptionPane.showMessageDialog(null, "PLEASE SELECT A DATA TO RESTORT TO ", "PLEASE SELETE DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT THIS ACCOUT TO RESTORT " + userData.getUsername() ,"RESTORE ACCOUNT", JOptionPane.YES_NO_OPTION);
+        int choose = JOptionPane.showConfirmDialog(null, "ARE YOU SURE YOU WANT THIS ACCOUT TO RESTORT " + userData.getUsername(), "RESTORE ACCOUNT", JOptionPane.YES_NO_OPTION);
 
         if (choose != JOptionPane.YES_OPTION) {
             return;
@@ -463,8 +467,7 @@ public class DeletedData extends javax.swing.JDialog {
         resetInputData();
         user.addDataAccountTable(data.getDeletedAccounts(), myTable1);
 
-
-    }                                                 
+    }
 
     private void resetInputData() {
         txtusername.setText("Username");
@@ -476,9 +479,11 @@ public class DeletedData extends javax.swing.JDialog {
         profile = null;
         lblpictureHolder.setIcon(null);
         txtpassword.setText("Password");
+        userData = null;
+
     }
 
-    private void btnpernadeleteActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    private void btnpernadeleteActionPerformed(java.awt.event.ActionEvent evt) {
         if (userData == null) {
             JOptionPane.showMessageDialog(null, "PLEASE SELECT A DATA TO RESTORT TO ", "PLEASE SELETE DATA", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -491,7 +496,7 @@ public class DeletedData extends javax.swing.JDialog {
             resetInputData();
         }
 
-    }                                              
+    }
 
     /**
      * @param args the command line arguments

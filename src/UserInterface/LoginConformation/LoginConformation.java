@@ -32,7 +32,7 @@ public class LoginConformation extends javax.swing.JDialog {
         String password = String.valueOf(txtpassword.getPassword());
 
         if (!data.getCurrentUser().getUsername().equals(txtusername.getText())
-                && data.getCurrentUser().verifyPassword(password, data.getCurrentUser().getPassword())) {
+                && !data.getCurrentUser().verifyPassword(password, data.getCurrentUser().getPassword())) {
             JOptionPane.showMessageDialog(null, "INCCORRECT PASSWORD OR USERNAME TO THE PERSON(ADMIN) CURRENTLY LOGIN", "INCCORECT USERNAME AND PASSWORD", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -66,6 +66,7 @@ public class LoginConformation extends javax.swing.JDialog {
         initComponents();
         txtpassword.setEchoChar((char) 0);
         userData = user;
+        this.operation = operation;
     }
 
     /**
@@ -206,6 +207,7 @@ public class LoginConformation extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        login(operation);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtusernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameFocusGained

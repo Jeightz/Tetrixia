@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements Runnable {
@@ -279,7 +278,6 @@ public class GameBoard extends JPanel implements Runnable {
         // If any part of the locked piece is above the grid, it's game over
         if (lockAboveGrid) {
             isGameOver = true;
-
             repaint();
             return;
         }
@@ -615,7 +613,7 @@ public class GameBoard extends JPanel implements Runnable {
     }
 
     private void hardDrop() {
-        if (isGameOver || isGamePause) {
+        if (isGameOver || isGamePause) {    
             return;
         }
 
@@ -669,7 +667,6 @@ public class GameBoard extends JPanel implements Runnable {
                 repaint();
             }
             lastTime = System.nanoTime();
-
             try {
                 Thread.sleep(1000 / Fps);
             } catch (InterruptedException e) {

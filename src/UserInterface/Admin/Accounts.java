@@ -32,7 +32,7 @@ public class Accounts extends javax.swing.JPanel {
     File profile = null;
     private final checkPasswordField pass = new checkPasswordField();
     private final txtField txt = new txtField();
-    private UserData user = new UserData();
+    private  UserData user = new UserData();
     private final SeeAndUnseePass cbpass = new SeeAndUnseePass();
     private AdminFrame frame;
 
@@ -72,7 +72,7 @@ public class Accounts extends javax.swing.JPanel {
             return false;
         }
 
-        if (!isValidSignUpInput(username, firstname, lastname, gender, bod, pass) || profile == null) {
+        if (!isValidSignUpInput(username, firstname, lastname, gender, bod) || profile == null) {
             JOptionPane.showMessageDialog(null, "Invalid SignUp Fill Up EveryThing ", "Invalid SignUP", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
@@ -84,11 +84,11 @@ public class Accounts extends javax.swing.JPanel {
         return true;
     }
 
-    private boolean isValidSignUpInput(String username, String firstName, String lastName, String gender, String birthDate, String password) {
+    private boolean isValidSignUpInput(String username, String firstName, String lastName, String gender, String birthDate) {
         return !(gender.equals("Gender") || firstName.isEmpty() || lastName.isEmpty() || username.isEmpty()
-                || password.isEmpty() || birthDate.isEmpty()
+               || birthDate.isEmpty()
                 || firstName.equalsIgnoreCase("FirstName") || lastName.equalsIgnoreCase("LastName")
-                || username.equalsIgnoreCase("Username") || password.equalsIgnoreCase("Password"));
+                || username.equalsIgnoreCase("Username") );
     }
 
     private void resetInputData() {
@@ -108,7 +108,6 @@ public class Accounts extends javax.swing.JPanel {
     public Accounts() {
         initComponents();
         updateData();
-        this.frame = frame;
         chckseeUnsee.setVisible(false);
         txtpassword.setEchoChar((char) 0);
         btnban.setEnabled(false);

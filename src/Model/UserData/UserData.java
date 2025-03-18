@@ -27,7 +27,7 @@ public class UserData {
 
     //map is a interface
     //hashmap as an implementation of the map
-    private HashMap<String, Integer> userKeyBinds = new HashMap<>();//store the keyBind of the user
+    private HashMap<String,Integer> userKeyBinds = new HashMap<>();//store the keyBind of the user
 
     private String Username;
     private String Password;
@@ -228,10 +228,9 @@ public class UserData {
             return null;
         }
     }
-
+    
     public UserData(ArrayList<UserData> data, String Username, String Password, String FirstName, String LastName,
             String gender, File profile, String BOD) {
-
         this.Username = Username;
         this.Password = userPasswordHash(Password);
         this.FirstName = FirstName;
@@ -243,7 +242,6 @@ public class UserData {
         this.newAddUSerKeyBinds();
         this.userType = "User";
         this.isMusicOn = true;
-
     }
 
     public UserData userLogin(String username, String password) {
@@ -254,7 +252,7 @@ public class UserData {
                             "Your account is banned until: " + userData.getBanExpr(),
                             "Account Banned",
                             JOptionPane.ERROR_MESSAGE);
-                    return userData;
+                    return null;
                 }
                 if ("Admin".equals(userData.userType)) {
                     userData.loginHistory.add(LocalDateTime.now());
@@ -413,7 +411,7 @@ public class UserData {
             int score = da.getPlayerScore();
 
             if (da.userType.equals("User")) {
-                model.addRow(new Object[]{count++, da.getUsername(), da.FirstName + " " + da.LastName, score});
+                model.addRow(new Object[]{count++, da.getUsername(), da.FirstName + " " + da.LastName, da.getPlayerScore()});
             }
 
         }
